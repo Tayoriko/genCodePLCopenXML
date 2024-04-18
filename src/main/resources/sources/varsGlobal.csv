@@ -1,0 +1,12 @@
+globalEmergency,BOOL,Emergency stop
+globalReset,BOOL,Reset all alarms
+globalSimulation,BOOL,Switch simulation mode for all devices
+globalAuto,BOOL,Reset CMD.Manual for all devices
+globalSilence,BOOL,Disable siren from HMI
+globalSave,BOOL,Save data to PVL
+globalZero,BOOL,Load 0 to all buffers
+pulseS01,BOOL,global trigger 100 ms
+pulseS1,BOOL,global trigger 1 second
+clockS01,BOOL,global clock for 100 ms
+clockS05,BOOL,global clock for 500 ms
+clockS1,BOOL,global clock for 1 s
