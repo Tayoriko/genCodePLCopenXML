@@ -1,0 +1,8 @@
+$tab<variable name="$name">
+$tab    <type>
+$tab        <$type />
+$tab    </type>
+$tab    <documentation>
+$tab        <xhtml xmlns="http://www.w3.org/1999/xhtml">$documentation</xhtml>
+$tab    </documentation>
+$tab</variable>

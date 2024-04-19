@@ -1,7 +1,8 @@
-package system;
+package check;
 
-import enumerations.listBaseTypes;
-import enumerations.listCustomTypes;
+import enumerations.eVarType;
+import enumerations.eVarCustom;
+import system.GDB;
 
 import java.util.Arrays;
 
@@ -11,13 +12,13 @@ import java.util.Arrays;
 public class CheckVar {
     public Check checkName(String data){
         Check<String> check = new Check<>(data);
-        //Check empty String
+        //Check EMPTY String
         if (check.getValue().isEmpty()) {
             check.setError();
             check.addMessage("Empty variable name.");
         }
         //Check correct regex
-        if (!check.getValue().matches(RegexBase.regexVarName)) {
+        if (!check.getValue().matches(GDB.regexVarName)) {
             check.setError();
             check.addMessage("Incorect variable name: " + data + ".");
         }
@@ -32,33 +33,25 @@ public class CheckVar {
 
     public Check checkType(String data){
         Check<String> check = new Check<>(data);
-        //Check empty String
-        if (check.getValue().isEmpty()) {
+        //Check EMPTY String
+        if (check.getValue().isEmpty() || check.getValue().toUpperCase().equals(eVarType.EMPTY.getValue())) {
             check.setError();
             check.addMessage("Empty variable type.");
         }
         //Check correct variable type
         String dataType = "";
         if (data.length() <= 5) {
-            String lowercaseInput = data.toLowerCase();
-            //listBaseTypes result = listBaseTypes.empty;
-            for (listBaseTypes e : listBaseTypes.values()) {
-                if (e.getValue().equals(lowercaseInput)) {
-                    dataType = e.getValue();
-                    break;
-                }
-            }
+            dataType = eVarType.findByValue(data).getValue();
         }
         if (data.length() > 5){
-            //listCustomTypes result = listCustomTypes.empty;
-            for (listCustomTypes e : listCustomTypes.values()) {
+            for (eVarCustom e : eVarCustom.values()) {
                 if (e.getValue().equals(data)) {
                     dataType = e.getValue();
                     break;
                 }
             }
         }
-        if (dataType.equals(RegexBase.empty)) {
+        if (dataType.equals(GDB.empty)) {
             check.setError();
             check.addMessage("Incorect variable type: " + data + ".");
         }
@@ -73,13 +66,13 @@ public class CheckVar {
 
     public Check checkComm(String data){
         Check<String> check = new Check<>(data);
-        //Check empty String
+        //Check EMPTY String
         if (check.getValue().isEmpty()) {
             check.setError();
             check.addMessage("Empty variable comment.");
         }
         //Check correct regex
-        if (!check.getValue().matches(RegexBase.regexVarComment)) {
+        if (!check.getValue().matches(GDB.regexVarComment)) {
             check.setError();
             check.addMessage("Incorect variable comment: " + data + ".");
         }
@@ -109,6 +102,50 @@ public class CheckVar {
         if (check.isError()) {
             check.addMessage("system.CheckVar().check() -> " + Arrays.stream(value).toList() + "\n");
             System.out.println(check.getMessage());
+        }
+        //Result
+        return check;
+    }
+
+    public Check checkVarAddrBool(String value){
+        String addr = value.substring(3);
+        Check<String> check = new Check<>(addr);
+        //Check EMPTY String
+        if (check.getValue().isEmpty()) {
+            check.setError();
+            check.addMessage("Empty variable address.");
+        }
+        //Check correct regex
+        if (!check.getValue().matches(GDB.regexVarAddrBool)) {
+            check.setError();
+            check.addMessage("Incorect variable address: " + value + ".");
+        }
+        //Error
+        if (check.isError()) {
+            String message = "system.CheckVar().checkVarAddrBool() -> ";
+            System.out.println(message + check.getMessage());
+        }
+        //Result
+        return check;
+    }
+
+    public Check checkVarAddr(String value){
+        String addr = value.substring(3);
+        Check<String> check = new Check<>(addr);
+        //Check EMPTY String
+        if (check.getValue().isEmpty()) {
+            check.setError();
+            check.addMessage("Empty variable address.");
+        }
+        //Check correct regex
+        if (!check.getValue().matches(GDB.regexVarAddr)) {
+            check.setError();
+            check.addMessage("Incorect variable address: " + value + ".");
+        }
+        //Error
+        if (check.isError()) {
+            String message = "system.CheckVar().checkVarAddr() -> ";
+            System.out.println(message + check.getMessage());
         }
         //Result
         return check;

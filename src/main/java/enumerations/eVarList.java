@@ -8,26 +8,27 @@ package enumerations;
  * Use this enumeration to work with CoDeSyS or PLCopenXML
  */
 
-public enum listVars {
-
+public enum eVarList {
+    EMPTY       ("empty"),
     IN          ("VAR_INPUT"),
     OUT         ("VAR_OUTPUT"),
     IN_OUT      ("VAR_IN_OUT"),
     GLOBAL      ("VAR_GLOBAL"),
     RETAIN      ("VAR_GLOBAL RETAIN"),
     PERSISTENT  ("VAR_GLOBAL PERSISTENT RETAIN"),
+    INTERNAL    ("empty"),
     END         ("END_VARS");
 
     //add name to enumerations
     private final String vars;
 
     //initialisation enumerations
-    listVars(String vars){
+    eVarList(String vars){
         this.vars = vars;
     }
 
     //get string description on vars
-    public String getVars() {
+    public String getValue() {
         return this.vars;
     }
 }

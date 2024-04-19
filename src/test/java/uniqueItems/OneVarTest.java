@@ -1,5 +1,9 @@
 package uniqueItems;
 
+import enumerations.eVarAllocate;
+import enumerations.eVarList;
+import enumerations.eVarType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class OneVarTest {
@@ -19,5 +23,14 @@ class OneVarTest {
         String[] varName = {"globalEmergency","BOOL","Emergency stop"};
         OneVar var = new OneVar(varName);
         System.out.println(var.toXML(1));
+    }
+
+    @Test
+    void setAddress() {
+        String[] varName = {"globalEmergency","BOOL","Emergency stop"};
+        OneVar var = new OneVar(varName);
+        var.setAddress(eVarAllocate.OUT,"3.14");
+        System.out.println(var);
+        Assertions.assertEquals("%QX3.14", var.getAddress());
     }
 }

@@ -1,9 +1,9 @@
 package CSV;
 
-import system.Check;
-import system.CheckVar;
+import check.Check;
+import check.CheckVar;
 import system.ReadFile;
-import system.RegexBase;
+import system.GDB;
 import uniqueItems.OneVar;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class CsvReadVars {
     protected String[] convertLineToArray(String value){
         //convert line from csv file to array string
         //string parsing
-        String[] elements = value.split(RegexBase.csvSplit);
+        String[] elements = value.split(GDB.splitCsv);
         //trim elements
         for (String element : elements) {
             element = element.trim();

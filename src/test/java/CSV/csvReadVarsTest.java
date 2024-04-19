@@ -2,7 +2,7 @@ package CSV;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import system.RegexBase;
+import system.GDB;
 import uniqueItems.OneVar;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ class CsvReadVarsTest {
     @Test
     void readFile() {
         String filename = "varsGlobal";
-        List<OneVar> varList = csvReadVars.readFile(RegexBase.filepathSource, filename);
+        List<OneVar> varList = csvReadVars.readFile(GDB.filepathSource, filename);
         varList.forEach(item -> System.out.println(item.toString()));
         Assertions.assertEquals(12, varList.size());
     }

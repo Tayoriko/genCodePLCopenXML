@@ -1,4 +1,4 @@
-globalEmergency,BOOL,Emergency stop
+globalEmergency,bool,Emergency stop
 globalReset,BOOL,Reset all alarms
 globalSimulation,BOOL,Switch simulation mode for all devices
 globalAuto,BOOL,Reset CMD.Manual for all devices

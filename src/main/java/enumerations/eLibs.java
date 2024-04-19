@@ -8,8 +8,9 @@ package enumerations;
  * Use this enumeration to work with CoDeSyS or PLCopenXML
  */
 
-public enum listLib {
+public enum eLibs {
 
+    EMPTY      ("empty"),
     mt         ("mt"),         //mechatronics default library
     mtMotion   ("mt_motion");   //mechatronics default library with axis
 
@@ -17,7 +18,7 @@ public enum listLib {
     private final String lib;
 
     //initialisation enumerations
-    listLib(String lib){
+    eLibs(String lib){
         this.lib = lib;
     }
 

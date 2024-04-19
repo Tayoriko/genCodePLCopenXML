@@ -1,4 +1,4 @@
-package system;
+package check;
 
 public class Check<T> {
     private boolean error;
