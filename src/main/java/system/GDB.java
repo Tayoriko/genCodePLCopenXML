@@ -25,15 +25,26 @@ public class GDB {
     public static final int tabToComment = 5;
 
     //locations and smth
-    public static final String filepathSource = "./src/main/resources/sources/";
     public static final String filepathTemplate = "./src/main/resources/templates/";
+    public static final String filepathSource = "./src/main/resources/sources/";
     public static final String fileFormatDefault = ".csv";
     public static final String fileFormatTemplate = ".vm";
+    public static final String xmlVersion = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+
+
+    //global namespace
+    public static final String companyName = "sintozone's studio";
+    public static final String productName = "CODESYS";
+    public static final String productVersion = "CODESYS V3.5 SP20";
+    public static final String projectName = "genXMLtest";
 
     //global methods
 
     //default filenames for templates
     public static final String templateOneVar = "OneVarAddr";
     public static final String templateOneVarNoAddr = "OneVarNoAddr";
+    public static final String templateFileHeader = "genFileHeader";
+    public static final String templateContentHeader = "genContentHeader";
+
 }
 

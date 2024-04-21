@@ -8,7 +8,7 @@ import uniqueItems.OneVar;
 import java.util.Arrays;
 import java.util.List;
 
-class CsvReadVarsTest {
+class сsvReadVarsTest {
 
     CsvReadVars csvReadVars = new CsvReadVars();
 

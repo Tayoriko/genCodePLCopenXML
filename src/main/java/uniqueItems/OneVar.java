@@ -1,26 +1,17 @@
 package uniqueItems;
 
-import check.Check;
-import check.CheckVar;
 import enumerations.eVarAllocate;
 import enumerations.eVarType;
-import enumerations.eVarList;
-import system.VelocityEngineSingleton;
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import system.GDB;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.concurrent.atomic.AtomicReference;
+import system.GenXML;
 
 /**
  * This class contain structure for one unique variable
  * Use this enumeration to work with variables as object
  */
 
-public class OneVar {
+public class OneVar extends GenXML {
 
     private String name = "noName";
     private eVarType type = eVarType.EMPTY;
@@ -63,45 +54,23 @@ public class OneVar {
 
     public String toXML(int tabs)
     {
-        VelocityEngine velocityEngine = VelocityEngineSingleton.getInstance();
-
         // Создаем контекст Velocity
         VelocityContext context = new VelocityContext();
 
         // Заполняем контекст данными
-        context.put("tab", GDB.tab.repeat(Math.max(0, tabs)));
         context.put("name", this.name);
         context.put("address", this.address.getAddress());
         context.put("type", this.type.getValue());
         context.put("documentation", this.comment);
 
-        // Получаем шаблон
-        Template template;
-        try {
-            if (address.isEnable()) {
-                template = velocityEngine.getTemplate(GDB.filepathTemplate +
-                        GDB.templateOneVar +
-                        GDB.fileFormatTemplate);
-            }
-            else {
-                template = velocityEngine.getTemplate(GDB.filepathTemplate +
-                        GDB.templateOneVarNoAddr +
-                        GDB.fileFormatTemplate);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        String template;
+        if (address.isEnable()){
+            template = GDB.templateOneVar;
+        } else {
+            template = GDB.templateOneVarNoAddr;
         }
 
-        // Записываем данные из контекста в StringWriter с использованием шаблона
-        StringWriter writer = new StringWriter();
-        try {
-            template.merge(context, writer);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Выводим результат
-        return writer.toString();
+        return getXML(context, template, tabs);
     }
 
     public void setAddress(eVarAllocate varAllocate, String address) {

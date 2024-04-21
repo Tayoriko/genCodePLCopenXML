@@ -1,0 +1,18 @@
+$tab<contentHeader name="$name.project" modificationDateTime="$timeStamp">
+$tab    <coordinateInfo>
+$tab      <fbd>
+$tab        <scaling x="1" y="1" />
+$tab      </fbd>
+$tab      <ld>
+$tab        <scaling x="1" y="1" />
+$tab      </ld>
+$tab      <sfc>
+$tab        <scaling x="1" y="1" />
+$tab      </sfc>
+$tab    </coordinateInfo>
+$tab    <addData>
+$tab      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+$tab        <ProjectInformation />
+$tab      </data>
+$tab    </addData>
+$tab</contentHeader>
