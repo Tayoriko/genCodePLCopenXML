@@ -1,0 +1,2 @@
+$tab<fileHeader companyName="$companyName" productName="%productName" productVersion="$productVersion"
+$tab creationDateTime="$timeStamp" />

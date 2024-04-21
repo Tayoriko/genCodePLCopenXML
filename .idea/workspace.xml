@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="958f20e8-afe4-4fa6-92c4-14c7738f4228" name="Changes" comment="Added:&#10;- generate var list from CSV file&#10;- generate string from one var&#10;- generate XML record from one var">
+      <change afterPath="$PROJECT_DIR$/src/main/java/enumerations/eXMLpath.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/genXML/GenAddData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/genXML/GenBodyXML.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/genXML/GenContentHeader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/genXML/GenCoordinateInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/genXML/GenFileHeader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/system/GenXML.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/genAddDataClose.vm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/genAddDataOpen.vm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/genContentHeader.vm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/genFileHeader.vm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/genGlobalVarsClose.vm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/genGlobalVarsOpen" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/genXML/GenAddDataTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/genXML/GenBodyXMLTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/genXML/GenFileHeaderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/system/GDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/system/GDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uniqueItems/OneVar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uniqueItems/OneVar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/CSV/csvReadVarsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CSV/csvReadVarsTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="xml" />
+        <option value="Interface" />
+        <option value="Class" />
+        <option value="Enum" />
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Tayoriko&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Tayoriko/genCodePLCopenXML&quot;,
+    &quot;accountId&quot;: &quot;d8a2a9ea-4c53-43dc-a44f-b46048783a2b&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2fEjPnGlIGAovKYuUnNXcCTfDvt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.CsvReadVarsTest.executor": "Run",
+    "JUnit.GenBodyXMLTest.getXML.executor": "Run",
+    "JUnit.GenFileHeaderTest.genFileHeader.executor": "Run",
+    "JUnit.OneVarTest.setAddress.executor": "Run",
+    "JUnit.OneVarTest.testToString.executor": "Run",
+    "JUnit.OneVarTest.toXML.executor": "Run",
+    "JUnit.csvReadVarsTest.checkData.executor": "Run",
+    "JUnit.csvReadVarsTest.createVar.executor": "Run",
+    "JUnit.csvReadVarsTest.readFile.executor": "Run",
+    "JUnit.csvReadVarsTest.readLine.executor": "Run",
+    "JUnit.java in genCode.executor": "Run",
+    "Maven.genCode [compile].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/enere/IdeaProjects/genCode/src/main/resources/templates",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\enere\IdeaProjects\genCode\src\main\resources\templates" />
+      <recent name="C:\Users\enere\IdeaProjects\genCode\src\main\java\CSV" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\enere\IdeaProjects\genCode\src\main\resources" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="genXML" />
+      <recent name="uniqueItems" />
+      <recent name="CSV" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="enumerations" />
+      <recent name="check" />
+      <recent name="system" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.GenBodyXMLTest.getXML">
+    <configuration name="GenBodyXMLTest.getXML" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="genCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="genXML.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="genXML" />
+      <option name="MAIN_CLASS_NAME" value="genXML.GenBodyXMLTest" />
+      <option name="METHOD_NAME" value="getXML" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GenFileHeaderTest.genFileHeader" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="genCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="genXML.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="genXML" />
+      <option name="MAIN_CLASS_NAME" value="genXML.GenFileHeaderTest" />
+      <option name="METHOD_NAME" value="genFileHeader" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OneVarTest.setAddress" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="genCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="uniqueItems.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="uniqueItems" />
+      <option name="MAIN_CLASS_NAME" value="uniqueItems.OneVarTest" />
+      <option name="METHOD_NAME" value="setAddress" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in genCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="genCode" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="сsvReadVarsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="genCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="check.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="CSV" />
+      <option name="MAIN_CLASS_NAME" value="CSV.сsvReadVarsTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.GenBodyXMLTest.getXML" />
+        <item itemvalue="JUnit.GenFileHeaderTest.genFileHeader" />
+        <item itemvalue="JUnit.java in genCode" />
+        <item itemvalue="JUnit.OneVarTest.setAddress" />
+        <item itemvalue="JUnit.сsvReadVarsTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="958f20e8-afe4-4fa6-92c4-14c7738f4228" name="Changes" comment="" />
+      <created>1713373112062</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1713373112062</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Added:&#10;- generate var list from CSV file&#10;- generate string from one var&#10;- generate XML record from one var">
+      <option name="closed" value="true" />
+      <created>1713436251876</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713436251876</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.vm" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added:&#10;- generate var list from CSV file&#10;- generate string from one var&#10;- generate XML record from one var" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added:&#10;- generate var list from CSV file&#10;- generate string from one var&#10;- generate XML record from one var" />
+  </component>
+</project>
