@@ -37,12 +37,14 @@ public class GDB {
     public static final String productName = "CODESYS";
     public static final String productVersion = "CODESYS V3.5 SP20";
     public static final String projectName = "genXMLtest";
+    public static final String dataBase = "D:/CoDeSyS/PLCopen.db";
+
+    //PLCopenXML specific attributes
+    public static final String attributeXmlns = "http://www.w3.org/1999/xhtml";
 
     //global methods
 
     //default filenames for templates
-    public static final String templateOneVar = "OneVarAddr";
-    public static final String templateOneVarNoAddr = "OneVarNoAddr";
     public static final String templateFileHeader = "genFileHeader";
     public static final String templateContentHeader = "genContentHeader";
 

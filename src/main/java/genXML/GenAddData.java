@@ -26,7 +26,7 @@ public class GenAddData extends GenXML {
         sb.append(genOpen(tabs) + "\n");
         sb.append("<globalVars name=\"GVL\">").append("\n");
         for (OneVar oneVar : varList) {
-            sb.append(oneVar.toXML(tabs)).append("\n");
+            sb.append(oneVar.toXML()).append("\n");
         }
         sb.append("</globalVars>").append("\n");
         sb.append(genClose(tabs)).append("\n");

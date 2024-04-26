@@ -1,18 +1,10 @@
 package genXML;
 
-import enumerations.eXMLpath;
 import system.GDB;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class GenBodyXML {
 
-    private Map<eXMLpath, String> xmlBody = new HashMap<>();
     private int tabs = 0;
 
     public GenBodyXML () {}

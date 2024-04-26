@@ -2,6 +2,7 @@ package uniqueItems;
 
 import enumerations.eVarAllocate;
 import enumerations.eVarType;
+import genXML.objects.ObjOneVar;
 import org.apache.velocity.VelocityContext;
 import system.GDB;
 import system.GenXML;
@@ -52,25 +53,12 @@ public class OneVar extends GenXML {
         return var.toString();
     }
 
-    public String toXML(int tabs)
+    public String toXML()
     {
-        // Создаем контекст Velocity
-        VelocityContext context = new VelocityContext();
+        ObjOneVar objOneVar = new ObjOneVar(this);
 
-        // Заполняем контекст данными
-        context.put("name", this.name);
-        context.put("address", this.address.getAddress());
-        context.put("type", this.type.getValue());
-        context.put("documentation", this.comment);
+        return objOneVar.getXML().toString();
 
-        String template;
-        if (address.isEnable()){
-            template = GDB.templateOneVar;
-        } else {
-            template = GDB.templateOneVarNoAddr;
-        }
-
-        return getXML(context, template, tabs);
     }
 
     public void setAddress(eVarAllocate varAllocate, String address) {
@@ -109,6 +97,11 @@ public class OneVar extends GenXML {
 
     public String getAddress() {
         return address.getAddress();
+    }
+
+    public Boolean isEnableAddress ()
+    {
+        return address.isEnable();
     }
 
 }
