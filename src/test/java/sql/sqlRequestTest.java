@@ -14,15 +14,13 @@ class sqlRequestTest {
     void connect() throws SQLException {
         SQLRequest sqlRequest = new SQLRequest();
         Connection connection;
-        connection = sqlRequest.connect(GDB.dataBase);
+        connection = sqlRequest.connect(GDB.filepathDataBase+GDB.dataBase);
         String sql = "SELECT * FROM varListSys";
 
         try {
 
             Statement stmt  = connection.createStatement();
-            System.out.println("1");
             ResultSet rs    = stmt.executeQuery(sql);
-            System.out.println("2");
             // loop through the result set
             while (rs.next()) {
                 System.out.println(

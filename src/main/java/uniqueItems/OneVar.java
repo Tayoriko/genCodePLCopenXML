@@ -83,6 +83,18 @@ public class OneVar extends GenXML {
         this.address.deleteAddress();
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setType(String type) {
+        this.type = eVarType.findByValue(type);
+    }
+
     public String getName() {
         return name;
     }

@@ -23,10 +23,12 @@ public class GDB {
     public static final String tab = "\t";
     public static final int tabVarName = 10;
     public static final int tabToComment = 5;
+    public static final int instances = 1;
 
     //locations and smth
     public static final String filepathTemplate = "./src/main/resources/templates/";
     public static final String filepathSource = "./src/main/resources/sources/";
+    public static final String filepathDataBase = "./src/main/resources/db/";
     public static final String fileFormatDefault = ".csv";
     public static final String fileFormatTemplate = ".vm";
     public static final String xmlVersion = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
@@ -37,7 +39,7 @@ public class GDB {
     public static final String productName = "CODESYS";
     public static final String productVersion = "CODESYS V3.5 SP20";
     public static final String projectName = "genXMLtest";
-    public static final String dataBase = "D:/CoDeSyS/PLCopen.db";
+    public static final String dataBase = "PLCopen.db";
 
     //PLCopenXML specific attributes
     public static final String attributeXmlns = "http://www.w3.org/1999/xhtml";
