@@ -1,91 +1,73 @@
 package alarmsGen;
 
+import alarmsBase.AlarmMessage;
+import alarmsBase.AlarmWeintek;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.List;
 
 public class AlarmDatabaseExporter {
 
-    public static void exportToExcel(AlarmDatabase alarmDatabase, String outputFilePath) {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Alarms");
+    // Метод для экспорта базы данных в Excel файл
+    public static void exportToExcelWeintek(AlarmDatabase database, String filePath) {
+        // Создаем новый workbook и лист для записи данных
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Alarms");
 
-        // Заголовок столбцов в требуемом порядке
-        String[] headers = {
-                "Category", "Priority", "Address Type", "PLC Name (Read)", "Device Type (Read)", "System Tag (Read)", "User-defined Tag (Read)",
-                "Address (Read)", "Index (Read)", "Data Format (Read)", "Enable Notification", "Set ON (Notification)",
-                "PLC Name (Notification)", "Device Type (Notification)", "System Tag (Notification)", "User-defined Tag (Notification)",
-                "Address (Notification)", "Index (Notification)", "Condition", "Trigger Value", "Content", "Use Label Library",
-                "Label Name", "Font", "Color", "Acknowledge Value", "Enable Sound"
-        };
+            // Создаем заголовок
+            Row headerRow = sheet.createRow(0);
+            String[] headers = {
+                    "Category", "Priority", "Address Type", "PLC Name (Read)", "Device Type (Read)",
+                    "System Tag (Read)", "User-defined Tag (Read)", "Address (Read)", "Index (Read)",
+                    "Data Format (Read)", "Enable Notification", "Set ON (Notification)",
+                    "PLC Name (Notification)", "Device Type (Notification)", "System Tag (Notification)",
+                    "User-defined Tag (Notification)", "Address (Notification)", "Index (Notification)",
+                    "Condition", "Trigger Value", "Content", "Use Label Library", "Label Name",
+                    "Font", "Color", "Acknowledge Value", "Enable Sound"
+            };
 
-        // Создание заголовка
-        Row headerRow = sheet.createRow(0);
-        for (int i = 0; i < headers.length; i++) {
-            headerRow.createCell(i).setCellValue(headers[i]);
-        }
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+            }
 
-        // Заполнение данных из базы данных
-        int rowNum = 1;
-        for (AlarmConfig alarm : alarmDatabase.getAllAlarms()) {
-            Row row = sheet.createRow(rowNum++);
+            // Получаем список всех AlarmMessage из базы данных
+            List<AlarmMessage> alarms = database.getAlarms();
 
-            // Заполняем ячейки согласно порядку указанных столбцов
-            row.createCell(0).setCellValue(alarm.getCategory());
-            row.createCell(1).setCellValue(alarm.getPriority());
-            row.createCell(2).setCellValue(alarm.getAddressType());
-            row.createCell(3).setCellValue(alarm.getPlcNameRead());
-            row.createCell(4).setCellValue(alarm.getDataTypeRead());
-            row.createCell(5).setCellValue(String.valueOf(alarm.isSystemTagRead()));
-            row.createCell(6).setCellValue(String.valueOf(alarm.isUserDefinedTagRead()));
-            row.createCell(7).setCellValue(alarm.getAddressRead());
-            row.createCell(8).setCellValue(alarm.getIndexRead());
-            row.createCell(9).setCellValue(alarm.getDataTypeRead());
-            row.createCell(10).setCellValue(String.valueOf(alarm.isEnableNotification()));
-            row.createCell(11).setCellValue(""); // Set ON (Notification) - добавьте значение при необходимости
-            row.createCell(12).setCellValue(""); // PLC Name (Notification) - добавьте значение при необходимости
-            row.createCell(13).setCellValue(""); // Device Type (Notification) - добавьте значение при необходимости
-            row.createCell(14).setCellValue(""); // System Tag (Notification) - добавьте значение при необходимости
-            row.createCell(15).setCellValue(""); // User-defined Tag (Notification) - добавьте значение при необходимости
-            row.createCell(16).setCellValue(""); // Address (Notification) - добавьте значение при необходимости
-            row.createCell(17).setCellValue(""); // Index (Notification) - добавьте значение при необходимости
-            row.createCell(18).setCellValue(alarm.getCondition());
-            row.createCell(19).setCellValue(alarm.getTriggerValue());
-            row.createCell(20).setCellValue(alarm.getAlarmMessage());
-            row.createCell(21).setCellValue(String.valueOf(alarm.isUseLabelLibrary()));
-            row.createCell(22).setCellValue(alarm.getLabelName());
-            row.createCell(23).setCellValue(alarm.getFont());
-            row.createCell(24).setCellValue(alarm.getColor());
-            row.createCell(25).setCellValue(alarm.getAcknowledgeValue());
-            row.createCell(26).setCellValue(String.valueOf(alarm.isEnableSound()));
-        }
+            // Добавляем каждое сообщение в виде строки в Excel, начиная со второй строки
+            int rowIndex = 1;
+            for (AlarmMessage alarm : alarms) {
+                // Преобразуем AlarmMessage в AlarmWeintek
+                AlarmWeintek weintekAlarm = convertToWeintek(alarm);
 
-        // Запись файла на диск
-        try (FileOutputStream fileOut = new FileOutputStream(outputFilePath)) {
-            workbook.write(fileOut);
-            System.out.println("Данные успешно экспортированы в файл: " + outputFilePath);
+                // Записываем строку в Excel
+                Row row = sheet.createRow(rowIndex++);
+                String[] values = weintekAlarm.toExcelRow().split("\t");
+
+                for (int i = 0; i < values.length; i++) {
+                    Cell cell = row.createCell(i);
+                    cell.setCellValue(values[i]);
+                }
+            }
+
+            // Записываем workbook в файл
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+                workbook.close();
+            }
+            System.out.println("Excel file created successfully at " + filePath);
+
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                workbook.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
-}
 
+    // Преобразование AlarmMessage в AlarmWeintek
+    private static AlarmWeintek convertToWeintek(AlarmMessage alarm) {
+        // Преобразуем AlarmMessage в AlarmWeintek, используя его адрес и сообщение
+        return new AlarmWeintek(alarm.getAddress(), alarm.getMessage());
+    }
+}

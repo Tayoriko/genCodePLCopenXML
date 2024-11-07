@@ -1,14 +1,16 @@
 package alarmsGen;
 
+import alarmsBase.AlarmMessage;
 import enums.eDevType;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import enums.eProtocol;
+import enums.eRegex;
 import enums.eVarLists;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,27 +19,75 @@ import static enums.eDevType.*;
 
 
 public class AlarmCreator {
+    private String nameVarList = "";
+    private String prefix = "";
+    private String deviceName = "";
+    private String devName = "";
 
-    // Метод для создания набора аварий для заданного типа устройства
-    public static List<AlarmConfig> createAlarmsFromExcel(String filePath, eDevType deviceType, Set<Map.Entry<String, String>> alarmSet) throws IOException {
-        List<AlarmConfig> alarms = new ArrayList<>();
+    public AlarmCreator (File source, eProtocol protocol) throws IOException {
+        Sheet sheet = openSheet(source);
+        grabData(protocol, sheet);
+        reviewDevices(sheet, protocol, MOTOR);
+        reviewDevices(sheet, protocol, VALVE);
+        reviewDevices(sheet, protocol, AI);
+    }
 
-        try (FileInputStream fis = new FileInputStream(filePath);
+    private Sheet openSheet (File source) throws IOException {
+        try (FileInputStream fis = new FileInputStream(source);
              Workbook workbook = new XSSFWorkbook(fis)) {
+            return workbook.getSheetAt(0);
+        }
+    }
 
-            Sheet sheet = workbook.getSheetAt(0);
-            boolean inTargetSection = false;
+    public void createMessageCodesys (String variableName, eDevType devType) {
+        Set<Map.Entry<String, String>> alarmSet = Set.of();
+        switch (devType){
+            case MOTOR -> alarmSet = AlarmSets.getMotorAlarmSet();
+            case VALVE -> alarmSet = AlarmSets.getValveAlarmSet();
+            case AI -> alarmSet = AlarmSets.getAnalogAlarmSet();
+        }
+        for (Map.Entry<String, String> alarm : alarmSet) {
             int sequenceNumber = 1;
-            String devName = "";
+            // Формируем шаблонное обращение к переменной
+            String addressRead = "Application." + nameVarList + "." + prefix;
+            // Проверяем значение второго столбца
+            if (variableName.equals("0") || variableName.isEmpty()) {
+                // Формируем имя переменной на основе шаблона и последовательного номера
+                String template = getTemplateForDeviceType(devType);
+                if (!deviceName.equals(devName)) {devName = deviceName; sequenceNumber++;}
+                addressRead +=  template + "[" + sequenceNumber + "]." + alarm.getKey();
+            } else {
+                addressRead += variableName + "." + alarm.getKey();
+            }
+            System.out.println(addressRead);
+            // Создаем объект AlarmConfig
+            String contentWithDeviceName = devName + " - " + alarm.getValue();
+            System.out.println(contentWithDeviceName);
+            AlarmMessage alarmConfig = new AlarmMessage(addressRead, contentWithDeviceName);
+            AlarmDatabase.getInstance().addAlarm(alarmConfig);
+        }
+    };
 
+
+    private void grabDataCodesys (Sheet sheet) {
+        nameVarList = getCell(sheet, 0,1);
+        prefix = getCell(sheet, 1, 1);
+    }
+
+    private void grabData (eProtocol protocol, Sheet sheet) {
+        if (Objects.requireNonNull(protocol) == eProtocol.CODESYS) {
+            grabDataCodesys(sheet);
+        }
+    }
+
+    private void reviewDevices (Sheet sheet, eProtocol protocol, eDevType devType) {
+            boolean inTargetSection = false;
             for (Row row : sheet) {
                 Cell firstCell = row.getCell(0);
                 if (firstCell == null) continue;
-
                 String cellValue = firstCell.getStringCellValue().trim();
-
                 // Определяем начало нужного раздела
-                if (isDeviceTypeHeader(cellValue, deviceType)) {
+                if (isDeviceTypeHeader(cellValue, devType)) {
                     inTargetSection = true;
                     continue;
                 }
@@ -47,60 +97,33 @@ public class AlarmCreator {
                     if (cellValue.isEmpty()) {
                         break; // Конец раздела
                     }
-
-                    String deviceName = cellValue;
+                    deviceName = cellValue;
+                    //System.out.println(deviceName);
                     String variableName = getCellValue(row.getCell(1));
-
-                    for (Map.Entry<String, String> alarm : alarmSet) {
-                        String addressRead;
-
-                        // Проверяем значение второго столбца
-                        if (variableName.equals("0") || variableName.isEmpty()) {
-                            // Формируем имя переменной на основе шаблона и последовательного номера
-                            String template = getTemplateForDeviceType(deviceType);
-                            if (!deviceName.equals(devName)) {devName = deviceName; sequenceNumber++;}
-                            addressRead = "Application.SVL." + eVarLists.status.getName() + template + "[" + sequenceNumber + "]." + alarm.getKey();
-                        } else {
-                            addressRead = "Application.SVL." + eVarLists.status.getName() + variableName + "." + alarm.getKey();
-                        }
-
-                        // Создаем объект AlarmConfig
-                        String contentWithDeviceName = devName + " - " + alarm.getValue();
-                        AlarmConfig alarmConfig = new AlarmConfig(addressRead, contentWithDeviceName);
-                        alarms.add(alarmConfig);
+                    switch (protocol) {
+                        case CODESYS -> createMessageCodesys(variableName, devType);
                     }
                 }
             }
         }
 
-        return alarms;
-    }
-
     private static boolean isDeviceTypeHeader(String cellValue, eDevType deviceType) {
-        return switch (deviceType) {
-            case AI -> cellValue.equalsIgnoreCase("Analog Input");
-            case EMPTY -> false;
-            case MOTOR -> cellValue.equalsIgnoreCase("Motor");
-            case VALVE -> cellValue.equalsIgnoreCase("Valve");
-            // Добавьте проверки для других типов устройств
-            case PID -> false;
-            case AO -> false;
-            case DI -> false;
-            case DO -> false;
+        boolean result = false;
+        switch (deviceType) {
+            case EMPTY, PID, AO, DI, DO -> {System.out.println("not found " + deviceType.getValue());}
+            case MOTOR -> result = cellValue.equalsIgnoreCase(MOTOR.getValue());
+            case VALVE -> result = cellValue.equalsIgnoreCase(VALVE.getValue());
+            case AI -> result = cellValue.equalsIgnoreCase(AI.getValue());
         };
+        return result;
     }
 
     private static String getTemplateForDeviceType(eDevType deviceType) {
         return switch (deviceType) {
-            case AI -> AI.getName();
-            case EMPTY -> null;
+            case EMPTY, PID, AO, DI, DO -> "null";
             case MOTOR -> MOTOR.getName();
             case VALVE -> VALVE.getName();
-            // Добавьте шаблоны для других типов устройств
-            case PID -> null;
-            case AO -> null;
-            case DI -> null;
-            case DO -> null;
+            case AI -> AI.getName();
         };
     }
 
@@ -111,5 +134,11 @@ public class AlarmCreator {
             case NUMERIC -> String.valueOf((int) cell.getNumericCellValue()); // Приведение числового значения к int
             default -> "0";
         };
+    }
+
+    private String getCell (Sheet sheet, int rowID, int cellID){
+        Row row = sheet.getRow(rowID);
+        Cell cell = row.getCell(cellID);
+        return cell.getStringCellValue().trim();
     }
 }

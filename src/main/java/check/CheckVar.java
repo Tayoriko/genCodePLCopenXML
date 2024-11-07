@@ -15,7 +15,7 @@ public class CheckVar {
             check.addMessage("Empty device name.");
         }
         //Check correct regex
-        if (!check.getValue().matches(String.valueOf(eRegex.devName))) {
+        if (!check.getValue().matches(String.valueOf(eRegex.deviceName))) {
             check.setError();
             check.addMessage("Incorect device name: " + data + ".");
         }

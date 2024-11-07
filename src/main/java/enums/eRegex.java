@@ -2,7 +2,7 @@ package enums;
 
 public enum eRegex {
     EMPTY       ("empty"),
-    devName     ("^[A-ZА-Я][a-zA-Zа-яА-Я0-9]{0,9}$");
+    deviceName     ("^[A-ZА-Я][a-zA-Zа-яА-Я0-9]{0,9}$");
 
 
     //add name to enumerations
