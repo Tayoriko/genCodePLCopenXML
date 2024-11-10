@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -24,6 +25,9 @@ public class AlarmApp extends Application {
     private static ToggleGroup hmiGroup = new ToggleGroup();
     private static ToggleGroup protocolGroup = new ToggleGroup();
     private static ToggleGroup templateGroup = new ToggleGroup();
+    private String customFolderPath = System.getProperty("user.dir"); // Путь по умолчанию — папка проекта
+    private Label customFolderLabel;
+    private Button selectFolderButton;
 
     @Override
     public void start(Stage primaryStage) {
@@ -34,10 +38,12 @@ public class AlarmApp extends Application {
         RadioButton oniBtn = new RadioButton(eHMI.ONI.getValue());
         RadioButton omronNbBtn = new RadioButton(eHMI.OMRON_NB.getValue());
         RadioButton winccBtn = new RadioButton(eHMI.WINCC.getValue());
+        RadioButton tiaPanelsBtn = new RadioButton(eHMI.TIA.getValue()); // Новый пункт
         weintekBtn.setToggleGroup(hmiGroup);
         oniBtn.setToggleGroup(hmiGroup);
         omronNbBtn.setToggleGroup(hmiGroup);
         winccBtn.setToggleGroup(hmiGroup);
+        tiaPanelsBtn.setToggleGroup(hmiGroup);
         weintekBtn.setSelected(true);
 
         // Создание переключателей для выбора протокола
@@ -45,10 +51,12 @@ public class AlarmApp extends Application {
         RadioButton opcBtn = new RadioButton(eProtocol.OPC.getValue());
         RadioButton omronBtn = new RadioButton(eProtocol.OMRON.getValue());
         RadioButton modbusBtn = new RadioButton(eProtocol.MODBUS.getValue());
+        RadioButton step7Btn = new RadioButton(eProtocol.STEP7.getValue()); // Новый пункт
         codesysBtn.setToggleGroup(protocolGroup);
         opcBtn.setToggleGroup(protocolGroup);
         omronBtn.setToggleGroup(protocolGroup);
         modbusBtn.setToggleGroup(protocolGroup);
+        step7Btn.setToggleGroup(protocolGroup);
         codesysBtn.setSelected(true);
 
         // Создание переключателей для выбора шаблона
@@ -124,6 +132,36 @@ public class AlarmApp extends Application {
             }
         });
 
+        // Лейбл и кнопка для выбора кастомной папки, изначально скрытые
+        customFolderLabel = new Label("Custom Folder: " + customFolderPath);
+        selectFolderButton = new Button("Select Folder");
+        customFolderLabel.setVisible(false);
+        selectFolderButton.setVisible(false);
+
+        // Обработчик изменения выбора шаблона
+        templateGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            RadioButton selectedTemplate = (RadioButton) templateGroup.getSelectedToggle();
+            if (selectedTemplate != null && selectedTemplate.getText().equals(eTemplate.CUSTOM.getValue())) {
+                customFolderLabel.setVisible(true);
+                selectFolderButton.setVisible(true);
+            } else {
+                customFolderLabel.setVisible(false);
+                selectFolderButton.setVisible(false);
+            }
+        });
+
+        // Обработчик кнопки выбора папки
+        selectFolderButton.setOnAction(e -> {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Select Custom Folder");
+            directoryChooser.setInitialDirectory(new File(customFolderPath));
+            File selectedDirectory = directoryChooser.showDialog(primaryStage);
+            if (selectedDirectory != null) {
+                customFolderPath = selectedDirectory.getAbsolutePath();
+                customFolderLabel.setText("Custom Folder: " + customFolderPath);
+            }
+        });
+
         // Расположение переключателей HMI/SCADA, протоколов и шаблонов в сетке
         GridPane mainGrid = new GridPane();
         mainGrid.setVgap(10);
@@ -134,17 +172,23 @@ public class AlarmApp extends Application {
         mainGrid.add(oniBtn, 2, 0);
         mainGrid.add(omronNbBtn, 3, 0);
         mainGrid.add(winccBtn, 4, 0);
+        mainGrid.add(tiaPanelsBtn, 5, 0);
 
         mainGrid.add(new Label("Select protocol:"), 0, 1);
         mainGrid.add(codesysBtn, 1, 1);
         mainGrid.add(opcBtn, 2, 1);
         mainGrid.add(omronBtn, 3, 1);
         mainGrid.add(modbusBtn, 4, 1);
+        mainGrid.add(step7Btn, 5, 1);
 
         mainGrid.add(new Label("Select template:"), 0, 2);
         mainGrid.add(basicTemplateBtn, 1, 2);
         mainGrid.add(extendedTemplateBtn, 2, 2);
         mainGrid.add(customTemplateBtn, 3, 2);
+
+        // Добавляем кастомную папку и кнопку выбора папки в сетку
+        mainGrid.add(customFolderLabel, 0, 3, 3, 1);
+        mainGrid.add(selectFolderButton, 3, 3);
 
         // Нижний ряд с кнопками и статусом
         HBox bottomRow = new HBox(10, openFileBtn, saveToFileBtn, statusLabel, generateBtn);
@@ -158,7 +202,7 @@ public class AlarmApp extends Application {
         root.add(bottomRow, 0, 1);
 
         // Настройка сцены и отображение окна
-        Scene scene = new Scene(root, 600, 250);
+        Scene scene = new Scene(root, 525, 200);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -191,5 +235,9 @@ public class AlarmApp extends Application {
 
     public File getSelectedFile() {
         return selectedFile;
+    }
+
+    public String getCustomFolderPath() {
+        return customFolderPath;
     }
 }

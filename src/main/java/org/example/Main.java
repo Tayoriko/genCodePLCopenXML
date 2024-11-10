@@ -7,3 +7,5 @@ public class Main {
         AlarmApp.main(args); // Запуск JavaFX-приложения
     }
 }
+
+// TODO: add global configuration with store data over serialisation

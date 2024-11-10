@@ -10,7 +10,7 @@ public class AlarmWeintek extends AlarmMessage {
     private boolean systemTagRead = false;
     private boolean userDefinedTagRead = false;
     private String addressRead = "";
-    private String indexRead = null;
+    private String indexRead = "null";
     private boolean enableNotification = false;
     private String condition = "bt: 1";
     private String triggerValue = "0";
@@ -51,8 +51,8 @@ public class AlarmWeintek extends AlarmMessage {
                 Boolean.toString(systemTagRead),
                 Boolean.toString(userDefinedTagRead),
                 addressRead != null ? addressRead : "",
-                indexRead != null ? indexRead : "",
-                "Data Format (Read)", // Замените или обновите, если нужно
+                indexRead,
+                "", // Замените или обновите, если нужно
                 Boolean.toString(enableNotification),
                 "", // Placeholder для Set ON (Notification)
                 "", // Placeholder для PLC Name (Notification)

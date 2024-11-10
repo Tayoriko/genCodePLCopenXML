@@ -14,6 +14,8 @@ import static alarmsGen.AlarmGeneration.loadFilePath;
 
 public class AlarmSets {
 
+    // TODO: add language option from configuration
+
     private static Set<Map.Entry<String, String>> motorAlarmSet = Set.of();
     private static Set<Map.Entry<String, String>> valveAlarmSet = Set.of();
     private static Set<Map.Entry<String, String>> analogAlarmSet = Set.of();
@@ -30,7 +32,7 @@ public class AlarmSets {
         switch (template) {
             case eTemplate.BASIC -> {
                 filePath = loadFilePath(type);
-                set = loadAlarmsFromCsv(filePath);
+                set = loadAlarmsFromCsv(filePath, "ru");
                 break;
             }
         }
@@ -49,8 +51,8 @@ public class AlarmSets {
         return analogAlarmSet;
     }
 
-    // Метод для чтения CSV-файла и создания структуры данных
-    private static Set<Map.Entry<String, String>> loadAlarmsFromCsv(String filePath) {
+    // Метод для чтения CSV-файла и создания структуры данных с выбором языка
+    private static Set<Map.Entry<String, String>> loadAlarmsFromCsv(String filePath, String language) {
         Map<String, String> alarmMap = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -58,12 +60,16 @@ public class AlarmSets {
 
             // Чтение файла построчно
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",", 2);
+                String[] parts = line.split(",", 3); // Изменено на 3, чтобы учесть третий элемент
 
                 // Проверка на корректность строки
-                if (parts.length == 2) {
+                if (parts.length >= 3) {
                     String address = parts[0].trim();
-                    String alarmText = parts[1].trim().replace("\"", "");
+                    String russianText = parts[1].trim().replace("\"", "");
+                    String englishText = parts[2].trim().replace("\"", "");
+
+                    // Выбор текста в зависимости от языка
+                    String alarmText = language.equals("ru") ? russianText : englishText;
                     alarmMap.put(address, alarmText);
                 }
             }

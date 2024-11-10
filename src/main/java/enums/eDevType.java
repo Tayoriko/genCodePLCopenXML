@@ -32,11 +32,11 @@ public enum eDevType {
     }
 
     //find type by string value
-    public static eVarLists findByValue (String value) {
-        eVarLists type = eVarLists.EMPTY;
-        for (eVarLists item : eVarLists.values())
+    public static eDevType findByValue (String value) {
+        eDevType type = eDevType.EMPTY;
+        for (eDevType item : eDevType.values())
         {
-            if (item.getValue().equals(value.toUpperCase())) {
+            if (item.getValue().equalsIgnoreCase(value)) {
                 type = item;
                 break;
             }

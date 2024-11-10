@@ -17,8 +17,18 @@ public class AlarmDatabaseExporter {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Alarms");
 
+            // Создаем новую строку в начале файла
+            Row systemRow = sheet.createRow(0);
+
+            // Устанавливаем значения в ячейки
+            // TODO: add editor to menu
+            systemRow.createCell(0).setCellValue("VERSION");
+            systemRow.createCell(1).setCellValue("2");
+            systemRow.createCell(2).setCellValue("HARDWARE_VERSION");
+            systemRow.createCell(3).setCellValue("41");
+
             // Создаем заголовок
-            Row headerRow = sheet.createRow(0);
+            Row headerRow = sheet.createRow(1);
             String[] headers = {
                     "Category", "Priority", "Address Type", "PLC Name (Read)", "Device Type (Read)",
                     "System Tag (Read)", "User-defined Tag (Read)", "Address (Read)", "Index (Read)",

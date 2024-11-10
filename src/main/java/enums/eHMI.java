@@ -5,7 +5,8 @@ public enum eHMI {
     WEINTEK     ("Weintek"),
     ONI         ("Oni"),
     OMRON_NB    ("Omron NB"),
-    WINCC       ("WinCC");
+    WINCC       ("WinCC"),
+    TIA         ("TIA Panels");
 
 
     //add name to enumerations

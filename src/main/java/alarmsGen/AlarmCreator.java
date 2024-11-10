@@ -21,15 +21,17 @@ import static enums.eDevType.*;
 public class AlarmCreator {
     private String nameVarList = "";
     private String prefix = "";
+    private String varName = "";
+    private String alarmName = "";
     private String deviceName = "";
     private String devName = "";
 
     public AlarmCreator (File source, eProtocol protocol) throws IOException {
         Sheet sheet = openSheet(source);
         grabData(protocol, sheet);
+        reviewDevices(sheet, protocol, AI);
         reviewDevices(sheet, protocol, MOTOR);
         reviewDevices(sheet, protocol, VALVE);
-        reviewDevices(sheet, protocol, AI);
     }
 
     private Sheet openSheet (File source) throws IOException {
@@ -50,14 +52,15 @@ public class AlarmCreator {
             int sequenceNumber = 1;
             // Формируем шаблонное обращение к переменной
             String addressRead = "Application." + nameVarList + "." + prefix;
+            alarmName = varName + "." + alarm.getKey();
             // Проверяем значение второго столбца
             if (variableName.equals("0") || variableName.isEmpty()) {
                 // Формируем имя переменной на основе шаблона и последовательного номера
                 String template = getTemplateForDeviceType(devType);
                 if (!deviceName.equals(devName)) {devName = deviceName; sequenceNumber++;}
-                addressRead +=  template + "[" + sequenceNumber + "]." + alarm.getKey();
+                addressRead +=  template + "[" + sequenceNumber + "]." + alarmName;
             } else {
-                addressRead += variableName + "." + alarm.getKey();
+                addressRead += variableName + "." + alarmName;
             }
             System.out.println(addressRead);
             // Создаем объект AlarmConfig
@@ -72,6 +75,7 @@ public class AlarmCreator {
     private void grabDataCodesys (Sheet sheet) {
         nameVarList = getCell(sheet, 0,1);
         prefix = getCell(sheet, 1, 1);
+        varName = getCell(sheet, 2, 1);
     }
 
     private void grabData (eProtocol protocol, Sheet sheet) {
@@ -94,7 +98,7 @@ public class AlarmCreator {
 
                 // Проверяем, что мы в нужном разделе
                 if (inTargetSection) {
-                    if (cellValue.isEmpty()) {
+                    if (cellValue.isEmpty() || nextSection(cellValue, devType)) {
                         break; // Конец раздела
                     }
                     deviceName = cellValue;
@@ -106,6 +110,11 @@ public class AlarmCreator {
                 }
             }
         }
+
+    private boolean nextSection (String cellValue, eDevType devType) {
+        eDevType newType = findByValue(cellValue);
+        return !newType.equals(EMPTY) && !newType.equals(devType);
+    }
 
     private static boolean isDeviceTypeHeader(String cellValue, eDevType deviceType) {
         boolean result = false;
