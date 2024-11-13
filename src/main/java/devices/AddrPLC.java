@@ -10,9 +10,15 @@ public class AddrPLC {
     }
 
     public AddrPLC(String addr) {
-        String[] splitAddress = splitAddress(addr);
-        this.word = Integer.parseInt(splitAddress[0]);
-        this.bit = Integer.parseInt(splitAddress[1]);
+        if (!addr.isEmpty()){
+            String[] splitAddress = splitAddress(addr);
+            this.word = Integer.parseInt(splitAddress[0]);
+            this.bit = Integer.parseInt(splitAddress[1]);
+        }
+        else {
+            this.word = 0;
+            this.bit = 0;
+        }
     }
 
     public String getAddrCodesys() {
