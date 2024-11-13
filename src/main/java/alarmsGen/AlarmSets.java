@@ -1,5 +1,6 @@
 package alarmsGen;
 
+import enums.FilePath;
 import enums.eDevType;
 import enums.eTemplate;
 
@@ -9,8 +10,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static alarmsGen.AlarmGeneration.loadFilePath;
 
 public class AlarmSets {
 
@@ -79,5 +78,24 @@ public class AlarmSets {
 
         // Возвращаем Set из Map
         return alarmMap.entrySet();
+    }
+
+    private static String loadFilePath(eDevType type) {
+        String filePath = "";
+        switch (type) {
+            case MOTOR -> {
+                filePath = FilePath.BASIC_MOTOR;
+                break;
+            }
+            case VALVE -> {
+                filePath = FilePath.BASIC_VALVE;
+                break;
+            }
+            case AI -> {
+                filePath = FilePath.BASIC_ANALOG_INPUT;
+                break;
+            }
+        }
+        return filePath;
     }
 }

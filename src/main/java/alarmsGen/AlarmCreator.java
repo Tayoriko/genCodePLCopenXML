@@ -1,17 +1,18 @@
 package alarmsGen;
 
 import alarmsBase.AlarmMessage;
+import devices.AddrPLC;
+import devices.DevMotor;
+import devices.DevOne;
+import devicesDB.MotorDatabase;
 import enums.eDevType;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
 import enums.eProtocol;
-import enums.eRegex;
-import enums.eVarLists;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -23,15 +24,12 @@ public class AlarmCreator {
     private String prefix = "";
     private String varName = "";
     private String alarmName = "";
-    private String deviceName = "";
     private String devName = "";
+    private final Sheet sheet;
 
-    public AlarmCreator (File source, eProtocol protocol) throws IOException {
-        Sheet sheet = openSheet(source);
+    public AlarmCreator(File source, eProtocol protocol) throws IOException {
+        sheet = openSheet(source);
         grabData(protocol, sheet);
-        reviewDevices(sheet, protocol, AI);
-        reviewDevices(sheet, protocol, MOTOR);
-        reviewDevices(sheet, protocol, VALVE);
     }
 
     private Sheet openSheet (File source) throws IOException {
@@ -40,37 +38,6 @@ public class AlarmCreator {
             return workbook.getSheetAt(0);
         }
     }
-
-    public void createMessageCodesys (String variableName, eDevType devType) {
-        Set<Map.Entry<String, String>> alarmSet = Set.of();
-        switch (devType){
-            case MOTOR -> alarmSet = AlarmSets.getMotorAlarmSet();
-            case VALVE -> alarmSet = AlarmSets.getValveAlarmSet();
-            case AI -> alarmSet = AlarmSets.getAnalogAlarmSet();
-        }
-        for (Map.Entry<String, String> alarm : alarmSet) {
-            int sequenceNumber = 1;
-            // Формируем шаблонное обращение к переменной
-            String addressRead = "Application." + nameVarList + "." + prefix;
-            alarmName = varName + "." + alarm.getKey();
-            // Проверяем значение второго столбца
-            if (variableName.equals("0") || variableName.isEmpty()) {
-                // Формируем имя переменной на основе шаблона и последовательного номера
-                String template = getTemplateForDeviceType(devType);
-                if (!deviceName.equals(devName)) {devName = deviceName; sequenceNumber++;}
-                addressRead +=  template + "[" + sequenceNumber + "]." + alarmName;
-            } else {
-                addressRead += variableName + "." + alarmName;
-            }
-            System.out.println(addressRead);
-            // Создаем объект AlarmConfig
-            String contentWithDeviceName = devName + " - " + alarm.getValue();
-            System.out.println(contentWithDeviceName);
-            AlarmMessage alarmConfig = new AlarmMessage(addressRead, contentWithDeviceName);
-            AlarmDatabase.getInstance().addAlarm(alarmConfig);
-        }
-    };
-
 
     private void grabDataCodesys (Sheet sheet) {
         nameVarList = getCell(sheet, 0,1);
@@ -84,9 +51,9 @@ public class AlarmCreator {
         }
     }
 
-    private void reviewDevices (Sheet sheet, eProtocol protocol, eDevType devType) {
+    public void reviewAlarms(eProtocol protocol, eDevType devType) {
             boolean inTargetSection = false;
-            for (Row row : sheet) {
+            for (Row row : this.sheet) {
                 Cell firstCell = row.getCell(0);
                 if (firstCell == null) continue;
                 String cellValue = firstCell.getStringCellValue().trim();
@@ -101,15 +68,43 @@ public class AlarmCreator {
                     if (cellValue.isEmpty() || nextSection(cellValue, devType)) {
                         break; // Конец раздела
                     }
-                    deviceName = cellValue;
-                    //System.out.println(deviceName);
-                    String variableName = getCellValue(row.getCell(1));
+                    String name = cellValue;
+                    System.out.println(name);
+                    int devId = (int) Double.parseDouble(getCellValue(row.getCell(2)));
+                    System.out.println(getCellValue(row.getCell(0)));
+                    System.out.println(getCellValue(row.getCell(1)));
+                    System.out.println(getCellValue(row.getCell(2)));
+                    System.out.println(getCellValue(row.getCell(3)));
+                    //System.out.println(devId);
                     switch (protocol) {
-                        case CODESYS -> createMessageCodesys(variableName, devType);
+                        case CODESYS -> createAlarmCodesys(name, devId, devType);
                     }
                 }
             }
         }
+
+
+    public void createAlarmCodesys(String name, int devId, eDevType devType) {
+        Set<Map.Entry<String, String>> alarmSet = Set.of();
+        switch (devType){
+            case MOTOR -> alarmSet = AlarmSets.getMotorAlarmSet();
+            case VALVE -> alarmSet = AlarmSets.getValveAlarmSet();
+            case AI -> alarmSet = AlarmSets.getAnalogAlarmSet();
+        }
+        for (Map.Entry<String, String> alarm : alarmSet) {
+            // Формируем шаблонное обращение к переменной
+            String addressRead = "Application." + nameVarList + "." + prefix;
+            alarmName = varName + "." + alarm.getKey();
+            // Формируем имя переменной на основе шаблона и последовательного номера
+            String template = getTemplateForDeviceType(devType);
+            if (!name.equals(devName)) {devName = name;}
+            addressRead +=  template + "[" + devId + "]." + alarmName;
+            // Создаем объект AlarmConfig
+            String contentWithDeviceName = devName + " - " + alarm.getValue();
+            AlarmMessage alarmConfig = new AlarmMessage(addressRead, contentWithDeviceName);
+            AlarmDatabase.getInstance().addAlarm(alarmConfig);
+        }
+    };
 
     private boolean nextSection (String cellValue, eDevType devType) {
         eDevType newType = findByValue(cellValue);

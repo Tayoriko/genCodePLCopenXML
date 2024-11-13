@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static enums.eDevType.MOTOR;
-import static org.junit.jupiter.api.Assertions.*;
-
 class AlarmCreatorTest {
 
     @Test

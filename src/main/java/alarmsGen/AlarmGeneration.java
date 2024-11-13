@@ -4,12 +4,20 @@ import enums.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
+
+import static enums.eDevType.*;
 
 public class AlarmGeneration {
 
-    public static void generate(File source, String target) throws IOException {
+    public static void generateXlsx(File source, String target) throws IOException {
+
+        generate(source, target);
+
+        // Экспортируем базу данных в Excel
+        AlarmDatabaseExporter.exportToExcelWeintek(AlarmDatabase.getInstance(), target);
+    }
+
+    private static void generate (File source, String target) throws IOException {
         AlarmDatabase database = AlarmDatabase.getInstance();
         database.clear();
         eHMI hmi = AlarmApp.getHmi();
@@ -20,31 +28,10 @@ public class AlarmGeneration {
         AlarmSets alarmSets = new AlarmSets(template);
 
         //Создаём записи в базе
-        AlarmCreator alarmCreator = new AlarmCreator(source, protocol);
+        AlarmCreator recordsCreator = new AlarmCreator(source, protocol);
+        recordsCreator.reviewAlarms(protocol, AI);
+        recordsCreator.reviewAlarms(protocol, MOTOR);
+        recordsCreator.reviewAlarms(protocol, VALVE);
 
-        // Экспортируем базу данных в Excel
-        AlarmDatabaseExporter.exportToExcelWeintek(database, target);
-
-    }
-
-
-
-    static String loadFilePath(eDevType type) {
-        String filePath = "";
-        switch (type) {
-            case MOTOR -> {
-                filePath = FilePath.BASIC_MOTOR;
-                break;
-            }
-            case VALVE -> {
-                filePath = FilePath.BASIC_VALVE;
-                break;
-            }
-            case AI -> {
-                filePath = FilePath.BASIC_ANALOG_INPUT;
-                break;
-            }
-        }
-        return filePath;
     }
 }

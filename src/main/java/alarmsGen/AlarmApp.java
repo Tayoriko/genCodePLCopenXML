@@ -1,10 +1,11 @@
 package alarmsGen;
 
+import devicesPou.XmlCompose;
+import enums.eDevType;
 import enums.eHMI;
 import enums.eProtocol;
 import enums.eTemplate;
 import javafx.application.Application;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -16,6 +17,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AlarmApp extends Application {
 
@@ -68,6 +71,27 @@ public class AlarmApp extends Application {
         customTemplateBtn.setToggleGroup(templateGroup);
         basicTemplateBtn.setSelected(true);
 
+        // Поле для ввода имени проекта
+        Label projectNameLabel = new Label("Project name:");
+        TextField projectNameField = new TextField();
+        projectNameField.setPromptText("Enter project name");
+
+        // Лейбл и кнопка для выбора кастомной папки, изначально скрытые
+        customFolderLabel = new Label("Save to Folder: " + customFolderPath);
+        selectFolderButton = new Button("Select Folder");
+
+        // Обработчик кнопки выбора папки
+        selectFolderButton.setOnAction(e -> {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Select Custom Folder");
+            directoryChooser.setInitialDirectory(new File(customFolderPath));
+            File selectedDirectory = directoryChooser.showDialog(primaryStage);
+            if (selectedDirectory != null) {
+                customFolderPath = selectedDirectory.getAbsolutePath();
+                customFolderLabel.setText("Save to Folder: " + customFolderPath);
+            }
+        });
+
         // Кнопка для открытия файла
         Button openFileBtn = new Button("Open XLSX");
         openFileBtn.setOnAction(e -> {
@@ -81,20 +105,6 @@ public class AlarmApp extends Application {
             }
         });
 
-        // Кнопка для выбора файла для сохранения
-        Button saveToFileBtn = new Button("Save to...");
-        saveToFileBtn.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save to...");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
-            File selectedFile = fileChooser.showSaveDialog(primaryStage);
-            if (selectedFile != null) {
-                saveToFile = selectedFile.getAbsolutePath(); // Сохраняем путь вместо создания файла
-                updateStatus("Saving to: " + selectedFile.getName());
-                System.out.println("save to: " + saveToFile);
-            }
-        });
-
         // Метка для отображения статуса с фиксированной шириной
         statusLabel = new Label("Ready");
         statusLabel.setPrefWidth(150);
@@ -102,19 +112,22 @@ public class AlarmApp extends Application {
         statusLabel.setStyle("-fx-border-color: lightgrey; -fx-padding: 5px;");
 
         // Кнопка для генерации
-        Button generateBtn = new Button("Generate!");
+        Button generateBtn = new Button("Generate Alarms");
         generateBtn.setOnAction(e -> {
             if (selectedFile == null) {
                 updateStatus("Error: No file selected");
                 return;
             }
-            if (saveToFile == null) {
-                updateStatus("Error: No save location");
+            // Получаем имя проекта
+            String projectName = projectNameField.getText();
+            if (projectName.isEmpty()) {
+                updateStatus("Error: Project name is required");
                 return;
             }
             try {
                 System.out.println("generate started");
-                AlarmGeneration.generate(getSelectedFile(), saveToFile);
+                saveToFile = customFolderPath + "\\" + projectName + "_HMI_alarms_" + getHmi().getValue() + ".xlsx";
+                AlarmGeneration.generateXlsx(getSelectedFile(), saveToFile);
                 updateStatus("File saved successfully.");
             } catch (IOException ex) {
                 updateStatus("Error: Could not save the file.");
@@ -132,34 +145,54 @@ public class AlarmApp extends Application {
             }
         });
 
-        // Лейбл и кнопка для выбора кастомной папки, изначально скрытые
-        customFolderLabel = new Label("Custom Folder: " + customFolderPath);
-        selectFolderButton = new Button("Select Folder");
-        customFolderLabel.setVisible(false);
-        selectFolderButton.setVisible(false);
 
-        // Обработчик изменения выбора шаблона
-        templateGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            RadioButton selectedTemplate = (RadioButton) templateGroup.getSelectedToggle();
-            if (selectedTemplate != null && selectedTemplate.getText().equals(eTemplate.CUSTOM.getValue())) {
-                customFolderLabel.setVisible(true);
-                selectFolderButton.setVisible(true);
-            } else {
-                customFolderLabel.setVisible(false);
-                selectFolderButton.setVisible(false);
-            }
-        });
+        // Чекбоксы для выбора типов устройств
+        CheckBox motorsCheckBox = new CheckBox(eDevType.MOTOR.getValue());
+        CheckBox valvesCheckBox = new CheckBox(eDevType.VALVE.getValue());
+        CheckBox aiCheckBox = new CheckBox(eDevType.AI.getName());
+        CheckBox aoCheckBox = new CheckBox(eDevType.AO.getName());
+        CheckBox diCheckBox = new CheckBox(eDevType.DI.getName());
+        CheckBox doCheckBox = new CheckBox(eDevType.DO.getName());
 
-        // Обработчик кнопки выбора папки
-        selectFolderButton.setOnAction(e -> {
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            directoryChooser.setTitle("Select Custom Folder");
-            directoryChooser.setInitialDirectory(new File(customFolderPath));
-            File selectedDirectory = directoryChooser.showDialog(primaryStage);
-            if (selectedDirectory != null) {
-                customFolderPath = selectedDirectory.getAbsolutePath();
-                customFolderLabel.setText("Custom Folder: " + customFolderPath);
+        // Кнопка для генерации в нижнем ряду
+        Button lowerGenerateBtn = new Button("Generate POUs");
+        lowerGenerateBtn.setOnAction(e -> {
+                    updateStatus("Generation...");
+                    Set<eDevType> selectedDevices = new HashSet<>();
+
+                    if (motorsCheckBox.isSelected()) selectedDevices.add(eDevType.MOTOR);
+                    if (valvesCheckBox.isSelected()) selectedDevices.add(eDevType.VALVE);
+                    if (aiCheckBox.isSelected()) selectedDevices.add(eDevType.AI);
+                    if (aoCheckBox.isSelected()) selectedDevices.add(eDevType.AO);
+                    if (diCheckBox.isSelected()) selectedDevices.add(eDevType.DI);
+                    if (doCheckBox.isSelected()) selectedDevices.add(eDevType.DO);
+
+                    // Проверяем, была ли выбрана папка
+                    if (customFolderPath == null || customFolderPath.isEmpty()) {
+                        updateStatus("Error: folder not selected");
+                        return;
+                    }
+
+                    // Получаем имя проекта
+                    String projectName = projectNameField.getText();
+                    if (projectName.isEmpty()) {
+                        updateStatus("Error: Project name is required");
+                        return;
+                    }
+
+                    if (selectedFile == null) {
+                        updateStatus("Error: No file selected");
+                        return;
+                    }
+
+                    // Передаем папку, выбранные устройства и имя проекта в PouDevice
+            XmlCompose pouDevice = null;
+            try {
+                pouDevice = new XmlCompose(selectedFile, customFolderPath, projectName, getProtocol(), selectedDevices);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
+            updateStatus("Generation complete.");
         });
 
         // Расположение переключателей HMI/SCADA, протоколов и шаблонов в сетке
@@ -191,8 +224,17 @@ public class AlarmApp extends Application {
         mainGrid.add(selectFolderButton, 3, 3);
 
         // Нижний ряд с кнопками и статусом
-        HBox bottomRow = new HBox(10, openFileBtn, saveToFileBtn, statusLabel, generateBtn);
+        HBox bottomRow = new HBox(10, openFileBtn, statusLabel, generateBtn);
         bottomRow.setAlignment(Pos.CENTER);
+
+        // Нижняя строка с CheckBox для выбора устройств и кнопкой Generate
+        HBox deviceSelectionRow = new HBox(10, motorsCheckBox, valvesCheckBox, aiCheckBox, aoCheckBox, diCheckBox, doCheckBox, lowerGenerateBtn);
+        deviceSelectionRow.setAlignment(Pos.CENTER);
+
+        // Строка для ввода имени проекта
+        HBox projectNameRow = new HBox(10, projectNameLabel, projectNameField);
+        projectNameRow.setAlignment(Pos.CENTER);
+        projectNameField.setPrefWidth(300); // Устанавливаем предпочтительную ширину
 
         // Основная компоновка
         GridPane root = new GridPane();
@@ -200,9 +242,11 @@ public class AlarmApp extends Application {
         root.setAlignment(Pos.CENTER);
         root.add(mainGrid, 0, 0);
         root.add(bottomRow, 0, 1);
+        root.add(deviceSelectionRow, 0, 2);
+        root.add(projectNameRow, 0, 3);
 
         // Настройка сцены и отображение окна
-        Scene scene = new Scene(root, 525, 200);
+        Scene scene = new Scene(root, 525, 250);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -1,0 +1,92 @@
+      <pou name="$pouName" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="$drvName">
+              <type>
+                <array>
+                  <dimension lower="1" upper="$cntName" />
+                  <baseType>
+                    <derived name="mt.$drvName" />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Driver for standard motor</xhtml>
+              </documentation>
+            </variable>
+            <variable name="step">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">step for process</xhtml>
+              </documentation>
+            </variable>
+            <variable name="support">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">internal buffer</xhtml>
+              </documentation>
+            </variable>
+            <variable name="cnt">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">conter for FOR</xhtml>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">ID for copy</xhtml>
+              </documentation>
+            </variable>
+            <variable name="PT">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <derived name="R_TRIG" />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="NT">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <derived name="F_TRIG" />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="clock">
+              <type>
+                <array>
+                  <dimension lower="0" upper="5" />
+                  <baseType>
+                    <derived name="mt.timerRtc" />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">//Loader for HMI
+$loader
+
+//Call to execute $device processing
+$data
+
+			</xhtml>
+          </ST>
+        </body>
+      </pou>

@@ -1,8 +1,9 @@
 package enums;
 
 public enum eRegex {
-    EMPTY       ("empty"),
-    deviceName     ("^[A-ZА-Я][a-zA-Zа-яА-Я0-9]{0,9}$");
+    EMPTY               ("empty"),
+    deviceName          ("^[A-ZА-Я][a-zA-Zа-яА-Я0-9]{0,9}$"),
+    timeStampCodesys    ("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
 
 
     //add name to enumerations
