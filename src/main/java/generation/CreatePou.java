@@ -1,7 +1,6 @@
-package devicesPou;
+package generation;
 
-import devicesDB.DeviceCreator;
-import devicesDB.MotorDatabase;
+import devicesDB.*;
 import enums.FilePath;
 import enums.eDevType;
 import enums.eProtocol;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Properties;
 
-import static enums.eDevType.MOTOR;
+import static enums.eDevType.*;
 
 public class CreatePou {
     private String device = "";
@@ -75,6 +74,36 @@ public class CreatePou {
                 DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
                 deviceCreator.reviewDevice(protocol, MOTOR);
                 device.append(MotorDatabase.getInstance().getAllRecords());
+            }
+            case VALVE ->{
+                ValveDatabase.getInstance().clear();
+                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+                deviceCreator.reviewDevice(protocol, VALVE);
+                device.append(ValveDatabase.getInstance().getAllRecords());
+            }
+            case AI ->{
+                AnalogInputDatabase.getInstance().clear();
+                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+                deviceCreator.reviewDevice(protocol, AI);
+                device.append(AnalogInputDatabase.getInstance().getAllRecords());
+            }
+            case AO ->{
+                AnalogOutputDatabase.getInstance().clear();
+                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+                deviceCreator.reviewDevice(protocol, AO);
+                device.append(AnalogOutputDatabase.getInstance().getAllRecords());
+            }
+            case DI ->{
+                DiscreteInputDatabase.getInstance().clear();
+                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+                deviceCreator.reviewDevice(protocol, DI);
+                device.append(DiscreteInputDatabase.getInstance().getAllRecords());
+            }
+            case DO ->{
+                DiscreteOutputDatabase.getInstance().clear();
+                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+                deviceCreator.reviewDevice(protocol, DO);
+                device.append(DiscreteOutputDatabase.getInstance().getAllRecords());
             }
         }
         return device;

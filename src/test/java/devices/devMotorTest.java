@@ -1,6 +1,6 @@
 package devices;
 
-import devicesDB.DeviceCreator;
+import generation.DeviceCreator;
 import devicesDB.MotorDatabase;
 import enums.FilePath;
 import enums.eProtocol;

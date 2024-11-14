@@ -1,4 +1,4 @@
-package devicesPou;
+package generation;
 
 import enums.FilePath;
 import enums.eDevType;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class XmlCompose {
     private String sp = "";
-    private String projectName = "SVT_Babhinskii_PLC_v0.0.0.1.project";
+    private String projectName = "SVT_Babhinskii_PLC_v0.0.0.1";
     private String timeStamp;
     private String targetFolder = "";
     private eProtocol protocol = eProtocol.EMPTY;
@@ -28,7 +28,7 @@ public class XmlCompose {
 
     public XmlCompose(File selectedFile, String targetFolder, String projectName, eProtocol protocol, String sp, Set<eDevType> selectedDevices) throws IOException {
         this.selectedFile = selectedFile;
-        this.projectName = projectName + ".project";
+        this.projectName = projectName;
         this.timeStamp = getTimeStamp();
         this.targetFolder = targetFolder;
         this.protocol = protocol;

@@ -1,6 +1,7 @@
-package alarmsGen;
+package org.example;
 
-import devicesPou.XmlCompose;
+import alarmsGen.AlarmGeneration;
+import generation.XmlCompose;
 import enums.eDevType;
 import enums.eHMI;
 import enums.eProtocol;
@@ -21,7 +22,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AlarmApp extends Application {
+public class AppFX extends Application {
 
     private Label statusLabel;
     private File selectedFile;
@@ -200,7 +201,7 @@ public class AlarmApp extends Application {
                     // Получаем имя проекта
                     String projectName = projectNameField.getText();
                     if (projectName.isEmpty()) {
-                        updateStatus("Error: Project name is required");
+                        updateStatus("Error: No project name");
                         return;
                     }
 

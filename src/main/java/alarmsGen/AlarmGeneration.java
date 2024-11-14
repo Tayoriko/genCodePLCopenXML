@@ -3,6 +3,7 @@ package alarmsGen;
 import enums.eHMI;
 import enums.eProtocol;
 import enums.eTemplate;
+import org.example.AppFX;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,9 +23,9 @@ public class AlarmGeneration {
     private static void generate (File source, String target) throws IOException {
         AlarmDatabase database = AlarmDatabase.getInstance();
         database.clear();
-        eHMI hmi = AlarmApp.getHmi();
-        eProtocol protocol = AlarmApp.getProtocol();
-        eTemplate template = AlarmApp.getTemplate();
+        eHMI hmi = AppFX.getHmi();
+        eProtocol protocol = AppFX.getProtocol();
+        eTemplate template = AppFX.getTemplate();
 
         // Загружаем аварии для каждого типа устройства из разных файлов
         AlarmSets alarmSets = new AlarmSets(template);

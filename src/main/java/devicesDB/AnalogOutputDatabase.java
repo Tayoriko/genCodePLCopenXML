@@ -1,45 +1,45 @@
 package devicesDB;
 
-import devices.DevMotor;
+import devices.DevAnalogOutput;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MotorDatabase {
+public class AnalogOutputDatabase {
 
     // Единственный экземпляр класса
-    private static MotorDatabase instance;
+    private static AnalogOutputDatabase instance;
 
     // Список для хранения объектов AlarmMessage
-    private final List<DevMotor> records;
+    private final List<DevAnalogOutput> records;
 
     // Приватный конструктор для предотвращения создания экземпляров
-    private MotorDatabase() {
-        records = new ArrayList<DevMotor>();
+    private AnalogOutputDatabase() {
+        records = new ArrayList<DevAnalogOutput>();
     }
 
     // Метод для получения единственного экземпляра класса (Singleton)
-    public static synchronized MotorDatabase getInstance() {
+    public static synchronized AnalogOutputDatabase getInstance() {
         if (instance == null) {
-            instance = new MotorDatabase();
+            instance = new AnalogOutputDatabase();
         }
         return instance;
     }
 
     // Метод для добавления аварийного сообщения в базу данных
-    public void addRecord(DevMotor record) {
+    public void addRecord(DevAnalogOutput record) {
         records.add(record);
     }
 
     // Метод для удаления аварийного сообщения из базы данных
-    public void removeRecord(DevMotor record) {
+    public void removeRecord(DevAnalogOutput record) {
         records.remove(record);
     }
 
     // Метод для получения всех аварийных сообщений (неизменяемый список)
-    public List<DevMotor> getRecords() {
+    public List<DevAnalogOutput> getRecords() {
         return Collections.unmodifiableList(records);
     }
 

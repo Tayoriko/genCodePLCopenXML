@@ -10,6 +10,7 @@ public class DevOne {
     private AddrPLC cmdFw;
     private AddrPLC cmdOpen;
     private AddrPLC cmdClose;
+    private AddrPLC signal;
 
     // Конструктор для инициализации всех полей
     public DevOne(String name, String devName, AddrPLC qf, AddrPLC km, AddrPLC fbOpen, AddrPLC fbClose, AddrPLC cmdFw, AddrPLC cmdOpen, AddrPLC cmdClose) {
@@ -42,6 +43,13 @@ public class DevOne {
         this.fbClose = fbClose;
         this.cmdOpen = cmdOpen;
         this.cmdClose = cmdClose;
+    }
+
+    // Конструктор для аналогового/дискретного сигнала
+    public DevOne(String name, String devName, AddrPLC signal) {
+        this.name = name;
+        this.devName = devName;
+        this.signal = signal;
     }
 
     // Геттеры для каждого поля
@@ -79,6 +87,10 @@ public class DevOne {
 
     public AddrPLC getCmdClose() {
         return cmdClose;
+    }
+
+    public AddrPLC getSignal() {
+        return signal;
     }
 
     // Метод для отображения информации об устройстве

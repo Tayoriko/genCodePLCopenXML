@@ -1,4 +1,4 @@
-package devicesPou;
+package generation;
 
 import devices.IOLrecord;
 import devicesDB.IOLdatabase;
