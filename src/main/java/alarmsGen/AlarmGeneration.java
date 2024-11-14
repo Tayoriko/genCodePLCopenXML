@@ -1,6 +1,8 @@
 package alarmsGen;
 
-import enums.*;
+import enums.eHMI;
+import enums.eProtocol;
+import enums.eTemplate;
 
 import java.io.File;
 import java.io.IOException;

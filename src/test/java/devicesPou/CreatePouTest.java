@@ -1,7 +1,5 @@
 package devicesPou;
 
-import devicesDB.IOLdatabase;
-import devicesDB.MotorDatabase;
 import enums.FilePath;
 import enums.eDevType;
 import enums.eProtocol;
@@ -37,6 +35,7 @@ class CreatePouTest {
                 FilePath.DEFAULT_TARGET_FOLDER,
                 "test",
                 eProtocol.CODESYS,
+                "SP 20",
                 selectedDevices);
         //MotorDatabase.getInstance().printAllRecords();
         //IOLdatabase.getInstance().printAllRecords();

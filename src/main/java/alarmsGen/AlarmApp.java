@@ -6,6 +6,7 @@ import enums.eHMI;
 import enums.eProtocol;
 import enums.eTemplate;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -79,6 +80,29 @@ public class AlarmApp extends Application {
         // Лейбл и кнопка для выбора кастомной папки, изначально скрытые
         customFolderLabel = new Label("Save to Folder: " + customFolderPath);
         selectFolderButton = new Button("Select Folder");
+        customFolderLabel.setPrefWidth(500);
+
+        // 2. Создание выпадающего списка для выбора версии CoDeSyS 3.5
+        Label codesysVersionLabel = new Label("CoDeSyS v");
+        ComboBox<String> codesysVersionComboBox = new ComboBox<>();
+
+// Заполнение выпадающего списка версиями CoDeSyS SP 10-20 с учетом наличия патчей
+        codesysVersionComboBox.setItems(FXCollections.observableArrayList(
+                "SP10", "SP10 Patch 1",
+                "SP11", "SP11 Patch 1",
+                "SP12",
+                "SP13", "SP13 Patch 1",
+                "SP14",
+                "SP15",
+                "SP16", "SP16 Patch 1",
+                "SP17", "SP17 Patch 1",
+                "SP18",
+                "SP19", "SP19 Patch 1", "SP19 Patch 2",
+                "SP20"
+        ));
+
+// Установка значения по умолчанию
+        codesysVersionComboBox.setValue("SP20");
 
         // Обработчик кнопки выбора папки
         selectFolderButton.setOnAction(e -> {
@@ -188,7 +212,7 @@ public class AlarmApp extends Application {
                     // Передаем папку, выбранные устройства и имя проекта в PouDevice
             XmlCompose pouDevice = null;
             try {
-                pouDevice = new XmlCompose(selectedFile, customFolderPath, projectName, getProtocol(), selectedDevices);
+                pouDevice = new XmlCompose(selectedFile, customFolderPath, projectName, getProtocol(), codesysVersionComboBox.getValue(), selectedDevices);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -220,8 +244,8 @@ public class AlarmApp extends Application {
         mainGrid.add(customTemplateBtn, 3, 2);
 
         // Добавляем кастомную папку и кнопку выбора папки в сетку
-        mainGrid.add(customFolderLabel, 0, 3, 3, 1);
-        mainGrid.add(selectFolderButton, 3, 3);
+        mainGrid.add(customFolderLabel, 0, 3, 5, 1);
+        mainGrid.add(selectFolderButton, 5, 3);
 
         // Нижний ряд с кнопками и статусом
         HBox bottomRow = new HBox(10, openFileBtn, statusLabel, generateBtn);
@@ -234,7 +258,9 @@ public class AlarmApp extends Application {
         // Строка для ввода имени проекта
         HBox projectNameRow = new HBox(10, projectNameLabel, projectNameField);
         projectNameRow.setAlignment(Pos.CENTER);
-        projectNameField.setPrefWidth(300); // Устанавливаем предпочтительную ширину
+        projectNameField.setPrefWidth(250); // Устанавл
+        // Добавление поля и выпадающего списка в интерфейс
+        projectNameRow.getChildren().addAll(codesysVersionLabel, codesysVersionComboBox);// иваем предпочтительную ширину
 
         // Основная компоновка
         GridPane root = new GridPane();

@@ -1,6 +1,8 @@
 package alarmsGen;
 
-import enums.*;
+import enums.eHMI;
+import enums.eProtocol;
+import enums.eTemplate;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

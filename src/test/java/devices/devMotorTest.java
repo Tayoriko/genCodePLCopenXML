@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static enums.eDevType.*;
+import static enums.eDevType.MOTOR;
 
 class devMotorTest {
 

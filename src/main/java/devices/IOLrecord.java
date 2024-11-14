@@ -1,7 +1,5 @@
 package devices;
 
-import enums.eVarType;
-
 public class IOLrecord {
     private final String name;
     private final String dataType;

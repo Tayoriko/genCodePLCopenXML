@@ -3,7 +3,6 @@ package devicesPou;
 import devices.IOLrecord;
 import devicesDB.IOLdatabase;
 import enums.FilePath;
-import enums.eDevType;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 

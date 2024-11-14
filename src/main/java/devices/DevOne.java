@@ -1,7 +1,5 @@
 package devices;
 
-import enums.eDevType;
-
 public class DevOne {
     private final String name;
     private String devName;

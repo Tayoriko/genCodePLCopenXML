@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-    <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP20" creationDateTime="$timeStamp"/>
+    <fileHeader companyName="" productName="CODESYS" productVersion="$protocolVersion" creationDateTime="$timeStamp"/>
     <contentHeader name="$projectName">
     <coordinateInfo>
       <fbd>
