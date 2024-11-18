@@ -1,5 +1,7 @@
 package devices;
 
+import enums.FilePath;
+
 public class DevAnalogInput {
     private String header = "// #";
     private int id = 0;
@@ -15,8 +17,8 @@ public class DevAnalogInput {
         this.header += setHeader(id, name);
         this.id = id;
         if (signal.isIntToReal()) {
-            this.signal = "INT_TO_REAL(" + varList + ".listAI" + signal.getAddrCodesysAnalog() + ")";
-        } else this.signal = varList + ".listAI" + signal.getAddrCodesysAnalog();
+            this.signal = "INT_TO_REAL(" + getAddr(signal.getAddrCodesysAnalog()) + ")";
+        } else this.signal = getAddr(signal.getAddrCodesysAnalog());
         this.cmd = "CVL.cmdAI[" + id + "]";;
         this.cfg = "RVL.cfgAI[" + id + "]";
         this.state = "SVL.stateAI[" + id + "]";
@@ -24,15 +26,21 @@ public class DevAnalogInput {
     }
 
     public DevAnalogInput(int id, DevOne devOne){
-        this.header += setHeader(id, devOne.getName());
+        this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
         if (devOne.getSignal().isIntToReal()) {
-            this.signal = "INT_TO_REAL(" + varList + ".listAI" + devOne.getSignal().getAddrCodesysAnalog() + ")";
-        } else this.signal = varList + ".listAI" + devOne.getSignal().getAddrCodesysAnalog();
+            this.signal = "INT_TO_REAL(" + getAddr(devOne.getSignal().getAddrCodesysAnalog()) + ")";
+        } else this.signal = getAddr(devOne.getSignal().getAddrCodesysAnalog());
         this.cmd = "CVL.cmdAI[" + id + "]";
         this.cfg = "RVL.cfgAI[" + id + "]";
         this.state = "SVL.stateAI[" + id + "]";
         this.result = "IOL." + devOne.getDevName();
+    }
+
+    private String getAddr (String addr) {
+        if (addr.length() > FilePath.MAX_VAR_LENGHT) {
+            return addr;
+        } else return varList + ".listAI" + addr;
     }
 
     // Геттеры для каждого поля

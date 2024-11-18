@@ -54,61 +54,61 @@ public class DeviceCreator {
 
     public void createDeviceCodesys(Row row, eDevType devType) {
         int id = (int) row.getCell(2).getNumericCellValue();
-        String comment = row.getCell(9).getStringCellValue();
+        String comment = getCellAsString(row, 9);
         IOLrecord record = null;
         DevOne devOne = null;
         switch (devType) {
             case MOTOR -> {
-                devOne = createDevMotor(row);
+                devOne = createDevMotor(row, comment);
                 DevMotor devMotor = new DevMotor(id, devOne);
                 MotorDatabase.getInstance().addRecord(devMotor);
-                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", comment);
+                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", devOne.getCommentIOL());
             }
             case VALVE -> {
-                devOne = createDevValve(row);
+                devOne = createDevValve(row, comment);
                 DevValve devValve = new DevValve(id, devOne);
                 ValveDatabase.getInstance().addRecord(devValve);
-                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", comment);
+                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", devOne.getCommentIOL());
             }
             case AI -> {
-                devOne = createDevAnalogInput(row);
+                devOne = createDevAnalogInput(row, comment);
                 DevAnalogInput devAnalogInput = new DevAnalogInput(id, devOne);
                 AnalogInputDatabase.getInstance().addRecord(devAnalogInput);
-                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", comment);
+                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", devOne.getCommentIOL());
             }
             case AO -> {
-                devOne = createDevAnalogOutput(row);
+                devOne = createDevAnalogOutput(row, comment);
                 DevAnalogOutput devAnalogOutput = new DevAnalogOutput(id, devOne);
                 AnalogOutputDatabase.getInstance().addRecord(devAnalogOutput);
-                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", comment);
+                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", devOne.getCommentIOL());
             }
             case DI -> {
-                devOne = createDevDiscreteInput(row);
+                devOne = createDevDiscreteInput(row, comment);
                 DevDiscreteInput devDiscreteInput = new DevDiscreteInput(id, devOne);
                 DiscreteInputDatabase.getInstance().addRecord(devDiscreteInput);
-                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", comment);
+                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", devOne.getCommentIOL());
             }
             case DO -> {
-                devOne = createDevDiscreteOutput(row);
+                devOne = createDevDiscreteOutput(row, comment);
                 DevDiscreteOutput devDiscreteOutput = new DevDiscreteOutput(id, devOne);
                 DiscreteOutputDatabase.getInstance().addRecord(devDiscreteOutput);
-                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", comment);
+                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getTypeName() + "\"", devOne.getCommentIOL());
             }
         }
         assert devOne != null;
         IOLdatabase.getInstance().addRecord(record);
     };
 
-    private DevOne createDevMotor (Row row) {
+    private DevOne createDevMotor (Row row, String comment) {
         String name = row.getCell(0).getStringCellValue();
         String devName = row.getCell(1).getStringCellValue();
         AddrPLC addrQF = getCellAsAddr(row, 3);
         AddrPLC addrKM = getCellAsAddr(row, 4);
         AddrPLC addrFW = getCellAsAddr(row, 7);
-        return new DevOne(name, devName, addrQF, addrKM, addrFW);
+        return new DevOne(name, comment, devName, addrQF, addrKM, addrFW);
     }
 
-    private DevOne createDevValve (Row row) {
+    private DevOne createDevValve (Row row, String comment) {
         String name = row.getCell(0).getStringCellValue();
         String devName = row.getCell(1).getStringCellValue();
         AddrPLC addrQF = getCellAsAddr(row, 3);
@@ -116,10 +116,10 @@ public class DeviceCreator {
         AddrPLC addrFbClose = getCellAsAddr(row, 6);
         AddrPLC addrCmdOpen = getCellAsAddr(row, 7);
         AddrPLC addrCmdClose = getCellAsAddr(row, 8);
-        return new DevOne(name, devName, addrQF, addrFbOpen, addrFbClose, addrCmdOpen, addrCmdClose);
+        return new DevOne(name, comment, devName, addrQF, addrFbOpen, addrFbClose, addrCmdOpen, addrCmdClose);
     }
 
-    private DevOne createDevAnalogInput (Row row) {
+    private DevOne createDevAnalogInput (Row row, String comment) {
         String name = row.getCell(0).getStringCellValue();
         String devName = row.getCell(1).getStringCellValue();
         AddrPLC addrSignal = getCellAsAddr(row, 3);
@@ -127,10 +127,10 @@ public class DeviceCreator {
             addrSignal = getCellAsAddr(row, 4);
             addrSignal.setIntToReal(true);
         }
-        return new DevOne(name, devName, addrSignal);
+        return new DevOne(name, comment, devName, addrSignal);
     }
 
-    private DevOne createDevAnalogOutput (Row row) {
+    private DevOne createDevAnalogOutput (Row row, String comment) {
         String name = row.getCell(0).getStringCellValue();
         String devName = row.getCell(1).getStringCellValue();
         AddrPLC addrSignal = getCellAsAddr(row, 7);
@@ -138,21 +138,21 @@ public class DeviceCreator {
             addrSignal = getCellAsAddr(row, 8);
             addrSignal.setIntToReal(true);
         }
-        return new DevOne(name, devName, addrSignal);
+        return new DevOne(name, comment, devName, addrSignal);
     }
 
-    private DevOne createDevDiscreteInput (Row row) {
+    private DevOne createDevDiscreteInput (Row row, String comment) {
         String name = row.getCell(0).getStringCellValue();
         String devName = row.getCell(1).getStringCellValue();
         AddrPLC addrSignal = getCellAsAddr(row, 3);
-        return new DevOne(name, devName, addrSignal);
+        return new DevOne(name, comment, devName, addrSignal);
     }
 
-    private DevOne createDevDiscreteOutput (Row row) {
+    private DevOne createDevDiscreteOutput (Row row, String comment) {
         String name = row.getCell(0).getStringCellValue();
         String devName = row.getCell(1).getStringCellValue();
         AddrPLC addrSignal = getCellAsAddr(row, 7);
-        return new DevOne(name, devName, addrSignal);
+        return new DevOne(name, comment, devName, addrSignal);
     }
 
     private boolean nextSection (String cellValue, eDevType devType) {
@@ -184,6 +184,18 @@ public class DeviceCreator {
             }
         }
         return (cellValue != null) ? new AddrPLC(cell.getStringCellValue()) : new AddrPLC();
+    }
+
+    private String getCellAsString(Row row, int cellId) {
+        Cell cell = row.getCell(cellId);
+        String cellValue = null;
+        if (cell != null && cell.getCellType() == CellType.STRING) {
+            String value = cell.getStringCellValue();
+            if (value != null && !value.isEmpty()) {
+                cellValue = value;
+            }
+        }
+        return (cellValue != null) ? cellValue : "unknown device";
     }
 
 }

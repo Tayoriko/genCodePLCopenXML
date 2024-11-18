@@ -29,17 +29,18 @@ class devMotorTest {
 
     @Test
     void testDevMotorFromOne() {
-        DevOne devOne = new DevOne(name, devName, qf, km, cmdFw);
+        DevOne devOne = new DevOne(name, "xxx",devName, qf, km, cmdFw);
         DevMotor motor = new DevMotor(id, devOne);
         System.out.println(motor.toString());
     }
 
     @Test
     void testAddMotor() {
-        DevOne devOne = new DevOne(name, devName, qf, km, cmdFw);
+        DevOne devOne = new DevOne(name, "xxx",devName, qf, km, cmdFw);
         DevMotor motor = new DevMotor(id, devOne);
         MotorDatabase.getInstance().addRecord(motor);
         MotorDatabase.getInstance().printAllRecords();
+        System.out.println(devOne.getCommentIOL());
     }
 
     @Test

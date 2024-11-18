@@ -1,5 +1,7 @@
 package devices;
 
+import enums.FilePath;
+
 public class DevMotor {
     private String header = "// #";
     private int id = 0;
@@ -22,22 +24,22 @@ public class DevMotor {
         this.cfg = "RVL.cfgM[" + id + "]";
         this.state = "SVL.stateM[" + id + "]";
         this.devState = "IOL." + devName;
-        this.fbQF = varList + ".listDI" + qf.getAddrCodesysDiscrete();
-        this.fbKM = varList + ".listDI" + km.getAddrCodesysDiscrete();
-        this.cmdFW = varList + ".listDO" + cmdFw.getAddrCodesysDiscrete();
+        this.fbQF = getAddrDI(qf.getAddrCodesysDiscrete());
+        this.fbKM = getAddrDI(km.getAddrCodesysDiscrete());
+        this.cmdFW = getAddrDO(cmdFw.getAddrCodesysDiscrete());
         this.options = setOptions(qf, km);
     }
 
     public DevMotor (int id, DevOne devOne){
-        this.header += setHeader(id, devOne.getName());
+        this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
         this.cmd = "CVL.cmdM[" + id + "]";
         this.cfg = "RVL.cfgM[" + id + "]";
         this.state = "SVL.stateM[" + id + "]";
         this.devState = "IOL." + devOne.getDevName();
-        this.fbQF = varList + ".listDI" + devOne.getQf().getAddrCodesysDiscrete();
-        this.fbKM = varList + ".listDI" + devOne.getKm().getAddrCodesysDiscrete();
-        this.cmdFW = varList + ".listDO" + devOne.getCmdFw().getAddrCodesysDiscrete();
+        this.fbQF = getAddrDI(devOne.getQf().getAddrCodesysDiscrete());
+        this.fbKM = getAddrDI(devOne.getKm().getAddrCodesysDiscrete());
+        this.cmdFW = getAddrDO(devOne.getCmdFw().getAddrCodesysDiscrete());
         this.options = setOptions(devOne.getQf(), devOne.getKm());
     }
 
@@ -49,12 +51,24 @@ public class DevMotor {
     }
 
     private StringBuilder useIt (AddrPLC addrPLC, String cfgText) {
-        StringBuilder option = null;
+        StringBuilder option = new StringBuilder("");
         if (!addrPLC.isUse()){
-            option.append(cfg + "." + cfgText + " = FALSE;\n");
+            option.append(cfg + "." + cfgText + " := FALSE;\n");
             useOptions = true;
         }
         return option;
+    }
+
+    private String getAddrDI (String addr) {
+        if (addr.length() > FilePath.MAX_VAR_LENGHT) {
+            return addr;
+        } else return varList + ".listDI" + addr;
+    }
+
+    private String getAddrDO (String addr) {
+        if (addr.length() > FilePath.MAX_VAR_LENGHT) {
+            return addr;
+        } else return varList + ".listDO" + addr;
     }
 
     // Геттеры для каждого поля

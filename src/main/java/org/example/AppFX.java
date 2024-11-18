@@ -212,6 +212,12 @@ public class AppFX extends Application {
 
                     // Передаем папку, выбранные устройства и имя проекта в PouDevice
             XmlCompose pouDevice = null;
+            System.out.println(selectedFile);
+            System.out.println(customFolderPath);
+            System.out.println(projectName);
+            System.out.println(getProtocol().getValue());
+            System.out.println(codesysVersionComboBox.getValue());
+            System.out.println(selectedDevices.toString());
             try {
                 pouDevice = new XmlCompose(selectedFile, customFolderPath, projectName, getProtocol(), codesysVersionComboBox.getValue(), selectedDevices);
             } catch (IOException ex) {

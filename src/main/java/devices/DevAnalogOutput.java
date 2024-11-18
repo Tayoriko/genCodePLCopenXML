@@ -1,5 +1,7 @@
 package devices;
 
+import enums.FilePath;
+
 public class DevAnalogOutput {
     private String header = "// #";
     private int id = 0;
@@ -21,18 +23,24 @@ public class DevAnalogOutput {
         this.cfg = "RVL.cfgAO[" + id + "]";
         this.state = "SVL.stateAO[" + id + "]";
         if (result.isIntToReal()) {resultType = "resultI";};
-        this.result = varList + ".listAO" + result.getAddrCodesysAnalog();
+        this.result = getAddr(result.getAddrCodesysAnalog());
     }
 
     public DevAnalogOutput(int id, DevOne devOne){
-        this.header += setHeader(id, devOne.getName());
+        this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
         this.devState = "IOL." + devOne.getDevName();
         this.cmd = "CVL.cmdAO[" + id + "]";
         this.cfg = "RVL.cfgAO[" + id + "]";
         this.state = "SVL.stateAO[" + id + "]";
         if (devOne.getSignal().isIntToReal()) {resultType = "resultI";};
-        this.result = varList + ".listAO" + devOne.getSignal().getAddrCodesysAnalog();
+        this.result = getAddr(devOne.getSignal().getAddrCodesysAnalog());
+    }
+
+    private String getAddr (String addr) {
+        if (addr.length() > FilePath.MAX_VAR_LENGHT) {
+            return addr;
+        } else return varList + ".listAO" + addr;
     }
 
     // Геттеры для каждого поля

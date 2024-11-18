@@ -11,10 +11,14 @@ public class DevOne {
     private AddrPLC cmdOpen;
     private AddrPLC cmdClose;
     private AddrPLC signal;
+    private String comment;
+    private String commentIOL;
 
     // Конструктор для инициализации всех полей
-    public DevOne(String name, String devName, AddrPLC qf, AddrPLC km, AddrPLC fbOpen, AddrPLC fbClose, AddrPLC cmdFw, AddrPLC cmdOpen, AddrPLC cmdClose) {
+    public DevOne(String name, String comment, String devName, AddrPLC qf, AddrPLC km, AddrPLC fbOpen, AddrPLC fbClose, AddrPLC cmdFw, AddrPLC cmdOpen, AddrPLC cmdClose) {
         this.name = name;
+        this.comment = comment;
+        this.commentIOL = name + " - " + comment;
         this.devName = devName;
         this.qf = qf;
         this.km = km;
@@ -26,8 +30,10 @@ public class DevOne {
     }
 
     // Конструктор для инициализации мотора
-    public DevOne(String name, String devName, AddrPLC qf, AddrPLC km, AddrPLC cmdFw) {
+    public DevOne(String name, String comment, String devName, AddrPLC qf, AddrPLC km, AddrPLC cmdFw) {
         this.name = name;
+        this.comment = comment;
+        this.commentIOL = name + " - " + comment;
         this.devName = devName;
         this.qf = qf;
         this.km = km;
@@ -35,8 +41,10 @@ public class DevOne {
     }
 
     // Конструктор для инициализации клапана
-    public DevOne(String name, String devName, AddrPLC qf, AddrPLC fbOpen, AddrPLC fbClose, AddrPLC cmdOpen, AddrPLC cmdClose) {
+    public DevOne(String name, String comment, String devName, AddrPLC qf, AddrPLC fbOpen, AddrPLC fbClose, AddrPLC cmdOpen, AddrPLC cmdClose) {
         this.name = name;
+        this.comment = comment;
+        this.commentIOL = name + " - " + comment;
         this.devName = devName;
         this.qf = qf;
         this.fbOpen = fbOpen;
@@ -46,8 +54,10 @@ public class DevOne {
     }
 
     // Конструктор для аналогового/дискретного сигнала
-    public DevOne(String name, String devName, AddrPLC signal) {
+    public DevOne(String name, String comment, String devName, AddrPLC signal) {
         this.name = name;
+        this.comment = comment;
+        this.commentIOL = name + " - " + comment;
         this.devName = devName;
         this.signal = signal;
     }
@@ -91,6 +101,14 @@ public class DevOne {
 
     public AddrPLC getSignal() {
         return signal;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public String getCommentIOL() {
+        return commentIOL;
     }
 
     // Метод для отображения информации об устройстве

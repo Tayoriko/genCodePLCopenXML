@@ -1,5 +1,7 @@
 package devices;
 
+import enums.FilePath;
+
 public class DevDiscreteOutput {
     private String header = "// #";
     private int id = 0;
@@ -17,16 +19,22 @@ public class DevDiscreteOutput {
         this.command = "IOL." + devName;
         this.cmd = "CVL.cmdDO[" + id + "]";;
         this.cfg = "RVL.cfgDO[" + id + "]";
-        this.result = varList + ".listDO" + result.getAddrCodesysDiscrete();
+        this.result = getAddr(result.getAddrCodesysDiscrete());
     }
 
     public DevDiscreteOutput(int id, DevOne devOne){
-        this.header += setHeader(id, devOne.getName());
+        this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
         this.command = "IOL." + devOne.getDevName();
         this.cmd = "CVL.cmdDO[" + id + "]";
         this.cfg = "RVL.cfgDO[" + id + "]";
-        this.result = varList + ".listDO" + devOne.getSignal().getAddrCodesysDiscrete();
+        this.result = getAddr(devOne.getSignal().getAddrCodesysDiscrete());
+    }
+
+    private String getAddr (String addr) {
+        if (addr.length() > FilePath.MAX_VAR_LENGHT) {
+            return addr;
+        } else return varList + ".listDI" + addr;
     }
 
     // Геттеры для каждого поля

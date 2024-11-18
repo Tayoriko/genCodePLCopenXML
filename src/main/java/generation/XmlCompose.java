@@ -40,7 +40,6 @@ public class XmlCompose {
 
         //Сохранение в файл
         saveFinalXMLToFile(finalXML);
-
     }
 
     private StringBuilder composeXML () throws IOException {

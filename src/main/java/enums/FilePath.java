@@ -12,5 +12,6 @@ public class FilePath {
     public static final String FILEPATH_XML_POU         = "./src/main/resources/xml/XMLpou.vm";
     public static final String FILEPATH_XML_VAR         = "./src/main/resources/xml/XMLvar.vm";
     public static final String FILEPATH_XML_VARS        = "./src/main/resources/xml/XMLvars.vm";
+    public static final int MAX_VAR_LENGHT              = 10;
 
 }

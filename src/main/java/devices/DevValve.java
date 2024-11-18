@@ -1,5 +1,7 @@
 package devices;
 
+import enums.FilePath;
+
 public class DevValve {
     private String header = "// #";
     private int id = 0;
@@ -24,26 +26,26 @@ public class DevValve {
         this.cfg = "RVL.cfgV[" + id + "]";
         this.state = "SVL.stateV[" + id + "]";
         this.devState = "IOL." + devName;
-        this.fbQF = varList + ".listDI" + qf.getAddrCodesysDiscrete();
-        this.fbOpen = varList + ".listDI" + fbOpen.getAddrCodesysDiscrete();
-        this.fbClose = varList + ".listDI" + fbClose.getAddrCodesysDiscrete();
-        this.cmdOpen = varList + ".listDO" + cmdOpen.getAddrCodesysDiscrete();
-        this.cmdClose = varList + ".listDO" + cmdClose.getAddrCodesysDiscrete();
+        this.fbQF = getAddrDI(qf.getAddrCodesysDiscrete());
+        this.fbOpen = getAddrDI(fbOpen.getAddrCodesysDiscrete());
+        this.fbClose = getAddrDI(fbClose.getAddrCodesysDiscrete());
+        this.cmdOpen = getAddrDI(cmdOpen.getAddrCodesysDiscrete());
+        this.cmdClose = getAddrDI(cmdClose.getAddrCodesysDiscrete());
         this.options = setOptions(qf, fbOpen, fbClose);
     }
 
     public DevValve(int id, DevOne devOne){
-        this.header += setHeader(id, devOne.getName());
+        this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
         this.cmd = "CVL.cmdV[" + id + "]";;
         this.cfg = "RVL.cfgV[" + id + "]";
         this.state = "SVL.stateV[" + id + "]";
         this.devState = "IOL." + devOne.getDevName();
-        this.fbQF = varList + ".listDI" + devOne.getQf().getAddrCodesysDiscrete();
-        this.fbOpen = varList + ".listDI" + devOne.getFbOpen().getAddrCodesysDiscrete();
-        this.fbClose = varList + ".listDI" + devOne.getFbOpen().getAddrCodesysDiscrete();
-        this.cmdOpen = varList + ".listDO" + devOne.getCmdOpen().getAddrCodesysDiscrete();
-        this.cmdClose = varList + ".listDO" + devOne.getCmdClose().getAddrCodesysDiscrete();
+        this.fbQF = getAddrDI(devOne.getQf().getAddrCodesysDiscrete());
+        this.fbOpen = getAddrDI(devOne.getFbOpen().getAddrCodesysDiscrete());
+        this.fbClose = getAddrDI(devOne.getFbOpen().getAddrCodesysDiscrete());
+        this.cmdOpen = getAddrDO(devOne.getCmdOpen().getAddrCodesysDiscrete());
+        this.cmdClose = getAddrDO(devOne.getCmdClose().getAddrCodesysDiscrete());
         this.options = setOptions(devOne.getQf(), devOne.getFbOpen(), devOne.getFbClose());
     }
 
@@ -58,10 +60,22 @@ public class DevValve {
     private StringBuilder useIt (AddrPLC addrPLC, String cfgText) {
         StringBuilder option = new StringBuilder();
         if (!addrPLC.isUse()){
-            option.append(cfg + "." + cfgText + " = FALSE;\n");
+            option.append(cfg + "." + cfgText + " := FALSE;\n");
             useOptions = true;
         }
         return option;
+    }
+
+    private String getAddrDI (String addr) {
+        if (addr.length() > FilePath.MAX_VAR_LENGHT) {
+            return addr;
+        } else return varList + ".listDI" + addr;
+    }
+
+    private String getAddrDO (String addr) {
+        if (addr.length() > FilePath.MAX_VAR_LENGHT) {
+            return addr;
+        } else return varList + ".listDO" + addr;
     }
 
     // Геттеры для каждого поля

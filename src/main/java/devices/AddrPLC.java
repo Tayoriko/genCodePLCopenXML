@@ -22,17 +22,21 @@ public class AddrPLC {
             this.bit = Integer.parseInt(splitAddress[1]);
         }
         else {
-            this.word = 0;
+            this.word = -1;
             this.bit = 0;
         }
     }
 
     public String getAddrCodesysDiscrete() {
-        return "[" + word + "]." + bit;
+        String addr = "(*input address here*)";
+        if (word == 0 && bit == 0) {return addr;}
+        else return "[" + word + "]." + bit;
     }
 
     public String getAddrCodesysAnalog() {
-        return "[" + word + ", " + bit + "]";
+        String addr = "(*input address here*)";
+        if (word == 0) {return addr;}
+        else return "[" + word + ", " + bit + "]";
     }
 
     private static String[] splitAddress(String address) {
