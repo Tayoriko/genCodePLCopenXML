@@ -17,24 +17,21 @@ public class AlarmSets {
 
     private static Set<Map.Entry<String, String>> motorAlarmSet = Set.of();
     private static Set<Map.Entry<String, String>> valveAlarmSet = Set.of();
-    private static Set<Map.Entry<String, String>> analogAlarmSet = Set.of();
+    private static Set<Map.Entry<String, String>> analogAlarmInputSet = Set.of();
+    private static Set<Map.Entry<String, String>> analogAlarmOutputSet = Set.of();
 
     AlarmSets (eTemplate template) {
         motorAlarmSet = loadAlarmSet(template, eDevType.MOTOR);
         valveAlarmSet = loadAlarmSet(template, eDevType.VALVE);
-        analogAlarmSet = loadAlarmSet(template, eDevType.AI);
+        analogAlarmInputSet = loadAlarmSet(template, eDevType.AI);
+        analogAlarmOutputSet = loadAlarmSet(template, eDevType.AO);
     }
 
     private static Set<Map.Entry<String, String>> loadAlarmSet(eTemplate template, eDevType type) {
         Set<Map.Entry<String, String>> set = Set.of();
         String filePath = "";
-        switch (template) {
-            case eTemplate.BASIC -> {
-                filePath = loadFilePath(type);
-                set = loadAlarmsFromCsv(filePath, "ru");
-                break;
-            }
-        }
+        filePath = loadFilePath(type, template);
+        set = loadAlarmsFromCsv(filePath, "ru");
         return set;
     }
 
@@ -46,8 +43,12 @@ public class AlarmSets {
         return valveAlarmSet;
     }
 
-    public static Set<Map.Entry<String, String>> getAnalogAlarmSet() {
-        return analogAlarmSet;
+    public static Set<Map.Entry<String, String>> getAnalogInputAlarmSet() {
+        return analogAlarmInputSet;
+    }
+
+    public static Set<Map.Entry<String, String>> getAnalogAlarmOutputSet() {
+        return analogAlarmOutputSet;
     }
 
     // Метод для чтения CSV-файла и создания структуры данных с выбором языка
@@ -80,19 +81,46 @@ public class AlarmSets {
         return alarmMap.entrySet();
     }
 
-    private static String loadFilePath(eDevType type) {
+    private static String loadFilePath(eDevType type, eTemplate template) {
         String filePath = "";
-        switch (type) {
-            case MOTOR -> {
-                filePath = FilePath.BASIC_MOTOR;
-                break;
+        switch (template) {
+            case BASIC -> {
+                filePath = FilePath.BASIC;
+                switch (type) {
+                    case MOTOR -> {
+                        filePath += "motor.csv";
+                        break;
+                    }
+                    case VALVE -> {
+                        filePath += "valve.csv";
+                        break;
+                    }
+                    case AI -> {
+                        filePath += "analog_input.csv";
+                        break;
+                    }
+                }
             }
-            case VALVE -> {
-                filePath = FilePath.BASIC_VALVE;
-                break;
-            }
-            case AI -> {
-                filePath = FilePath.BASIC_ANALOG_INPUT;
+            case CUSTOM -> {
+                filePath = FilePath.CUSTOM;
+                switch (type) {
+                    case MOTOR -> {
+                        filePath += "motor.csv";
+                        break;
+                    }
+                    case VALVE -> {
+                        filePath += "valve.csv";
+                        break;
+                    }
+                    case AI -> {
+                        filePath += "analog_input.csv";
+                        break;
+                    }
+                    case AO -> {
+                        filePath += "analog_output.csv";
+                        break;
+                    }
+                }
                 break;
             }
         }

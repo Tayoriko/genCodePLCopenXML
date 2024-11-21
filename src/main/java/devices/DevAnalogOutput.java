@@ -86,7 +86,7 @@ public class DevAnalogOutput {
                         "   CMD         := %s,\n" +
                         "   cfg         := %s,\n" +
                         "   state       := %s,\n" +
-                        "   " + resultType + "      => %s);\n",
+                        "   " + resultType + "     := %s);\n",
                 header, id, devState, cmd, cfg, state, result
         );
 

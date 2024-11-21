@@ -1,0 +1,7 @@
+almQF,"Нет готовности к запуску","No Ready"
+almOpen,"Нет сигнала 'Открыто' при открытии","Alarm while opening"
+almClose,"Нет сигнала 'Закрыто' при закрытии","Alarm while closing"
+almDuo,"Сработали сразу два концевика","Alarm duo signals fbOpen and fbClose at once"
+almTS,"Перегрев привода","No TS"
+almExt,"Внешняя авария","External alarm"
+almLink,"Ошибка связи с приводов","Error communication"

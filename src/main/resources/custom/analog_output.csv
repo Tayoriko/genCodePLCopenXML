@@ -1,0 +1,6 @@
+NO_DAC_CONNECTION,"1 Нет связи с ЦАП","No connection to DAC",
+NO_LOAD,"2 Отсутствие нагрузки","No load",
+DAC_OVERHEAT,"3	Перегрев ЦАП","DAC overheating",
+CRC_ERROR,"4 Ошибка CRC","CRC error",
+CHANNEL_DISABLED,"5	Канал отключен","Channel disabled",
+SHORT_CIRCUIT,"6 Короткое замыкание","Short circuit",

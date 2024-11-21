@@ -89,7 +89,8 @@ public class AlarmCreator {
         switch (devType){
             case MOTOR -> alarmSet = AlarmSets.getMotorAlarmSet();
             case VALVE -> alarmSet = AlarmSets.getValveAlarmSet();
-            case AI -> alarmSet = AlarmSets.getAnalogAlarmSet();
+            case AI -> alarmSet = AlarmSets.getAnalogInputAlarmSet();
+            case AO -> alarmSet = AlarmSets.getAnalogAlarmOutputSet();
         }
         for (Map.Entry<String, String> alarm : alarmSet) {
             // Формируем шаблонное обращение к переменной
@@ -114,20 +115,22 @@ public class AlarmCreator {
     private static boolean isDeviceTypeHeader(String cellValue, eDevType deviceType) {
         boolean result = false;
         switch (deviceType) {
-            case EMPTY, PID, AO, DI, DO -> {System.out.println("not found " + deviceType.getValue());}
+            case EMPTY, PID, DI, DO -> {System.out.println("not found " + deviceType.getValue());}
             case MOTOR -> result = cellValue.equalsIgnoreCase(MOTOR.getValue());
             case VALVE -> result = cellValue.equalsIgnoreCase(VALVE.getValue());
             case AI -> result = cellValue.equalsIgnoreCase(AI.getValue());
+            case AO -> result = cellValue.equalsIgnoreCase(AO.getValue());
         };
         return result;
     }
 
     private static String getTemplateForDeviceType(eDevType deviceType) {
         return switch (deviceType) {
-            case EMPTY, PID, AO, DI, DO -> "null";
+            case EMPTY, PID, DI, DO -> "null";
             case MOTOR -> MOTOR.getName();
             case VALVE -> VALVE.getName();
             case AI -> AI.getName();
+            case AO -> AO.getName();
         };
     }
 
