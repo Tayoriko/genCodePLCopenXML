@@ -11,17 +11,6 @@ public class DevDiscreteOutput {
     private final String command;
     private final String result;
 
-
-    // Конструктор для инициализации всех полей
-    public DevDiscreteOutput(int id, String name, String devName, AddrPLC result) {
-        this.header += setHeader(id, name);
-        this.id = id;
-        this.command = "IOL." + devName;
-        this.cmd = "CVL.cmdDO[" + id + "]";;
-        this.cfg = "RVL.cfgDO[" + id + "]";
-        this.result = getAddr(result.getAddrCodesysDiscrete());
-    }
-
     public DevDiscreteOutput(int id, DevOne devOne){
         this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
@@ -70,8 +59,7 @@ public class DevDiscreteOutput {
     public String toString() {
         String baseOutput = String.format(
                 "%s\n" +
-                        "ID := %d;\n" +
-                        "drvDO[ID](\n" +
+                        "drvDO[%d](\n" +
                         "   command     := %s,\n" +
                         "   CMD         := %s,\n" +
                         "   cfg         := %s,\n" +

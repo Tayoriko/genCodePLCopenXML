@@ -105,6 +105,21 @@ public class CreatePou {
                 deviceCreator.reviewDevice(protocol, DO);
                 device.append(DiscreteOutputDatabase.getInstance().getAllRecords());
             }
+            case PID ->{
+                PidDatabase.getInstance().clear();
+                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+                deviceCreator.reviewDevice(protocol, PID);
+                //PidDatabase.getInstance().printAllRecords();
+                device.append(PidDatabase.getInstance().getAllRecords());
+            }
+            case FLOW ->{
+                FlowMetersDatabase.getInstance().clear();
+                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+                deviceCreator.reviewDevice(protocol, FLOW);
+                //FlowMetersDatabase.getInstance().printAllRecords();
+                device.append("mt.sys.upTimeMs := TIME_TO_UDINT(mt.sys.UpTime);\n\n");
+                device.append(FlowMetersDatabase.getInstance().getAllRecords());
+            }
         }
         return device;
     }

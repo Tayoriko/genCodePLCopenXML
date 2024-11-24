@@ -16,20 +16,6 @@ public class DevMotor {
     private StringBuilder options;
     private boolean useOptions = false;
 
-    // Конструктор для инициализации всех полей
-    public DevMotor(int id, String name, String devName, AddrPLC qf, AddrPLC km, AddrPLC cmdFw) {
-        this.header += setHeader(id, name);
-        this.id = id;
-        this.cmd = "CVL.cmdM[" + id + "]";;
-        this.cfg = "RVL.cfgM[" + id + "]";
-        this.state = "SVL.stateM[" + id + "]";
-        this.devState = "IOL." + devName;
-        this.fbQF = getAddrDI(qf.getAddrCodesysDiscrete());
-        this.fbKM = getAddrDI(km.getAddrCodesysDiscrete());
-        this.cmdFW = getAddrDO(cmdFw.getAddrCodesysDiscrete());
-        this.options = setOptions(qf, km);
-    }
-
     public DevMotor (int id, DevOne devOne){
         this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
@@ -116,8 +102,7 @@ public class DevMotor {
     public String toString() {
         String baseOutput = String.format(
                 "%s\n" +
-                        "ID := %d;\n" +
-                        "drvM[ID](\n" +
+                        "drvM[%d](\n" +
                         "   devState    := %s,\n" +
                         "   CMD         := %s,\n" +
                         "   cfg         := %s,\n" +

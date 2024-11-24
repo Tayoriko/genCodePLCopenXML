@@ -30,6 +30,28 @@
                 <xhtml xmlns="http://www.w3.org/1999/xhtml">internal buffer</xhtml>
               </documentation>
             </variable>
+            <variable name="empty">
+              <type>
+                <BOOL />
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE" />
+              </initialValue>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">default local false value</xhtml>
+              </documentation>
+            </variable>
+            <variable name="zero">
+              <type>
+                <REAL />
+              </type>
+              <initialValue>
+                <simpleValue value="0.0" />
+              </initialValue>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">default local zero value</xhtml>
+              </documentation>
+            </variable>
             <variable name="cnt">
               <type>
                 <INT />

@@ -13,19 +13,6 @@ public class DevAnalogOutput {
     private final String result;
     private String resultType = "resultR";
 
-
-    // Конструктор для инициализации всех полей
-    public DevAnalogOutput(int id, String name, String devName, AddrPLC result) {
-        this.header += setHeader(id, name);
-        this.id = id;
-        this.devState = "IOL." + devName;
-        this.cmd = "CVL.cmdAO[" + id + "]";;
-        this.cfg = "RVL.cfgAO[" + id + "]";
-        this.state = "SVL.stateAO[" + id + "]";
-        if (result.isIntToReal()) {resultType = "resultI";};
-        this.result = getAddr(result.getAddrCodesysAnalog());
-    }
-
     public DevAnalogOutput(int id, DevOne devOne){
         this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
@@ -80,8 +67,7 @@ public class DevAnalogOutput {
     public String toString() {
         String baseOutput = String.format(
                 "%s\n" +
-                        "ID := %d;\n" +
-                        "drvAO[ID](\n" +
+                        "drvAO[%d](\n" +
                         "   devState    := %s,\n" +
                         "   CMD         := %s,\n" +
                         "   cfg         := %s,\n" +

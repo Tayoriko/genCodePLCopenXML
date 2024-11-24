@@ -2,28 +2,30 @@ package devices;
 
 import enums.FilePath;
 
-public class DevDiscreteInput {
+public class DevPid {
     private String header = "// #";
     private int id = 0;
-    private String varList = "SIG";
-    private String signal = varList + ".listDI";
+    private String varList = "IOL";
+    private String signal = varList + ".listPID";
     private final String cmd;
     private final String cfg;
+    private final String state;
     private final String result;
 
-    public DevDiscreteInput(int id, DevOne devOne){
+    public DevPid(int id, DevOne devOne){
         this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
-        this.signal = getAddr(devOne.getSignal().getAddrCodesysDiscrete());
-        this.cmd = "CVL.cmdDI[" + id + "]";
-        this.cfg = "RVL.cfgDI[" + id + "]";
-        this.result = "IOL." + devOne.getDevName();
+        this.signal = "IOL." + devOne.getVarInput();
+        this.cmd = "CVL.cmdPID[" + id + "]";
+        this.cfg = "RVL.cfgPID[" + id + "]";
+        this.state = "SVL.statePID[" + id + "]";
+        this.result = "IOL." + devOne.getVarOutput();
     }
 
     private String getAddr (String addr) {
         if (addr.length() > FilePath.MAX_VAR_LENGHT) {
             return addr;
-        } else return varList + ".listDI" + addr;
+        } else return varList + ".listAI" + addr;
     }
 
     // Геттеры для каждого поля
@@ -43,13 +45,15 @@ public class DevDiscreteInput {
         return cfg;
     }
 
-
+    public String getState() {
+        return state;
+    }
 
     private String setHeader (int id, String name) {
         String text = "";
         if (id < 100) {text += "0";}
         if (id < 10) {text += "0";}
-        return text + id + " - " + name;
+        return text + id + " - PID " + name;
     }
 
     // Метод для отображения информации о команде двигателя
@@ -57,12 +61,13 @@ public class DevDiscreteInput {
     public String toString() {
         String baseOutput = String.format(
                 "%s\n" +
-                        "drvDI[%d](\n" +
+                        "drvPID[%d](\n" +
                         "   signal      := %s,\n" +
                         "   CMD         := %s,\n" +
                         "   cfg         := %s,\n" +
-                        "   result      => %s);\n",
-                header, id, signal, cmd, cfg, result
+                        "   state       := %s,\n" +
+                        "   result      := %s);\n",
+                header, id, signal, cmd, cfg, state, result
         );
 
         baseOutput += "\n";

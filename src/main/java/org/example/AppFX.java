@@ -40,28 +40,28 @@ public class AppFX extends Application {
 
         // Создание переключателей для выбора HMI/SCADA
         RadioButton weintekBtn = new RadioButton(eHMI.WEINTEK.getValue());
-        RadioButton oniBtn = new RadioButton(eHMI.ONI.getValue());
-        RadioButton omronNbBtn = new RadioButton(eHMI.OMRON_NB.getValue());
-        RadioButton winccBtn = new RadioButton(eHMI.WINCC.getValue());
-        RadioButton tiaPanelsBtn = new RadioButton(eHMI.TIA.getValue()); // Новый пункт
+        //RadioButton oniBtn = new RadioButton(eHMI.ONI.getValue());
+        //RadioButton omronNbBtn = new RadioButton(eHMI.OMRON_NB.getValue());
+        //RadioButton winccBtn = new RadioButton(eHMI.WINCC.getValue());
+        //RadioButton tiaPanelsBtn = new RadioButton(eHMI.TIA.getValue()); // Новый пункт
         weintekBtn.setToggleGroup(hmiGroup);
-        oniBtn.setToggleGroup(hmiGroup);
-        omronNbBtn.setToggleGroup(hmiGroup);
-        winccBtn.setToggleGroup(hmiGroup);
-        tiaPanelsBtn.setToggleGroup(hmiGroup);
+        //oniBtn.setToggleGroup(hmiGroup);
+        //omronNbBtn.setToggleGroup(hmiGroup);
+        //winccBtn.setToggleGroup(hmiGroup);
+        //tiaPanelsBtn.setToggleGroup(hmiGroup);
         weintekBtn.setSelected(true);
 
         // Создание переключателей для выбора протокола
         RadioButton codesysBtn = new RadioButton(eProtocol.CODESYS.getValue());
-        RadioButton opcBtn = new RadioButton(eProtocol.OPC.getValue());
-        RadioButton omronBtn = new RadioButton(eProtocol.OMRON.getValue());
-        RadioButton modbusBtn = new RadioButton(eProtocol.MODBUS.getValue());
-        RadioButton step7Btn = new RadioButton(eProtocol.STEP7.getValue()); // Новый пункт
+        //RadioButton opcBtn = new RadioButton(eProtocol.OPC.getValue());
+        //RadioButton omronBtn = new RadioButton(eProtocol.OMRON.getValue());
+        //RadioButton modbusBtn = new RadioButton(eProtocol.MODBUS.getValue());
+        //RadioButton step7Btn = new RadioButton(eProtocol.STEP7.getValue()); // Новый пункт
         codesysBtn.setToggleGroup(protocolGroup);
-        opcBtn.setToggleGroup(protocolGroup);
-        omronBtn.setToggleGroup(protocolGroup);
-        modbusBtn.setToggleGroup(protocolGroup);
-        step7Btn.setToggleGroup(protocolGroup);
+        //opcBtn.setToggleGroup(protocolGroup);
+        //omronBtn.setToggleGroup(protocolGroup);
+        //modbusBtn.setToggleGroup(protocolGroup);
+        //step7Btn.setToggleGroup(protocolGroup);
         codesysBtn.setSelected(true);
 
         // Создание переключателей для выбора шаблона
@@ -178,6 +178,8 @@ public class AppFX extends Application {
         CheckBox aoCheckBox = new CheckBox(eDevType.AO.getName());
         CheckBox diCheckBox = new CheckBox(eDevType.DI.getName());
         CheckBox doCheckBox = new CheckBox(eDevType.DO.getName());
+        CheckBox pidCheckBox = new CheckBox(eDevType.PID.getName());
+        CheckBox flowCheckBox = new CheckBox(eDevType.FLOW.getName());
 
         // Кнопка для генерации в нижнем ряду
         Button lowerGenerateBtn = new Button("Generate POUs");
@@ -191,6 +193,8 @@ public class AppFX extends Application {
                     if (aoCheckBox.isSelected()) selectedDevices.add(eDevType.AO);
                     if (diCheckBox.isSelected()) selectedDevices.add(eDevType.DI);
                     if (doCheckBox.isSelected()) selectedDevices.add(eDevType.DO);
+                    if (pidCheckBox.isSelected()) selectedDevices.add(eDevType.PID);
+                    if (flowCheckBox.isSelected()) selectedDevices.add(eDevType.FLOW);
 
                     // Проверяем, была ли выбрана папка
                     if (customFolderPath == null || customFolderPath.isEmpty()) {
@@ -233,17 +237,17 @@ public class AppFX extends Application {
 
         mainGrid.add(new Label("Select HMI/SCADA:"), 0, 0);
         mainGrid.add(weintekBtn, 1, 0);
-        mainGrid.add(oniBtn, 2, 0);
-        mainGrid.add(omronNbBtn, 3, 0);
-        mainGrid.add(winccBtn, 4, 0);
-        mainGrid.add(tiaPanelsBtn, 5, 0);
+        //mainGrid.add(oniBtn, 2, 0);
+        //mainGrid.add(omronNbBtn, 3, 0);
+        //mainGrid.add(winccBtn, 4, 0);
+        //mainGrid.add(tiaPanelsBtn, 5, 0);
 
         mainGrid.add(new Label("Select protocol:"), 0, 1);
         mainGrid.add(codesysBtn, 1, 1);
-        mainGrid.add(opcBtn, 2, 1);
-        mainGrid.add(omronBtn, 3, 1);
-        mainGrid.add(modbusBtn, 4, 1);
-        mainGrid.add(step7Btn, 5, 1);
+        //mainGrid.add(opcBtn, 2, 1);
+        //mainGrid.add(omronBtn, 3, 1);
+        //mainGrid.add(modbusBtn, 4, 1);
+        //mainGrid.add(step7Btn, 5, 1);
 
         mainGrid.add(new Label("Select template:"), 0, 2);
         mainGrid.add(basicTemplateBtn, 1, 2);
@@ -259,7 +263,7 @@ public class AppFX extends Application {
         bottomRow.setAlignment(Pos.CENTER);
 
         // Нижняя строка с CheckBox для выбора устройств и кнопкой Generate
-        HBox deviceSelectionRow = new HBox(10, motorsCheckBox, valvesCheckBox, aiCheckBox, aoCheckBox, diCheckBox, doCheckBox, lowerGenerateBtn);
+        HBox deviceSelectionRow = new HBox(10, motorsCheckBox, valvesCheckBox, aiCheckBox, aoCheckBox, diCheckBox, doCheckBox, pidCheckBox, flowCheckBox, lowerGenerateBtn);
         deviceSelectionRow.setAlignment(Pos.CENTER);
 
         // Строка для ввода имени проекта

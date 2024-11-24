@@ -18,22 +18,6 @@ public class DevValve {
     private StringBuilder options;
     private boolean useOptions = false;
 
-    // Конструктор для инициализации всех полей
-    public DevValve(int id, String name, String devName, AddrPLC qf, AddrPLC fbOpen, AddrPLC fbClose, AddrPLC cmdOpen,AddrPLC cmdClose) {
-        this.header += setHeader(id, name);
-        this.id = id;
-        this.cmd = "CVL.cmdV[" + id + "]";;
-        this.cfg = "RVL.cfgV[" + id + "]";
-        this.state = "SVL.stateV[" + id + "]";
-        this.devState = "IOL." + devName;
-        this.fbQF = getAddrDI(qf.getAddrCodesysDiscrete());
-        this.fbOpen = getAddrDI(fbOpen.getAddrCodesysDiscrete());
-        this.fbClose = getAddrDI(fbClose.getAddrCodesysDiscrete());
-        this.cmdOpen = getAddrDI(cmdOpen.getAddrCodesysDiscrete());
-        this.cmdClose = getAddrDI(cmdClose.getAddrCodesysDiscrete());
-        this.options = setOptions(qf, fbOpen, fbClose);
-    }
-
     public DevValve(int id, DevOne devOne){
         this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
@@ -131,8 +115,7 @@ public class DevValve {
     public String toString() {
         String baseOutput = String.format(
                 "%s\n" +
-                        "ID := %d;\n" +
-                        "drvV[ID](\n" +
+                        "drvV[%d](\n" +
                         "   devState    := %s,\n" +
                         "   CMD         := %s,\n" +
                         "   cfg         := %s,\n" +

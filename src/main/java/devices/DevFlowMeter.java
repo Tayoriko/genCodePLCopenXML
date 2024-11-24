@@ -2,29 +2,40 @@ package devices;
 
 import enums.FilePath;
 
-public class DevAnalogInput {
+public class DevFlowMeter {
     private String header = "// #";
     private int id = 0;
     private String varList = "SIG";
-    private String signal = varList + ".listDI";
+    private String signalDi = varList + ".listDI";
+    private String signalAi = varList + ".listAI";
     private final String cmd;
     private final String cfg;
     private final String state;
     private final String result;
 
-    public DevAnalogInput(int id, DevOne devOne){
+    public DevFlowMeter(int id, DevOne devOne){
         this.header += setHeader(id, devOne.getName()) + " - " + devOne.getComment();
         this.id = id;
-        if (devOne.getSignal().isIntToReal()) {
-            this.signal = "INT_TO_REAL(" + getAddr(devOne.getSignal().getAddrCodesysAnalog()) + ")";
-        } else this.signal = getAddr(devOne.getSignal().getAddrCodesysAnalog());
-        this.cmd = "CVL.cmdAI[" + id + "]";
-        this.cfg = "RVL.cfgAI[" + id + "]";
-        this.state = "SVL.stateAI[" + id + "]";
+        if (devOne.getSignal().isBool()) {
+            this.signalDi = getAddrDI(devOne.getSignal().getAddrCodesysDiscrete());
+            this.signalAi = "zero";
+        } else {
+            this.signalAi = getAddrAI(devOne.getSignal().getAddrCodesysAnalog());
+            this.signalDi = "empty";
+        }
+        this.cmd = "CVL.cmdFlow[" + id + "]";
+        this.cfg = "RVL.cfgFlow[" + id + "]";
+        this.state = "SVL.stateFlow[" + id + "]";
         this.result = "IOL." + devOne.getDevName();
     }
 
-    private String getAddr (String addr) {
+    private String getAddrDI (String addr) {
+        if (addr.length() > FilePath.MAX_VAR_LENGHT) {
+            return addr;
+        } else return varList + ".listDI" + addr;
+    }
+
+    private String getAddrAI (String addr) {
         if (addr.length() > FilePath.MAX_VAR_LENGHT) {
             return addr;
         } else return varList + ".listAI" + addr;
@@ -35,8 +46,12 @@ public class DevAnalogInput {
         return id;
     }
 
-    public String getSignal() {
-        return signal;
+    public String getSignalDi() {
+        return signalDi;
+    }
+
+    public String getSignalAi() {
+        return signalAi;
     }
 
     public String getCmd() {
@@ -64,13 +79,16 @@ public class DevAnalogInput {
     public String toString() {
         String baseOutput = String.format(
                 "%s\n" +
-                        "drvAI[%d](\n" +
-                        "   signal      := %s,\n" +
+                        "drvFlow[%d](\n" +
+                        "   signalDI    := %s,\n" +
+                        "   signalAI    := %s,\n" +
                         "   CMD         := %s,\n" +
                         "   cfg         := %s,\n" +
                         "   state       := %s,\n" +
+                        //"   PreDone     => (*command for dosing mode for switch to low speed*),\n",
+                        //"   Done        => (*command for dosing mode about end of process*),\n",
                         "   result      => %s);\n",
-                header, id, signal, cmd, cfg, state, result
+                header, id, signalDi, signalAi, cmd, cfg, state, result
         );
 
         baseOutput += "\n";

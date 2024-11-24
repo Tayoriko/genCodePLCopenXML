@@ -2,13 +2,14 @@ package enums;
 
 public enum eDevType {
     EMPTY       ("empty",           "empty","empty",            "empty",     "empty",       eVarType.EMPTY.getTypeName(), "empty"),
-    MOTOR       ("Motor",           "M",    "pou85_callM",      "DrvM",      "IDL.limitM",  eVarType.IOLD.getTypeName(), "loadM();"),
-    VALVE       ("Valve",           "V",    "pou90_callV",      "DrvV",      "IDL.limitV",  eVarType.IOLD.getTypeName(), "loadV();"),
-    PID         ("PID",             "PID",  "pou75_PID",        "DrvPID",    "IDL.limitPID",eVarType.IOLA.getTypeName(), "loadPID();"),
-    AI          ("Analog Input",    "AI",   "pou11_inputAI",    "DrvAI",     "IDL.limitAI", eVarType.REAL.getTypeName(), "loadAI();"),
-    AO          ("Analog Output",   "AO",   "pou82_outputAO",   "DrvAO",     "IDL.limitAO", eVarType.IOLA.getTypeName(), "loadAO();"),
     DI          ("Discrete Input",  "DI",   "pou10_inputDI",    "DrvDI",     "IDL.limitDI", eVarType.BOOL.getTypeName(), "loadDI();"),
-    DO          ("Discrete Output", "DO",   "pou80_outputDO",   "DrvDO",     "IDL.limitDO", eVarType.BOOL.getTypeName(), "loadDO();");
+    AI          ("Analog Input",    "AI",   "pou11_inputAI",    "DrvAI",     "IDL.limitAI", eVarType.REAL.getTypeName(), "loadAI();"),
+    FLOW        ("FlowMeter",       "Flow", "pou12_flowMeter",  "DrvFlow",   "IDL.limitFlow",eVarType.REAL.getTypeName(), "loadFlow();"),
+    PID         ("PID",             "PID",  "pou75_PID",        "DrvPID",    "IDL.limitPID",eVarType.IOLA.getTypeName(), "loadPID();"),
+    DO          ("Discrete Output", "DO",   "pou80_outputDO",   "DrvDO",     "IDL.limitDO", eVarType.BOOL.getTypeName(), "loadDO();"),
+    AO          ("Analog Output",   "AO",   "pou82_outputAO",   "DrvAO",     "IDL.limitAO", eVarType.IOLA.getTypeName(), "loadAO();"),
+    MOTOR       ("Motor",           "M",    "pou85_callM",      "DrvM",      "IDL.limitM",  eVarType.IOLD.getTypeName(), "loadM();"),
+    VALVE       ("Valve",           "V",    "pou90_callV",      "DrvV",      "IDL.limitV",  eVarType.IOLD.getTypeName(), "loadV();");
 
 
     //add name to enumerations

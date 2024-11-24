@@ -19,7 +19,8 @@ public class CreateVarList {
         IOLdatabase database = IOLdatabase.getInstance();
 
         for (IOLrecord record : database.getAllRecords()) {
-            vars.append(record.toXML());
+            vars.append(record.toPLCopenXML());
+            vars.append(record.toPLCopenXMLid());
         }
     }
 

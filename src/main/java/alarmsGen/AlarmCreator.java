@@ -115,7 +115,7 @@ public class AlarmCreator {
     private static boolean isDeviceTypeHeader(String cellValue, eDevType deviceType) {
         boolean result = false;
         switch (deviceType) {
-            case EMPTY, PID, DI, DO -> {System.out.println("not found " + deviceType.getValue());}
+            case EMPTY, PID, DI, DO, FLOW -> {System.out.println("not found " + deviceType.getValue());}
             case MOTOR -> result = cellValue.equalsIgnoreCase(MOTOR.getValue());
             case VALVE -> result = cellValue.equalsIgnoreCase(VALVE.getValue());
             case AI -> result = cellValue.equalsIgnoreCase(AI.getValue());
@@ -126,7 +126,7 @@ public class AlarmCreator {
 
     private static String getTemplateForDeviceType(eDevType deviceType) {
         return switch (deviceType) {
-            case EMPTY, PID, DI, DO -> "null";
+            case EMPTY, PID, DI, DO, FLOW -> "null";
             case MOTOR -> MOTOR.getName();
             case VALVE -> VALVE.getName();
             case AI -> AI.getName();

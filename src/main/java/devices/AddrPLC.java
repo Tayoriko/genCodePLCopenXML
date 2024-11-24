@@ -5,7 +5,7 @@ public class AddrPLC {
     private int bit = 0;
     private boolean use = true;
     private boolean intToReal = false;
-
+    private boolean bool = false;
     public AddrPLC() {
         use = false;
     }
@@ -56,5 +56,13 @@ public class AddrPLC {
 
     public void setIntToReal(boolean intToReal) {
         this.intToReal = intToReal;
+    }
+
+    public boolean isBool() {
+        return bool;
+    }
+
+    public void setBool(boolean bool) {
+        this.bool = bool;
     }
 }

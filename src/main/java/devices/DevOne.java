@@ -13,6 +13,8 @@ public class DevOne {
     private AddrPLC signal;
     private String comment;
     private String commentIOL;
+    private String varInput;
+    private String varOutput;
 
     // Конструктор для инициализации всех полей
     public DevOne(String name, String comment, String devName, AddrPLC qf, AddrPLC km, AddrPLC fbOpen, AddrPLC fbClose, AddrPLC cmdFw, AddrPLC cmdOpen, AddrPLC cmdClose) {
@@ -62,6 +64,16 @@ public class DevOne {
         this.signal = signal;
     }
 
+    // Конструктор для ПИД-регулятора
+    public DevOne(String name, String comment, String devName, String varInput, String varOutput) {
+        this.name = name;
+        this.comment = comment;
+        this.commentIOL = name + " - " + comment;
+        this.devName = devName;
+        this.varInput = varInput;
+        this.varOutput = varOutput;
+    }
+
     // Геттеры для каждого поля
     public String getName() {
         return name;
@@ -109,6 +121,14 @@ public class DevOne {
 
     public String getCommentIOL() {
         return commentIOL;
+    }
+
+    public String getVarInput() {
+        return varInput;
+    }
+
+    public String getVarOutput() {
+        return varOutput;
     }
 
     // Метод для отображения информации об устройстве
