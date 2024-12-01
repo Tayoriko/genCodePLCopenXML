@@ -1,19 +1,19 @@
 package enums;
 
-public enum eProtocol {
+public enum ePLC {
     EMPTY       ("empty"),
     CODESYS     ("CoDeSyS"),
     OPC         ("OPC"),
     OMRON       ("Omron"),
     MODBUS      ("Modbus"),
-    STEP7       ("Step7");
+    TIA_PORTAL  ("TIA Portal");
 
 
     //add name to enumerations
     private final String alloc;
 
     //initialisation enumerations
-    eProtocol(String alloc){
+    ePLC(String alloc){
         this.alloc = alloc;
     }
 
@@ -23,9 +23,9 @@ public enum eProtocol {
     }
 
     //find type by string value
-    public static eProtocol findByValue (String value) {
-        eProtocol type = eProtocol.EMPTY;
-        for (eProtocol item : eProtocol.values())
+    public static ePLC findByValue (String value) {
+        ePLC type = ePLC.EMPTY;
+        for (ePLC item : ePLC.values())
         {
             if (item.getValue().equals(value)) {
                 type = item;

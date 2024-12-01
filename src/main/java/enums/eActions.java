@@ -1,18 +1,19 @@
 package enums;
 
-public enum eTemplate {
-    EMPTY       ("empty"),
-    BASIC       ("Basic"),
-    EXT         ("Extended"),
-    CUSTOM_MV210("MV210"),
-    CUSTOM      ("Custom");
+public enum eActions {
+
+    EMPTY       ("no actions"),
+    ALM         ("Alarms"),
+    PUO         ("Program"),
+    IOL         ("IO List"),
+    MBS         ("ModBus");
 
 
     //add name to enumerations
     private final String alloc;
 
     //initialisation enumerations
-    eTemplate(String alloc){
+    eActions(String alloc){
         this.alloc = alloc;
     }
 
@@ -22,9 +23,9 @@ public enum eTemplate {
     }
 
     //find type by string value
-    public static eTemplate findByValue (String value) {
-        eTemplate type = eTemplate.EMPTY;
-        for (eTemplate item : eTemplate.values())
+    public static eActions findByValue (String value) {
+        eActions type = eActions.EMPTY;
+        for (eActions item : eActions.values())
         {
             if (item.getValue().equals(value)) {
                 type = item;
@@ -33,4 +34,5 @@ public enum eTemplate {
         }
         return type;
     }
+
 }

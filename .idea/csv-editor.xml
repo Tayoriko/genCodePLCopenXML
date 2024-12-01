@@ -17,28 +17,14 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\custom\analog_input.csv">
+        <entry key="\src\main\resources\custom_MV210\analog_input.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\custom\analog_output.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\src\main\resources\custom\motor.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\src\main\resources\custom\valve.csv">
+        <entry key="\src\main\resources\custom_MV210\analog_output.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

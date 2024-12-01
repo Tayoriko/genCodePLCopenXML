@@ -1,8 +1,8 @@
 package generation;
 
 import enums.FilePath;
-import enums.eDevType;
-import enums.eProtocol;
+import enums.eDevices;
+import enums.ePLC;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.junit.jupiter.api.Test;
@@ -17,24 +17,24 @@ class CreatePouTest {
 
     @Test
     void createOne() throws IOException {
-        CreatePou createPou = new CreatePou(new File(FilePath.DEFAULT_SOURCE), eProtocol.CODESYS);
+        CreatePou createPou = new CreatePou(new File(FilePath.DEFAULT_SOURCE), ePLC.CODESYS);
         StringBuilder data = new StringBuilder();
         StringBuilder result = new StringBuilder();
-        result.append(createPou.createOne(eDevType.MOTOR));
-        data.append(createPou.createData(eDevType.MOTOR));
+        result.append(createPou.createOne(eDevices.MOTOR));
+        data.append(createPou.createData(eDevices.MOTOR));
         System.out.println(result);
         System.out.println(data);
     }
 
     @Test
     void testXMLcompose() throws IOException {
-        Set<eDevType> selectedDevices = new HashSet<>();
-        selectedDevices.add(eDevType.MOTOR);
+        Set<eDevices> selectedDevices = new HashSet<>();
+        selectedDevices.add(eDevices.MOTOR);
         XmlCompose xmlCompose = new XmlCompose(
                 new File(FilePath.DEFAULT_SOURCE),
                 FilePath.DEFAULT_TARGET_FOLDER,
                 "test",
-                eProtocol.CODESYS,
+                ePLC.CODESYS,
                 "SP 20",
                 selectedDevices);
         //MotorDatabase.getInstance().printAllRecords();

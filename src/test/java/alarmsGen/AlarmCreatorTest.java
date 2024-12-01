@@ -1,7 +1,7 @@
 package alarmsGen;
 
 import enums.eHMI;
-import enums.eProtocol;
+import enums.ePLC;
 import enums.eTemplate;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ class AlarmCreatorTest {
         AlarmDatabase database = AlarmDatabase.getInstance();
         database.clear();
         eHMI hmi = eHMI.WEINTEK;// AlarmApp.getHmi();
-        eProtocol protocol = eProtocol.CODESYS;// AlarmApp.getProtocol();
+        ePLC protocol = ePLC.CODESYS;// AlarmApp.getProtocol();
         eTemplate template = eTemplate.BASIC;//AlarmApp.getTemplate();
 
         // Загружаем аварии для каждого типа устройства из разных файлов

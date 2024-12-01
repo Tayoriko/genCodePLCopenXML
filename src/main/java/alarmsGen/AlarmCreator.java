@@ -1,8 +1,8 @@
 package alarmsGen;
 
 import alarmsBase.AlarmMessage;
-import enums.eDevType;
-import enums.eProtocol;
+import enums.eDevices;
+import enums.ePLC;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static enums.eDevType.*;
+import static enums.eDevices.*;
 
 
 public class AlarmCreator {
@@ -27,7 +27,7 @@ public class AlarmCreator {
     private String devName = "";
     private final Sheet sheet;
 
-    public AlarmCreator(File source, eProtocol protocol) throws IOException {
+    public AlarmCreator(File source, ePLC protocol) throws IOException {
         sheet = openSheet(source);
         grabData(protocol, sheet);
     }
@@ -45,13 +45,13 @@ public class AlarmCreator {
         varName = getCell(sheet, 2, 1);
     }
 
-    private void grabData (eProtocol protocol, Sheet sheet) {
-        if (Objects.requireNonNull(protocol) == eProtocol.CODESYS) {
+    private void grabData (ePLC protocol, Sheet sheet) {
+        if (Objects.requireNonNull(protocol) == ePLC.CODESYS) {
             grabDataCodesys(sheet);
         }
     }
 
-    public void reviewAlarms(eProtocol protocol, eDevType devType) {
+    public void reviewAlarms(ePLC protocol, eDevices devType) {
             boolean inTargetSection = false;
             for (Row row : this.sheet) {
                 Cell firstCell = row.getCell(0);
@@ -84,7 +84,7 @@ public class AlarmCreator {
         }
 
 
-    public void createAlarmCodesys(String name, int devId, eDevType devType) {
+    public void createAlarmCodesys(String name, int devId, eDevices devType) {
         Set<Map.Entry<String, String>> alarmSet = Set.of();
         switch (devType){
             case MOTOR -> alarmSet = AlarmSets.getMotorAlarmSet();
@@ -107,12 +107,12 @@ public class AlarmCreator {
         }
     };
 
-    private boolean nextSection (String cellValue, eDevType devType) {
-        eDevType newType = findByValue(cellValue);
+    private boolean nextSection (String cellValue, eDevices devType) {
+        eDevices newType = findByValue(cellValue);
         return !newType.equals(EMPTY) && !newType.equals(devType);
     }
 
-    private static boolean isDeviceTypeHeader(String cellValue, eDevType deviceType) {
+    private static boolean isDeviceTypeHeader(String cellValue, eDevices deviceType) {
         boolean result = false;
         switch (deviceType) {
             case EMPTY, PID, DI, DO, FLOW -> {System.out.println("not found " + deviceType.getValue());}
@@ -124,7 +124,7 @@ public class AlarmCreator {
         return result;
     }
 
-    private static String getTemplateForDeviceType(eDevType deviceType) {
+    private static String getTemplateForDeviceType(eDevices deviceType) {
         return switch (deviceType) {
             case EMPTY, PID, DI, DO, FLOW -> "null";
             case MOTOR -> MOTOR.getName();

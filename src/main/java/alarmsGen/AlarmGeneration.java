@@ -1,14 +1,14 @@
 package alarmsGen;
 
 import enums.eHMI;
-import enums.eProtocol;
+import enums.ePLC;
 import enums.eTemplate;
 import org.example.AppFX;
 
 import java.io.File;
 import java.io.IOException;
 
-import static enums.eDevType.*;
+import static enums.eDevices.*;
 
 public class AlarmGeneration {
 
@@ -24,7 +24,7 @@ public class AlarmGeneration {
         AlarmDatabase database = AlarmDatabase.getInstance();
         database.clear();
         eHMI hmi = AppFX.getHmi();
-        eProtocol protocol = AppFX.getProtocol();
+        ePLC protocol = AppFX.getProtocol();
         eTemplate template = AppFX.getTemplate();
 
         // Загружаем аварии для каждого типа устройства из разных файлов

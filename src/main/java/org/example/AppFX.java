@@ -2,9 +2,9 @@ package org.example;
 
 import alarmsGen.AlarmGeneration;
 import generation.XmlCompose;
-import enums.eDevType;
+import enums.eDevices;
 import enums.eHMI;
-import enums.eProtocol;
+import enums.ePLC;
 import enums.eTemplate;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -36,7 +36,7 @@ public class AppFX extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Alarm generation app for HMI/SCADA");
+        primaryStage.setTitle("Alarm and code generation app for PLC/HMI/SCADA");
 
         // Создание переключателей для выбора HMI/SCADA
         RadioButton weintekBtn = new RadioButton(eHMI.WEINTEK.getValue());
@@ -52,7 +52,7 @@ public class AppFX extends Application {
         weintekBtn.setSelected(true);
 
         // Создание переключателей для выбора протокола
-        RadioButton codesysBtn = new RadioButton(eProtocol.CODESYS.getValue());
+        RadioButton codesysBtn = new RadioButton(ePLC.CODESYS.getValue());
         //RadioButton opcBtn = new RadioButton(eProtocol.OPC.getValue());
         //RadioButton omronBtn = new RadioButton(eProtocol.OMRON.getValue());
         //RadioButton modbusBtn = new RadioButton(eProtocol.MODBUS.getValue());
@@ -66,10 +66,10 @@ public class AppFX extends Application {
 
         // Создание переключателей для выбора шаблона
         RadioButton basicTemplateBtn = new RadioButton(eTemplate.BASIC.getValue());
-        RadioButton extendedTemplateBtn = new RadioButton(eTemplate.EXT.getValue());
-        RadioButton customTemplateBtn = new RadioButton(eTemplate.CUSTOM.getValue());
+        //RadioButton extendedTemplateBtn = new RadioButton(eTemplate.EXT.getValue());
+        RadioButton customTemplateBtn = new RadioButton(eTemplate.CUSTOM_MV210.getValue());
         basicTemplateBtn.setToggleGroup(templateGroup);
-        extendedTemplateBtn.setToggleGroup(templateGroup);
+        //extendedTemplateBtn.setToggleGroup(templateGroup);
         customTemplateBtn.setToggleGroup(templateGroup);
         basicTemplateBtn.setSelected(true);
 
@@ -172,29 +172,30 @@ public class AppFX extends Application {
 
 
         // Чекбоксы для выбора типов устройств
-        CheckBox motorsCheckBox = new CheckBox(eDevType.MOTOR.getValue());
-        CheckBox valvesCheckBox = new CheckBox(eDevType.VALVE.getValue());
-        CheckBox aiCheckBox = new CheckBox(eDevType.AI.getName());
-        CheckBox aoCheckBox = new CheckBox(eDevType.AO.getName());
-        CheckBox diCheckBox = new CheckBox(eDevType.DI.getName());
-        CheckBox doCheckBox = new CheckBox(eDevType.DO.getName());
-        CheckBox pidCheckBox = new CheckBox(eDevType.PID.getName());
-        CheckBox flowCheckBox = new CheckBox(eDevType.FLOW.getName());
+        CheckBox diCheckBox = new CheckBox(eDevices.DI.getName());
+        CheckBox doCheckBox = new CheckBox(eDevices.DO.getName());
+        CheckBox aiCheckBox = new CheckBox(eDevices.AI.getName());
+        CheckBox aoCheckBox = new CheckBox(eDevices.AO.getName());
+        CheckBox pidCheckBox = new CheckBox(eDevices.PID.getName());
+        CheckBox flowCheckBox = new CheckBox(eDevices.FLOW.getName());
+        CheckBox motorsCheckBox = new CheckBox(eDevices.MOTOR.getValue());
+        CheckBox valvesCheckBox = new CheckBox(eDevices.VALVE.getValue());
+
 
         // Кнопка для генерации в нижнем ряду
         Button lowerGenerateBtn = new Button("Generate POUs");
         lowerGenerateBtn.setOnAction(e -> {
                     updateStatus("Generation...");
-                    Set<eDevType> selectedDevices = new HashSet<>();
+                    Set<eDevices> selectedDevices = new HashSet<>();
 
-                    if (motorsCheckBox.isSelected()) selectedDevices.add(eDevType.MOTOR);
-                    if (valvesCheckBox.isSelected()) selectedDevices.add(eDevType.VALVE);
-                    if (aiCheckBox.isSelected()) selectedDevices.add(eDevType.AI);
-                    if (aoCheckBox.isSelected()) selectedDevices.add(eDevType.AO);
-                    if (diCheckBox.isSelected()) selectedDevices.add(eDevType.DI);
-                    if (doCheckBox.isSelected()) selectedDevices.add(eDevType.DO);
-                    if (pidCheckBox.isSelected()) selectedDevices.add(eDevType.PID);
-                    if (flowCheckBox.isSelected()) selectedDevices.add(eDevType.FLOW);
+                    if (diCheckBox.isSelected()) selectedDevices.add(eDevices.DI);
+                    if (doCheckBox.isSelected()) selectedDevices.add(eDevices.DO);
+                    if (aiCheckBox.isSelected()) selectedDevices.add(eDevices.AI);
+                    if (aoCheckBox.isSelected()) selectedDevices.add(eDevices.AO);
+                    if (pidCheckBox.isSelected()) selectedDevices.add(eDevices.PID);
+                    if (flowCheckBox.isSelected()) selectedDevices.add(eDevices.FLOW);
+                    if (motorsCheckBox.isSelected()) selectedDevices.add(eDevices.MOTOR);
+                    if (valvesCheckBox.isSelected()) selectedDevices.add(eDevices.VALVE);
 
                     // Проверяем, была ли выбрана папка
                     if (customFolderPath == null || customFolderPath.isEmpty()) {
@@ -251,8 +252,8 @@ public class AppFX extends Application {
 
         mainGrid.add(new Label("Select template:"), 0, 2);
         mainGrid.add(basicTemplateBtn, 1, 2);
-        mainGrid.add(extendedTemplateBtn, 2, 2);
-        mainGrid.add(customTemplateBtn, 3, 2);
+        mainGrid.add(customTemplateBtn, 2, 2);
+        //mainGrid.add(extendedTemplateBtn, 3, 2);
 
         // Добавляем кастомную папку и кнопку выбора папки в сетку
         mainGrid.add(customFolderLabel, 0, 3, 5, 1);
@@ -302,10 +303,10 @@ public class AppFX extends Application {
         return eHMI.findByValue(selectedHmi.getText());  // Например, "Weintek", "ONI", и т.д.
     }
 
-    public static eProtocol getProtocol () {
+    public static ePLC getProtocol () {
         // Получаем выбранный протокол
         RadioButton selectedProtocol = (RadioButton) protocolGroup.getSelectedToggle();
-        return eProtocol.findByValue(selectedProtocol.getText());  // Например, "CoDeSyS", "OPC", и т.д.
+        return ePLC.findByValue(selectedProtocol.getText());  // Например, "CoDeSyS", "OPC", и т.д.
     }
 
     public static eTemplate getTemplate() {

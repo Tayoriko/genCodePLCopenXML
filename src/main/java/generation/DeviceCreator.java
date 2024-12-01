@@ -2,8 +2,8 @@ package generation;
 
 import devices.*;
 import devicesDB.*;
-import enums.eDevType;
-import enums.eProtocol;
+import enums.eDevices;
+import enums.ePLC;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -11,13 +11,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import static enums.eDevType.*;
+import static enums.eDevices.*;
 
 
 public class DeviceCreator {
     private final Sheet sheet;
 
-    public DeviceCreator(File source, eProtocol protocol) throws IOException {
+    public DeviceCreator(File source, ePLC protocol) throws IOException {
         sheet = openSheet(source);
     }
 
@@ -28,7 +28,7 @@ public class DeviceCreator {
         }
     }
 
-    public void reviewDevice(eProtocol protocol, eDevType devType) {
+    public void reviewDevice(ePLC protocol, eDevices devType) {
         boolean inTargetSection = false;
         for (Row row : this.sheet) {
             Cell firstCell = row.getCell(0);
@@ -52,7 +52,7 @@ public class DeviceCreator {
         }
     }
 
-    public void createDeviceCodesys(Row row, eDevType devType) {
+    public void createDeviceCodesys(Row row, eDevices devType) {
         int id = (int) row.getCell(2).getNumericCellValue();
         String comment = getCellAsString(row, 9);
         IOLrecord record = null;
@@ -186,12 +186,12 @@ public class DeviceCreator {
         return new DevOne(name, comment, devName, addrSignal);
     }
 
-    private boolean nextSection (String cellValue, eDevType devType) {
-        eDevType newType = findByValue(cellValue);
+    private boolean nextSection (String cellValue, eDevices devType) {
+        eDevices newType = findByValue(cellValue);
         return !newType.equals(EMPTY) && !newType.equals(devType);
     }
 
-    private static boolean isDeviceTypeHeader(String cellValue, eDevType deviceType) {
+    private static boolean isDeviceTypeHeader(String cellValue, eDevices deviceType) {
         boolean result = false;
         switch (deviceType) {
             case EMPTY -> {System.out.println("not found " + deviceType.getValue());}

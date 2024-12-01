@@ -1,6 +1,6 @@
 package enums;
 
-public enum eDevType {
+public enum eDevices {
     EMPTY       ("empty",           "empty","empty",            "empty",     "empty",       eVarType.EMPTY.getTypeName(), "empty"),
     DI          ("Discrete Input",  "DI",   "pou10_inputDI",    "DrvDI",     "IDL.limitDI", eVarType.BOOL.getTypeName(), "loadDI();"),
     AI          ("Analog Input",    "AI",   "pou11_inputAI",    "DrvAI",     "IDL.limitAI", eVarType.REAL.getTypeName(), "loadAI();"),
@@ -23,7 +23,7 @@ public enum eDevType {
 
 
     //initialisation enumerations
-    eDevType(String alloc, String name, String pou, String drv, String cnt, String typeName, String loader){
+    eDevices(String alloc, String name, String pou, String drv, String cnt, String typeName, String loader){
         this.alloc = alloc;
         this.name = name;
         this.pou = pou;
@@ -64,9 +64,9 @@ public enum eDevType {
     }
 
     //find type by string value
-    public static eDevType findByValue (String value) {
-        eDevType type = eDevType.EMPTY;
-        for (eDevType item : eDevType.values())
+    public static eDevices findByValue (String value) {
+        eDevices type = eDevices.EMPTY;
+        for (eDevices item : eDevices.values())
         {
             if (item.getValue().equalsIgnoreCase(value)) {
                 type = item;

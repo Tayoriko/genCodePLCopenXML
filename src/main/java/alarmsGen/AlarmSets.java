@@ -1,7 +1,7 @@
 package alarmsGen;
 
 import enums.FilePath;
-import enums.eDevType;
+import enums.eDevices;
 import enums.eTemplate;
 
 import java.io.BufferedReader;
@@ -21,13 +21,13 @@ public class AlarmSets {
     private static Set<Map.Entry<String, String>> analogAlarmOutputSet = Set.of();
 
     AlarmSets (eTemplate template) {
-        motorAlarmSet = loadAlarmSet(template, eDevType.MOTOR);
-        valveAlarmSet = loadAlarmSet(template, eDevType.VALVE);
-        analogAlarmInputSet = loadAlarmSet(template, eDevType.AI);
-        analogAlarmOutputSet = loadAlarmSet(template, eDevType.AO);
+        motorAlarmSet = loadAlarmSet(template, eDevices.MOTOR);
+        valveAlarmSet = loadAlarmSet(template, eDevices.VALVE);
+        analogAlarmInputSet = loadAlarmSet(template, eDevices.AI);
+        analogAlarmOutputSet = loadAlarmSet(template, eDevices.AO);
     }
 
-    private static Set<Map.Entry<String, String>> loadAlarmSet(eTemplate template, eDevType type) {
+    private static Set<Map.Entry<String, String>> loadAlarmSet(eTemplate template, eDevices type) {
         Set<Map.Entry<String, String>> set = Set.of();
         String filePath = "";
         filePath = loadFilePath(type, template);
@@ -81,7 +81,7 @@ public class AlarmSets {
         return alarmMap.entrySet();
     }
 
-    private static String loadFilePath(eDevType type, eTemplate template) {
+    private static String loadFilePath(eDevices type, eTemplate template) {
         String filePath = "";
         switch (template) {
             case BASIC -> {
@@ -101,8 +101,8 @@ public class AlarmSets {
                     }
                 }
             }
-            case CUSTOM -> {
-                filePath = FilePath.CUSTOM;
+            case CUSTOM_MV210 -> {
+                filePath = FilePath.CUSTOM_MV210;
                 switch (type) {
                     case MOTOR -> {
                         filePath += "motor.csv";

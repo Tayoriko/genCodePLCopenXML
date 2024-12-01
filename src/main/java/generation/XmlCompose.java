@@ -1,8 +1,8 @@
 package generation;
 
 import enums.FilePath;
-import enums.eDevType;
-import enums.eProtocol;
+import enums.eDevices;
+import enums.ePLC;
 import enums.eRegex;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -21,12 +21,12 @@ public class XmlCompose {
     private String projectName = "SVT_Babhinskii_PLC_v0.0.0.1";
     private String timeStamp;
     private String targetFolder = "";
-    private eProtocol protocol = eProtocol.EMPTY;
+    private ePLC protocol = ePLC.EMPTY;
     private File selectedFile = new File("");
-    private Set<eDevType> selectedDevices = new HashSet<>();
+    private Set<eDevices> selectedDevices = new HashSet<>();
 
 
-    public XmlCompose(File selectedFile, String targetFolder, String projectName, eProtocol protocol, String sp, Set<eDevType> selectedDevices) throws IOException {
+    public XmlCompose(File selectedFile, String targetFolder, String projectName, ePLC protocol, String sp, Set<eDevices> selectedDevices) throws IOException {
         this.selectedFile = selectedFile;
         this.projectName = projectName;
         this.timeStamp = getTimeStamp();
@@ -68,7 +68,7 @@ public class XmlCompose {
         finalXML.append("\n");
 
         //Создание раздела Data
-        for (eDevType devType : selectedDevices) {
+        for (eDevices devType : selectedDevices) {
             finalXML.append(createPou.createData(devType));
         }
         finalXML.append(createVarList.createData());
@@ -90,7 +90,7 @@ public class XmlCompose {
         }
     }
 
-    private String genProtocol (eProtocol protocol, String servicePack) {
+    private String genProtocol (ePLC protocol, String servicePack) {
         String protocolVersion = "";
         switch (protocol){
             case CODESYS -> protocolVersion = "CODESYS V3.5 ";
@@ -116,9 +116,9 @@ public class XmlCompose {
         return now.format(formatter);
     }
 
-    public StringBuilder processDevices(Set<eDevType> selectedDevices, CreatePou createPou) throws IOException {
+    public StringBuilder processDevices(Set<eDevices> selectedDevices, CreatePou createPou) throws IOException {
         StringBuilder allPou = new StringBuilder();
-        for (eDevType devType : selectedDevices) {
+        for (eDevices devType : selectedDevices) {
             allPou.append(createPou.createOne(devType));
         }
         return allPou;

@@ -3,13 +3,13 @@ package devices;
 import generation.DeviceCreator;
 import devicesDB.MotorDatabase;
 import enums.FilePath;
-import enums.eProtocol;
+import enums.ePLC;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 
-import static enums.eDevType.MOTOR;
+import static enums.eDevices.MOTOR;
 
 class devMotorTest {
 
@@ -20,12 +20,12 @@ class devMotorTest {
     String devName = "Not_1_2";
     AddrPLC cmdFw = new AddrPLC("0", "0");
 
-    @Test
-    void testDevMotorDefault() {
-        DevMotor motor = new DevMotor(id, name, devName, qf, km, cmdFw);
-        System.out.println(motor.toString());
-        System.out.println(motor.toString());
-    }
+//    @Test
+//    void testDevMotorDefault() {
+//        DevMotor motor = new DevMotor(id, name, devName, qf, km, cmdFw);
+//        System.out.println(motor.toString());
+//        System.out.println(motor.toString());
+//    }
 
     @Test
     void testDevMotorFromOne() {
@@ -45,7 +45,7 @@ class devMotorTest {
 
     @Test
     void testAddFromXLS() throws IOException {
-        eProtocol protocol = eProtocol.CODESYS;
+        ePLC protocol = ePLC.CODESYS;
         MotorDatabase.getInstance().clear();
         DeviceCreator deviceCreator = new DeviceCreator(new File(FilePath.DEFAULT_SOURCE), protocol);
         deviceCreator.reviewDevice(protocol, MOTOR);

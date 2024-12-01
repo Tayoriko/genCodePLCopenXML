@@ -2,8 +2,8 @@ package generation;
 
 import devicesDB.*;
 import enums.FilePath;
-import enums.eDevType;
-import enums.eProtocol;
+import enums.eDevices;
+import enums.ePLC;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Properties;
 
-import static enums.eDevType.*;
+import static enums.eDevices.*;
 
 public class CreatePou {
     private String device = "";
@@ -20,15 +20,15 @@ public class CreatePou {
     private String drvName = "";
     private String cntName = "";
     private String folder = "Local PRG";
-    private eProtocol protocol = eProtocol.EMPTY;
+    private ePLC protocol = ePLC.EMPTY;
     private File selectedFile = new File("");
 
-    public CreatePou(File selectedFile, eProtocol protocol) throws IOException {
+    public CreatePou(File selectedFile, ePLC protocol) throws IOException {
         this.selectedFile = selectedFile;
         this.protocol = protocol;
     }
 
-    public StringBuilder createOne(eDevType devType) throws IOException {
+    public StringBuilder createOne(eDevices devType) throws IOException {
         //Загрузка данных
         StringBuilder data = getDeviceFromDB(devType);
         StringBuilder pou = new StringBuilder();
@@ -52,7 +52,7 @@ public class CreatePou {
         return pou;
     }
 
-    public StringBuilder createData(eDevType devType) {
+    public StringBuilder createData(eDevices devType) {
         //Загрузка данных
         StringBuilder data = new StringBuilder();
         // Настройка Velocity
@@ -66,7 +66,7 @@ public class CreatePou {
         return data;
     }
 
-    private StringBuilder getDeviceFromDB(eDevType devType) throws IOException {
+    private StringBuilder getDeviceFromDB(eDevices devType) throws IOException {
         StringBuilder device = new StringBuilder();
         switch (devType){
             case MOTOR ->{
@@ -124,7 +124,7 @@ public class CreatePou {
         return device;
     }
 
-    private void loadTypeData (eDevType devType) {
+    private void loadTypeData (eDevices devType) {
         device = devType.getName();
         pouName = devType.getPou();
         drvName = devType.getDrv();
