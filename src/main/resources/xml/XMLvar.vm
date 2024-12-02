@@ -2,6 +2,9 @@
           <type>
             <REAL />
           </type>
+          <initialValue>
+            <simpleValue value="1" />
+          </initialValue>
           <documentation>
             <xhtml xmlns="http://www.w3.org/1999/xhtml">example 1</xhtml>
           </documentation>

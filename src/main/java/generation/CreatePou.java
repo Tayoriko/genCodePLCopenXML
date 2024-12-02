@@ -1,8 +1,7 @@
 package generation;
 
-import devicesDB.*;
 import enums.FilePath;
-import enums.eDevices;
+import enums.eDevType;
 import enums.ePLC;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -11,8 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Properties;
-
-import static enums.eDevices.*;
 
 public class CreatePou {
     private String device = "";
@@ -28,9 +25,9 @@ public class CreatePou {
         this.protocol = protocol;
     }
 
-    public StringBuilder createOne(eDevices devType) throws IOException {
+    public StringBuilder createOne(eDevType devType) throws IOException {
         //Загрузка данных
-        StringBuilder data = getDeviceFromDB(devType);
+//        StringBuilder data = getDeviceFromDB(devType);
         StringBuilder pou = new StringBuilder();
         loadTypeData(devType);
 
@@ -46,13 +43,13 @@ public class CreatePou {
         context.put("cntName",      cntName);
         context.put("loader",       devType.getLoader());
         context.put("device",       devType.getValue());
-        context.put("data",         data);
+//        context.put("data",         data);
 
         pou.append(generateText(context, FilePath.FILEPATH_XML_POU));
         return pou;
     }
 
-    public StringBuilder createData(eDevices devType) {
+    public StringBuilder createData(eDevType devType) {
         //Загрузка данных
         StringBuilder data = new StringBuilder();
         // Настройка Velocity
@@ -66,65 +63,65 @@ public class CreatePou {
         return data;
     }
 
-    private StringBuilder getDeviceFromDB(eDevices devType) throws IOException {
-        StringBuilder device = new StringBuilder();
-        switch (devType){
-            case MOTOR ->{
-                MotorDatabase.getInstance().clear();
-                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
-                deviceCreator.reviewDevice(protocol, MOTOR);
-                device.append(MotorDatabase.getInstance().getAllRecords());
-            }
-            case VALVE ->{
-                ValveDatabase.getInstance().clear();
-                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
-                deviceCreator.reviewDevice(protocol, VALVE);
-                device.append(ValveDatabase.getInstance().getAllRecords());
-            }
-            case AI ->{
-                AnalogInputDatabase.getInstance().clear();
-                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
-                deviceCreator.reviewDevice(protocol, AI);
-                device.append(AnalogInputDatabase.getInstance().getAllRecords());
-            }
-            case AO ->{
-                AnalogOutputDatabase.getInstance().clear();
-                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
-                deviceCreator.reviewDevice(protocol, AO);
-                device.append(AnalogOutputDatabase.getInstance().getAllRecords());
-            }
-            case DI ->{
-                DiscreteInputDatabase.getInstance().clear();
-                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
-                deviceCreator.reviewDevice(protocol, DI);
-                device.append(DiscreteInputDatabase.getInstance().getAllRecords());
-            }
-            case DO ->{
-                DiscreteOutputDatabase.getInstance().clear();
-                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
-                deviceCreator.reviewDevice(protocol, DO);
-                device.append(DiscreteOutputDatabase.getInstance().getAllRecords());
-            }
-            case PID ->{
-                PidDatabase.getInstance().clear();
-                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
-                deviceCreator.reviewDevice(protocol, PID);
-                //PidDatabase.getInstance().printAllRecords();
-                device.append(PidDatabase.getInstance().getAllRecords());
-            }
-            case FLOW ->{
-                FlowMetersDatabase.getInstance().clear();
-                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
-                deviceCreator.reviewDevice(protocol, FLOW);
-                //FlowMetersDatabase.getInstance().printAllRecords();
-                device.append("mt.sys.upTimeMs := TIME_TO_UDINT(mt.sys.UpTime);\n\n");
-                device.append(FlowMetersDatabase.getInstance().getAllRecords());
-            }
-        }
-        return device;
-    }
+//    private StringBuilder getDeviceFromDB(eDevices devType) throws IOException {
+//        StringBuilder device = new StringBuilder();
+//        switch (devType){
+//            case MOTOR ->{
+//                MotorDatabase.getInstance().clear();
+//                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+//                deviceCreator.reviewDevice(protocol, MOTOR);
+//                device.append(MotorDatabase.getInstance().getAllRecords());
+//            }
+//            case VALVE ->{
+//                ValveDatabase.getInstance().clear();
+//                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+//                deviceCreator.reviewDevice(protocol, VALVE);
+//                device.append(ValveDatabase.getInstance().getAllRecords());
+//            }
+//            case AI ->{
+//                AnalogInputDatabase.getInstance().clear();
+//                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+//                deviceCreator.reviewDevice(protocol, AI);
+//                device.append(AnalogInputDatabase.getInstance().getAllRecords());
+//            }
+//            case AO ->{
+//                AnalogOutputDatabase.getInstance().clear();
+//                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+//                deviceCreator.reviewDevice(protocol, AO);
+//                device.append(AnalogOutputDatabase.getInstance().getAllRecords());
+//            }
+//            case DI ->{
+//                DiscreteInputDatabase.getInstance().clear();
+//                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+//                deviceCreator.reviewDevice(protocol, DI);
+//                device.append(DiscreteInputDatabase.getInstance().getAllRecords());
+//            }
+//            case DO ->{
+//                DiscreteOutputDatabase.getInstance().clear();
+//                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+//                deviceCreator.reviewDevice(protocol, DO);
+//                device.append(DiscreteOutputDatabase.getInstance().getAllRecords());
+//            }
+//            case PID ->{
+//                PidDatabase.getInstance().clear();
+//                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+//                deviceCreator.reviewDevice(protocol, PID);
+//                //PidDatabase.getInstance().printAllRecords();
+//                device.append(PidDatabase.getInstance().getAllRecords());
+//            }
+//            case FLOW ->{
+//                FlowMetersDatabase.getInstance().clear();
+//                DeviceCreator deviceCreator = new DeviceCreator(selectedFile, protocol);
+//                deviceCreator.reviewDevice(protocol, FLOW);
+//                //FlowMetersDatabase.getInstance().printAllRecords();
+//                device.append("mt.sys.upTimeMs := TIME_TO_UDINT(mt.sys.UpTime);\n\n");
+//                device.append(FlowMetersDatabase.getInstance().getAllRecords());
+//            }
+//        }
+//        return device;
+//    }
 
-    private void loadTypeData (eDevices devType) {
+    private void loadTypeData (eDevType devType) {
         device = devType.getName();
         pouName = devType.getPou();
         drvName = devType.getDrv();

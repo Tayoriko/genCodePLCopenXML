@@ -8,7 +8,7 @@ import org.example.AppFX;
 import java.io.File;
 import java.io.IOException;
 
-import static enums.eDevices.*;
+import static enums.eDevType.*;
 
 public class AlarmGeneration {
 

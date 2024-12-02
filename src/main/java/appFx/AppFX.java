@@ -21,7 +21,7 @@ public class AppFX extends Application {
     private static File sourceFile = null;
     private static String targetFolder = System.getProperty("user.dir"); ;
     private static String projectName = "default";
-    private static Set<eDevices> devices = new HashSet<>();
+    private static Set<eDevType> devices = new HashSet<>();
     private static Set<eActions> actions = new HashSet<>();
 
     private static final FxToggles fxGrids = new FxToggles();

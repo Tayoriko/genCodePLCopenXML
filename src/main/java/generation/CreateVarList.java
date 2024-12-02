@@ -1,7 +1,5 @@
 package generation;
 
-import devices.IOLrecord;
-import devicesDB.IOLdatabase;
 import enums.FilePath;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -16,12 +14,12 @@ public class CreateVarList {
     private StringBuilder vars = new StringBuilder();
 
     public CreateVarList() {
-        IOLdatabase database = IOLdatabase.getInstance();
-
-        for (IOLrecord record : database.getAllRecords()) {
-            vars.append(record.toPLCopenXML());
-            vars.append(record.toPLCopenXMLid());
-        }
+//        IOLdatabase database = IOLdatabase.getInstance();
+//
+//        for (IOLrecord record : database.getAllRecords()) {
+//            vars.append(record.toPLCopenXML());
+//            vars.append(record.toPLCopenXMLid());
+//        }
     }
 
     public StringBuilder createOne () {

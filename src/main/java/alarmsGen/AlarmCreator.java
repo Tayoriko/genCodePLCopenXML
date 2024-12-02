@@ -1,7 +1,7 @@
 package alarmsGen;
 
 import alarmsBase.AlarmMessage;
-import enums.eDevices;
+import enums.eDevType;
 import enums.ePLC;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static enums.eDevices.*;
+import static enums.eDevType.*;
 
 
 public class AlarmCreator {
@@ -51,7 +51,7 @@ public class AlarmCreator {
         }
     }
 
-    public void reviewAlarms(ePLC protocol, eDevices devType) {
+    public void reviewAlarms(ePLC protocol, eDevType devType) {
             boolean inTargetSection = false;
             for (Row row : this.sheet) {
                 Cell firstCell = row.getCell(0);
@@ -84,7 +84,7 @@ public class AlarmCreator {
         }
 
 
-    public void createAlarmCodesys(String name, int devId, eDevices devType) {
+    public void createAlarmCodesys(String name, int devId, eDevType devType) {
         Set<Map.Entry<String, String>> alarmSet = Set.of();
         switch (devType){
             case MOTOR -> alarmSet = AlarmSets.getMotorAlarmSet();
@@ -107,12 +107,12 @@ public class AlarmCreator {
         }
     };
 
-    private boolean nextSection (String cellValue, eDevices devType) {
-        eDevices newType = findByValue(cellValue);
+    private boolean nextSection (String cellValue, eDevType devType) {
+        eDevType newType = findByValue(cellValue);
         return !newType.equals(EMPTY) && !newType.equals(devType);
     }
 
-    private static boolean isDeviceTypeHeader(String cellValue, eDevices deviceType) {
+    private static boolean isDeviceTypeHeader(String cellValue, eDevType deviceType) {
         boolean result = false;
         switch (deviceType) {
             case EMPTY, PID, DI, DO, FLOW -> {System.out.println("not found " + deviceType.getValue());}
@@ -124,7 +124,7 @@ public class AlarmCreator {
         return result;
     }
 
-    private static String getTemplateForDeviceType(eDevices deviceType) {
+    private static String getTemplateForDeviceType(eDevType deviceType) {
         return switch (deviceType) {
             case EMPTY, PID, DI, DO, FLOW -> "null";
             case MOTOR -> MOTOR.getName();

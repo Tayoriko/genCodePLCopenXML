@@ -1,7 +1,7 @@
 package appFx;
 
 import enums.eActions;
-import enums.eDevices;
+import enums.eDevType;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -21,7 +21,7 @@ public class FxOptions {
     private static String projectName = "default";
     static GridPane gridDevices;
     static GridPane gridActions;
-    private static Set<eDevices> devices = new HashSet<>();
+    private static Set<eDevType> devices = new HashSet<>();
     private static Set<eActions> actions = new HashSet<>();
 
     public FxOptions() {
@@ -107,14 +107,14 @@ public class FxOptions {
         Label label = new Label("Devices:");
         label.setPrefWidth(100);
         // Чекбоксы для выбора типов устройств
-        CheckBox boxDi = new CheckBox(eDevices.DI.getName());
-        CheckBox boxDo = new CheckBox(eDevices.DO.getName());
-        CheckBox boxAi = new CheckBox(eDevices.AI.getName());
-        CheckBox boxAo = new CheckBox(eDevices.AO.getName());
-        CheckBox boxPid = new CheckBox(eDevices.PID.getName());
-        CheckBox boxFlow = new CheckBox(eDevices.FLOW.getName());
-        CheckBox boxMotor = new CheckBox(eDevices.MOTOR.getValue());
-        CheckBox boxValve = new CheckBox(eDevices.VALVE.getValue());
+        CheckBox boxDi = new CheckBox(eDevType.DI.getName());
+        CheckBox boxDo = new CheckBox(eDevType.DO.getName());
+        CheckBox boxAi = new CheckBox(eDevType.AI.getName());
+        CheckBox boxAo = new CheckBox(eDevType.AO.getName());
+        CheckBox boxPid = new CheckBox(eDevType.PID.getName());
+        CheckBox boxFlow = new CheckBox(eDevType.FLOW.getName());
+        CheckBox boxMotor = new CheckBox(eDevType.MOTOR.getValue());
+        CheckBox boxValve = new CheckBox(eDevType.VALVE.getValue());
         //default
         boxDi.setSelected(true);
         boxDo.setSelected(true);
@@ -178,13 +178,13 @@ public class FxOptions {
         return projectName;
     }
 
-    public static Set<eDevices> getDevices() {
+    public static Set<eDevType> getDevices() {
         // Проходим по всем дочерним элементам GridPane
         for (Node node : gridDevices.getChildren()) {
             if (node instanceof CheckBox) { // Проверяем, является ли элемент CheckBox
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) { // Проверяем, выбран ли CheckBox
-                    devices.add(eDevices.findByValue(checkBox.getText()));
+                    devices.add(eDevType.findByValue(checkBox.getText()));
                     System.out.println("Selected action: " + checkBox.getText());
                 }
             }

@@ -2,7 +2,7 @@ package org.example;
 
 import alarmsGen.AlarmGeneration;
 import generation.XmlCompose;
-import enums.eDevices;
+import enums.eDevType;
 import enums.eHMI;
 import enums.ePLC;
 import enums.eTemplate;
@@ -172,30 +172,30 @@ public class AppFX extends Application {
 
 
         // Чекбоксы для выбора типов устройств
-        CheckBox diCheckBox = new CheckBox(eDevices.DI.getName());
-        CheckBox doCheckBox = new CheckBox(eDevices.DO.getName());
-        CheckBox aiCheckBox = new CheckBox(eDevices.AI.getName());
-        CheckBox aoCheckBox = new CheckBox(eDevices.AO.getName());
-        CheckBox pidCheckBox = new CheckBox(eDevices.PID.getName());
-        CheckBox flowCheckBox = new CheckBox(eDevices.FLOW.getName());
-        CheckBox motorsCheckBox = new CheckBox(eDevices.MOTOR.getValue());
-        CheckBox valvesCheckBox = new CheckBox(eDevices.VALVE.getValue());
+        CheckBox diCheckBox = new CheckBox(eDevType.DI.getName());
+        CheckBox doCheckBox = new CheckBox(eDevType.DO.getName());
+        CheckBox aiCheckBox = new CheckBox(eDevType.AI.getName());
+        CheckBox aoCheckBox = new CheckBox(eDevType.AO.getName());
+        CheckBox pidCheckBox = new CheckBox(eDevType.PID.getName());
+        CheckBox flowCheckBox = new CheckBox(eDevType.FLOW.getName());
+        CheckBox motorsCheckBox = new CheckBox(eDevType.MOTOR.getValue());
+        CheckBox valvesCheckBox = new CheckBox(eDevType.VALVE.getValue());
 
 
         // Кнопка для генерации в нижнем ряду
         Button lowerGenerateBtn = new Button("Generate POUs");
         lowerGenerateBtn.setOnAction(e -> {
                     updateStatus("Generation...");
-                    Set<eDevices> selectedDevices = new HashSet<>();
+                    Set<eDevType> selectedDevices = new HashSet<>();
 
-                    if (diCheckBox.isSelected()) selectedDevices.add(eDevices.DI);
-                    if (doCheckBox.isSelected()) selectedDevices.add(eDevices.DO);
-                    if (aiCheckBox.isSelected()) selectedDevices.add(eDevices.AI);
-                    if (aoCheckBox.isSelected()) selectedDevices.add(eDevices.AO);
-                    if (pidCheckBox.isSelected()) selectedDevices.add(eDevices.PID);
-                    if (flowCheckBox.isSelected()) selectedDevices.add(eDevices.FLOW);
-                    if (motorsCheckBox.isSelected()) selectedDevices.add(eDevices.MOTOR);
-                    if (valvesCheckBox.isSelected()) selectedDevices.add(eDevices.VALVE);
+                    if (diCheckBox.isSelected()) selectedDevices.add(eDevType.DI);
+                    if (doCheckBox.isSelected()) selectedDevices.add(eDevType.DO);
+                    if (aiCheckBox.isSelected()) selectedDevices.add(eDevType.AI);
+                    if (aoCheckBox.isSelected()) selectedDevices.add(eDevType.AO);
+                    if (pidCheckBox.isSelected()) selectedDevices.add(eDevType.PID);
+                    if (flowCheckBox.isSelected()) selectedDevices.add(eDevType.FLOW);
+                    if (motorsCheckBox.isSelected()) selectedDevices.add(eDevType.MOTOR);
+                    if (valvesCheckBox.isSelected()) selectedDevices.add(eDevType.VALVE);
 
                     // Проверяем, была ли выбрана папка
                     if (customFolderPath == null || customFolderPath.isEmpty()) {

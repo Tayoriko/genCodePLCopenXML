@@ -1,7 +1,7 @@
 package generation;
 
 import enums.FilePath;
-import enums.eDevices;
+import enums.eDevType;
 import enums.ePLC;
 import enums.eRegex;
 import org.apache.velocity.VelocityContext;
@@ -23,10 +23,10 @@ public class XmlCompose {
     private String targetFolder = "";
     private ePLC protocol = ePLC.EMPTY;
     private File selectedFile = new File("");
-    private Set<eDevices> selectedDevices = new HashSet<>();
+    private Set<eDevType> selectedDevices = new HashSet<>();
 
 
-    public XmlCompose(File selectedFile, String targetFolder, String projectName, ePLC protocol, String sp, Set<eDevices> selectedDevices) throws IOException {
+    public XmlCompose(File selectedFile, String targetFolder, String projectName, ePLC protocol, String sp, Set<eDevType> selectedDevices) throws IOException {
         this.selectedFile = selectedFile;
         this.projectName = projectName;
         this.timeStamp = getTimeStamp();
@@ -68,7 +68,7 @@ public class XmlCompose {
         finalXML.append("\n");
 
         //Создание раздела Data
-        for (eDevices devType : selectedDevices) {
+        for (eDevType devType : selectedDevices) {
             finalXML.append(createPou.createData(devType));
         }
         finalXML.append(createVarList.createData());
@@ -116,9 +116,9 @@ public class XmlCompose {
         return now.format(formatter);
     }
 
-    public StringBuilder processDevices(Set<eDevices> selectedDevices, CreatePou createPou) throws IOException {
+    public StringBuilder processDevices(Set<eDevType> selectedDevices, CreatePou createPou) throws IOException {
         StringBuilder allPou = new StringBuilder();
-        for (eDevices devType : selectedDevices) {
+        for (eDevType devType : selectedDevices) {
             allPou.append(createPou.createOne(devType));
         }
         return allPou;

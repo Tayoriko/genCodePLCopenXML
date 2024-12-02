@@ -15,8 +15,12 @@ public enum eVarType {
     WORD    ("WORD"),
     DWORD   ("DWORD"),
     LWORD   ("LWORD"),
-    IOLD    ("mt.udtDevDiscrete"),
-    IOLA    ("mt.udtDevAnalog");
+    IOLD    ("udtDevDiscrete"),
+    IOLA    ("udtDevAnalog"),
+    NETD    ("udtNetDataDiscrete"),
+    NETA    ("udtNetDataAnalog"),
+    PT      ("R_TRIG"),
+    NT      ("F_TRIG");
 
     private final String typeName;
 
