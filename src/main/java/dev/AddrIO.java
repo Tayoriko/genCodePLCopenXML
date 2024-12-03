@@ -7,7 +7,7 @@ public class AddrIO {
     private boolean enable = false;
 
     public AddrIO(String addr) {
-        if (!addr.isEmpty()){
+        if (!addr.isEmpty() && !addr.equals("empty")){
             String[] splitAddress = splitAddress(addr);
             this.word = Integer.parseInt(splitAddress[0]);
             this.bit = Integer.parseInt(splitAddress[1]);

@@ -1,6 +1,6 @@
 package alarmsGen;
 
-import enums.FilePath;
+import databases.GData;
 import enums.eDevType;
 import enums.eTemplate;
 
@@ -85,7 +85,7 @@ public class AlarmSets {
         String filePath = "";
         switch (template) {
             case BASIC -> {
-                filePath = FilePath.BASIC;
+                filePath = GData.BASIC;
                 switch (type) {
                     case MOTOR -> {
                         filePath += "motor.csv";
@@ -102,7 +102,7 @@ public class AlarmSets {
                 }
             }
             case CUSTOM_MV210 -> {
-                filePath = FilePath.CUSTOM_MV210;
+                filePath = GData.CUSTOM_MV210;
                 switch (type) {
                     case MOTOR -> {
                         filePath += "motor.csv";

@@ -1,14 +1,15 @@
 package codesys;
 
 import databases.DatabaseRegistry;
+import databases.GData;
 import dev.*;
+import enums.eActions;
 import enums.eDevType;
 import enums.eVarType;
 
 import java.util.List;
 
 public class CodesysCallDevices {
-    private static boolean useNetData = false;
 
     public CodesysCallDevices() {
     }
@@ -40,24 +41,16 @@ public class CodesysCallDevices {
                 List<DevValve> valveRecords = DatabaseRegistry.getInstance(DevValve.class).getRecords();
                 valveRecords.forEach(dev -> result.append(CodesysCallDevices.callValve(dev)));
             }
-            default -> throw new IllegalArgumentException("Unsupported device type: " + deviceType);
+            default -> System.out.println("skip " + deviceType.getName());
+            //throw new IllegalArgumentException("Unsupported device type: " + deviceType);
         }
 
         return result;
     }
 
-
-    public static boolean isUseNetData() {
-        return useNetData;
-    }
-
-    public static void setUseNetData(boolean useNetData) {
-        CodesysCallDevices.useNetData = useNetData;
-    }
-
     private static StringBuilder callNetData(String devName) {
         StringBuilder netData = new StringBuilder();
-        if (isUseNetData()) {
+        if (GData.getActions().contains(eActions.MBS)) {
             netData.append(String.format("   netData     := %s,\n", CodesysAddressing.getNetList(devName)));
         }
         return netData;
@@ -140,7 +133,7 @@ public class CodesysCallDevices {
         StringBuilder device = new StringBuilder(String.format(
                 "%s\n" +
                         "drvAO[%d](\n" +
-                        "   command     := %s,\n" +
+                        "   devState    := %s,\n" +
                         "   cmd         := %s,\n" +
                         "   cfg         := %s,\n" +
                         "   state       := %s,\n",
@@ -191,6 +184,8 @@ public class CodesysCallDevices {
                 CodesysAddressing.getAddrDi(devMotor.getFbKm()),
                 CodesysAddressing.getAddrDo(devMotor.getCmdFw())
                 ));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devMotor.getFbQf()), "useQF", devMotor));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devMotor.getFbKm()), "useKM", devMotor));
         device.append("\n");
         return device;
     }
@@ -223,7 +218,25 @@ public class CodesysCallDevices {
                 CodesysAddressing.getAddrDo(devValve.getCmdOpen()),
                 CodesysAddressing.getAddrDo(devValve.getCmdClose())
         ));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbQf()), "useQF", devValve));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbOpen()), "useFbOpen", devValve));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbClose()), "useFbClose", devValve));
         device.append("\n");
         return device;
+    }
+
+    public static StringBuilder callRaw(AbstractDevice dev) {
+        StringBuilder device = new StringBuilder(String.format(dev.toString()));
+        device.append("\n");
+        return device;
+    }
+
+    private static StringBuilder checkInput(String addr, String cfg, AbstractDevice dev) {
+        if (addr.equals(CodesysAddressing.noData)) return disableInput(cfg, dev);
+        else return new StringBuilder();
+    }
+
+    private static StringBuilder disableInput(String cfg, AbstractDevice dev) {
+        return new StringBuilder(dev.getCfg() + "." + cfg + " := FALSE;\n");
     }
 }

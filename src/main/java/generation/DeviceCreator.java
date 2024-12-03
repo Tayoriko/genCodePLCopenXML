@@ -15,6 +15,7 @@ import static enums.eDevType.*;
 public class DeviceCreator {
     private final Sheet sheet;
     private static Set<eDevType> devices;
+    private int cnt;
 
     public DeviceCreator(File source, Set<eDevType> devices) throws IOException {
         this.sheet = openSheet(source);
@@ -29,23 +30,26 @@ public class DeviceCreator {
     }
 
     public void reviewDevice(eDevType devType) {
-        boolean inTargetSection = false;
-        for (Row row : this.sheet) {
-            Cell firstCell = row.getCell(0);
-            if (firstCell == null) continue;
+        boolean foundDevType = false; // Флаг, указывающий, что devType найден
+        System.out.println("Search: " + devType.getValue());
+        for (Row row : sheet) {
+            Cell firstCell = row.getCell(0); // Первая ячейка строки
             String cellValue = firstCell.getStringCellValue().trim();
+            if (firstCell == null) continue;
             // Определяем начало нужного раздела
             if (isDeviceTypeHeader(cellValue, devType)) {
-                System.out.println(cellValue);
-                inTargetSection = true;
+                System.out.println("Start: " + devType.getValue());
+                foundDevType = true;
                 continue;
             }
-            // Проверяем, что мы в нужном разделе
-            if (inTargetSection) {
+            //обработка данных
+            if (foundDevType) {
                 if (cellValue.isEmpty() || nextSection(cellValue, devType)) {
+                    System.out.println("End: " + devType.getValue());
                     break; // Конец раздела
+                } else {
+                    CreateRecords.createDeviceCodesys(row, devType);
                 }
-                CreateRecords.createDeviceCodesys(row, devType);
             }
         }
     }
@@ -69,18 +73,6 @@ public class DeviceCreator {
             case FLOW -> result = cellValue.equalsIgnoreCase((FLOW.getValue()));
         };
         return result;
-    }
-
-    private String getCellAsString(Row row, int cellId) {
-        Cell cell = row.getCell(cellId);
-        String cellValue = null;
-        if (cell != null && cell.getCellType() == CellType.STRING) {
-            String value = cell.getStringCellValue();
-            if (value != null && !value.isEmpty()) {
-                cellValue = value;
-            }
-        }
-        return (cellValue != null) ? cellValue : "unknown device";
     }
 
 }

@@ -1,7 +1,12 @@
-package codesys;
+package devCodesys;
 
+import codesys.CodesysCallDevices;
+import databases.GData;
 import dev.DevAO;
+import enums.eActions;
+import enums.ePLC;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CodesysAOTest {
@@ -12,10 +17,15 @@ class CodesysAOTest {
     String result = "A3.AO2";
     String message = "Codesys - DevAO";
 
+    @BeforeAll
+    static void init(){
+        GData.setPlc(ePLC.CODESYS);
+    }
+
     @Test
     void createCodesysDevAoReal() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAo(devAO);
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +
@@ -32,7 +42,7 @@ class CodesysAOTest {
     void createCodesysDevAoInt() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
         devAO.setResultInt();
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAo(devAO);
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +
@@ -48,7 +58,7 @@ class CodesysAOTest {
     @Test
     void createCodesysDevAoNetData() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        CodesysCallDevices.setUseNetData(true);
+        GData.getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAo(devAO);
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +

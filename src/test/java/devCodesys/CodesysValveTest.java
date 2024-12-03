@@ -1,7 +1,12 @@
-package codesys;
+package devCodesys;
 
+import codesys.CodesysCallDevices;
+import databases.GData;
 import dev.DevValve;
+import enums.eActions;
+import enums.ePLC;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CodesysValveTest {
@@ -16,10 +21,15 @@ class CodesysValveTest {
     String cmdClose = "A4.DO12";
     String message = "Codesys - DevValve";
 
+    @BeforeAll
+    static void init(){
+        GData.setPlc(ePLC.CODESYS);
+    }
+
     @Test
     void createCodesysDevValve() {
         DevValve devValve = new DevValve(id, name, devName, comment, qf, fbOpen, fbClose, cmdOpen, cmdClose);
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callValve(devValve);
         String expectedResult = String.format(
                 "// #034 - Valve KE 34\n" +
@@ -39,7 +49,7 @@ class CodesysValveTest {
     @Test
     void createCodesysDevValveNetData() {
         DevValve devValve = new DevValve(id, name, devName, comment, qf, fbOpen, fbClose, cmdOpen, cmdClose);
-        CodesysCallDevices.setUseNetData(true);
+        GData.getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callValve(devValve);
         String expectedResult = String.format(
                 "// #034 - Valve KE 34\n" +

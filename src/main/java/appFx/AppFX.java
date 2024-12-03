@@ -1,6 +1,9 @@
 package appFx;
 
+import codesys.CodesysGen;
+import databases.GData;
 import enums.*;
+import generation.DeviceCreator;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,23 +12,18 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
 
 public class AppFX extends Application {
 
-    private eHMI hmi = eHMI.EMPTY;
-    private eTemplate template = eTemplate.EMPTY;
     private ePLC plc = ePLC.EMPTY;
-    private String version = "";
     private static File sourceFile = null;
     private static String targetFolder = System.getProperty("user.dir"); ;
-    private static String projectName = "default";
-    private static Set<eDevType> devices = new HashSet<>();
-    private static Set<eActions> actions = new HashSet<>();
 
     private static final FxToggles fxGrids = new FxToggles();
     private static final FxOptions fxOptions = new FxOptions();
+
+    CodesysGen codesysGen = new CodesysGen();
 
     public AppFX() {
     }
@@ -60,7 +58,19 @@ public class AppFX extends Application {
 
         //Actions
         btnGenerate.setOnAction(e -> {
-            readData();
+                    readData();
+                    try {
+                        System.out.println(GData.getDevices().toString());
+                        DeviceCreator deviceCreator = new DeviceCreator(sourceFile, GData.getDevices());
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    StringBuilder xml = new StringBuilder();
+                    switch (GData.getPlc()){
+                        case CODESYS -> xml = codesysGen.createXml();
+                    }
+                    //System.out.println(codesysGen.createXml());
+                    XmlSaver.saveXml(xml);
                 });
 
         // Настройка сцены и отображение окна
@@ -70,15 +80,20 @@ public class AppFX extends Application {
     }
 
     private void readData() {
-        hmi = fxGrids.getHmi();
-        plc = fxGrids.getPlc();
-        template = fxGrids.getTemplate();
-        if (plc.equals(ePLC.CODESYS)) version = fxGrids.getVersionCodesys();
-        if (plc.equals(ePLC.TIA_PORTAL)) version = fxGrids.getVersionTiaPortal();
+        GData.getDevices().clear();
+        GData.getActions().clear();
+        GData.setHmi(fxGrids.getHmi());
+        GData.setPlc(fxGrids.getPlc());
+        GData.setTemplate(fxGrids.getTemplate());
+        if (plc.equals(ePLC.CODESYS)) GData.setVersion(fxGrids.getVersionCodesys());
+        if (plc.equals(ePLC.TIA_PORTAL)) GData.setVersion(fxGrids.getVersionTiaPortal());
         sourceFile = FxOptions.getSourceFile();
         targetFolder = FxOptions.getTargetFolder();
-        projectName = FxOptions.getProjectName();
-        devices = FxOptions.getDevices();
-        actions = FxOptions.getActions();
+        GData.setTargetFolder(targetFolder);
+        GData.setProjectName(FxOptions.getProjectName());
+        GData.setDevices(FxOptions.getDevices());
+        GData.setActions(FxOptions.getActions());
     }
+
+
 }

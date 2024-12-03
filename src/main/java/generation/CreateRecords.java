@@ -9,53 +9,35 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
 public class CreateRecords {
-    private static GenericDatabase<DevDI> diDatabase;
-    private static GenericDatabase<DevDO> doDatabase;
-    private static GenericDatabase<DevAI> aiDatabase;
-    private static GenericDatabase<DevAO> aoDatabase;
-    private static GenericDatabase<DevMotor> motorDatabase;
-    private static GenericDatabase<DevValve> valveDatabase;
 
     public CreateRecords() {
-        diDatabase = DatabaseRegistry.getInstance(DevDI.class);
-        diDatabase.clear();
-        doDatabase = DatabaseRegistry.getInstance(DevDO.class);
-        doDatabase.clear();
-        aiDatabase = DatabaseRegistry.getInstance(DevAI.class);
-        aiDatabase.clear();
-        aoDatabase = DatabaseRegistry.getInstance(DevAO.class);
-        aoDatabase.clear();
-        motorDatabase = DatabaseRegistry.getInstance(DevMotor.class);
-        motorDatabase.clear();
-        valveDatabase = DatabaseRegistry.getInstance(DevValve.class);
-        valveDatabase.clear();
     }
 
     public static void createDeviceCodesys(Row row, eDevType devType) {
         switch (devType) {
             case DI -> {
                 DevDI dev = createDevDiscreteInput(row);
-                diDatabase.addRecord(dev);
+                DatabaseRegistry.getInstance(DevDI.class).addRecord(dev);
             }
             case DO -> {
                 DevDO dev = createDevDiscreteOutput(row);
-                doDatabase.addRecord(dev);
+                DatabaseRegistry.getInstance(DevDO.class).addRecord(dev);
             }
             case AI -> {
                 DevAI dev = createDevAnalogInput(row);
-                aiDatabase.addRecord(dev);
+                DatabaseRegistry.getInstance(DevAI.class).addRecord(dev);
             }
             case AO -> {
                 DevAO dev = createDevAnalogOutput(row);
-                aoDatabase.addRecord(dev);
+                DatabaseRegistry.getInstance(DevAO.class).addRecord(dev);
             }
             case MOTOR -> {
                 DevMotor dev = createDevMotor(row);
-                motorDatabase.addRecord(dev);
+                DatabaseRegistry.getInstance(DevMotor.class).addRecord(dev);
             }
             case VALVE -> {
                 DevValve dev = createDevValve(row);
-                valveDatabase.addRecord(dev);
+                DatabaseRegistry.getInstance(DevValve.class).addRecord(dev);
             }
             default -> {
                 break;
@@ -77,12 +59,12 @@ public class CreateRecords {
 
 
     private static DevDI createDevDiscreteInput (Row row) {
-        String addr = row.getCell(3).getStringCellValue();
+        String addr = getCellAsAddr(row, 3);
         return new DevDI(createRawDev(row), addr);
     }
 
     private static DevDO createDevDiscreteOutput (Row row) {
-        String addr = row.getCell(7).getStringCellValue();
+        String addr = getCellAsAddr(row, 7);
         return new DevDO(createRawDev(row), addr);
     }
 

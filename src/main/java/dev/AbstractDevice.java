@@ -1,5 +1,6 @@
 package dev;
 
+import databases.GData;
 import enums.eDevType;
 
 public abstract class AbstractDevice {
@@ -9,9 +10,9 @@ public abstract class AbstractDevice {
     private final String devName;
     private final String comment;
     private String header;
-    private final String cmd;
-    private final String cfg;
-    private final String state;
+    private String cmd;
+    private String cfg;
+    private String state;
     private eDevType devType = eDevType.EMPTY;
 
     public AbstractDevice(Integer id, eDevType devType, String name, String devName, String comment) {
@@ -21,9 +22,7 @@ public abstract class AbstractDevice {
         this.devName = devName;
         this.comment = comment;
         this.header = "// " + setHeader(id, name);
-        this.cmd = "CVL.cmd" + getDev().getName() + "[" + id + "]";
-        this.cfg = "RVL.cfg" + getDev().getName()  + "[" + id + "]";
-        this.state = "SVL.state" + getDev().getName()  + "[" + id + "]";
+        ioGen();
     }
 
     public AbstractDevice(RawDev devRawRow, eDevType devType) {
@@ -33,9 +32,21 @@ public abstract class AbstractDevice {
         this.devName = devRawRow.getDevName();
         this.comment = devRawRow.getComment();
         this.header = "// " + setHeader(id, name);
-        this.cmd = "CVL.cmd" + getDev().getName() + "[" + id + "]";
-        this.cfg = "RVL.cfg" + getDev().getName()  + "[" + id + "]";
-        this.state = "SVL.state" + getDev().getName()  + "[" + id + "]";
+        ioGen();
+    }
+
+    private String ioCodesys(String varList, String option) {
+        return varList + "." + option + getDev().getName()  + "[" + this.id + "]";
+    }
+
+    private void ioGen() {
+        switch (GData.getPlc()) {
+            case CODESYS -> {
+                this.cmd = ioCodesys("CVL","cmd");
+                this.cfg = ioCodesys("RVL","cfg");
+                this.state = ioCodesys("SVL","state");
+            }
+        }
     }
 
     private String setHeader (int id, String name) {
@@ -83,5 +94,20 @@ public abstract class AbstractDevice {
 
     public String getState() {
         return state;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractDevice{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", devName='" + devName + '\'' +
+                ", comment='" + comment + '\'' +
+                ", header='" + header + '\'' +
+                ", cmd='" + cmd + '\'' +
+                ", cfg='" + cfg + '\'' +
+                ", state='" + state + '\'' +
+                ", devType=" + devType +
+                '}';
     }
 }

@@ -1,7 +1,12 @@
-package codesys;
+package devCodesys;
 
+import codesys.CodesysCallDevices;
+import databases.GData;
 import dev.DevMotor;
+import enums.eActions;
+import enums.ePLC;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CodesysMotorTest {
@@ -14,10 +19,15 @@ class CodesysMotorTest {
     String cmdFw = "A4.DO11";
     String message = "Codesys - DevMotor";
 
+    @BeforeAll
+    static void init(){
+        GData.setPlc(ePLC.CODESYS);
+    }
+
     @Test
     void createCodesysDevMotor() {
         DevMotor devMotor = new DevMotor(id, name, devName, comment, qf, km ,cmdFw);
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callMotor(devMotor);
         String expectedResult = String.format(
                 "// #010 - Pump UZ 10\n" +
@@ -35,7 +45,7 @@ class CodesysMotorTest {
     @Test
     void createCodesysDevMotorNetData() {
         DevMotor devMotor = new DevMotor(id, name, devName, comment, qf, km ,cmdFw);
-        CodesysCallDevices.setUseNetData(true);
+        GData.getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callMotor(devMotor);
         String expectedResult = String.format(
                 "// #010 - Pump UZ 10\n" +

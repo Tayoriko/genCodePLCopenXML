@@ -1,10 +1,12 @@
 package codesys;
 
+import databases.GData;
 import dev.DevAO;
+import enums.eActions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class CodesysVarTablesTest {
+class CodesysVarTagsTest {
     int id = 1;
     String name = "Setpoint for UZ 1";
     String devName = "sp_UZ_1";
@@ -14,7 +16,7 @@ class CodesysVarTablesTest {
     @Test
     void genId() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         CodesysGenVarTags codesysVarTables = new CodesysGenVarTags();
         StringBuilder actualResult = codesysVarTables.genId(devAO);
         String expectedResult = String.format(
@@ -32,7 +34,7 @@ class CodesysVarTablesTest {
     @Test
     void genIol() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         CodesysGenVarTags codesysVarTables = new CodesysGenVarTags();
         StringBuilder actualResult = codesysVarTables.genIol(devAO);
         String expectedResult = String.format(
@@ -50,9 +52,9 @@ class CodesysVarTablesTest {
     @Test
     void genNet() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         CodesysGenVarTags codesysVarTables = new CodesysGenVarTags();
-        StringBuilder actualResult = codesysVarTables.genNet(devAO);
+        StringBuilder actualResult = codesysVarTables.genNvl(devAO);
         String expectedResult = String.format(
                 "<variable name=\"sp_UZ_1\">\n" +
                 "  <type>\n" +

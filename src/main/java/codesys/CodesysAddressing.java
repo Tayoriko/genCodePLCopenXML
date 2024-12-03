@@ -11,7 +11,7 @@ public class CodesysAddressing {
     private static String signalAi = varList + ".listAI";
     private static String signalDo = varList + ".listDO";
     private static String signalAo = varList + ".listAO";
-    private static final String noData = "(*input address here*)";
+    public static final String noData = "(*input address here*)";
 
     public CodesysAddressing() {
 

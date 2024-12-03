@@ -2,7 +2,7 @@ package enums;
 
 public enum ePLC {
     EMPTY       ("empty"),
-    CODESYS     ("CoDeSyS"),
+    CODESYS     ("CODESYS"),
     OPC         ("OPC"),
     OMRON       ("Omron"),
     MODBUS      ("Modbus"),

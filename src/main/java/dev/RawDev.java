@@ -1,5 +1,7 @@
 package dev;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
 public class RawDev {
@@ -16,10 +18,18 @@ public class RawDev {
     }
 
     public RawDev(Row row) {
-        this.id = (int) row.getCell(2).getNumericCellValue();
+        int id = -1;
+        if (row.getCell(2).getCellType().equals(CellType.NUMERIC)){
+            id = (int) row.getCell(2).getNumericCellValue();
+        }
+        if (row.getCell(2).getCellType().equals(CellType.STRING)){
+            System.out.println(row.getCell(2).getStringCellValue());
+            id = Integer.parseInt(String.valueOf(row.getCell(2).getStringCellValue()));
+        }
+        this.id = id;
         this.name = row.getCell(0).getStringCellValue();
         this.devName = row.getCell(1).getStringCellValue();
-        this.comment = row.getCell(9).getStringCellValue();
+        this.comment = getCellAsString(row, 9);
     }
 
     public int getId() {
@@ -36,5 +46,27 @@ public class RawDev {
 
     public String getComment() {
         return comment;
+    }
+
+    private String getCellAsString(Row row, int cellId) {
+        Cell cell = row.getCell(cellId);
+        String cellValue = null;
+        if (cell != null && cell.getCellType() == CellType.STRING) {
+            String value = cell.getStringCellValue();
+            if (value != null && !value.isEmpty()) {
+                cellValue = value;
+            }
+        }
+        return (cellValue != null) ? cellValue : "unknown device";
+    }
+
+    @Override
+    public String toString() {
+        return "RawDev{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", devName='" + devName + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 }

@@ -2,14 +2,14 @@ package enums;
 
 public enum eDevType {
     EMPTY       ("empty",           "empty","empty",            "empty",     "empty",       eVarType.EMPTY, "empty"),
-    DI          ("Discrete Input",  "DI",   "pou10_inputDI",    "DrvDI",     "IDL.limitDI", eVarType.BOOL, "loadDI();"),
-    AI          ("Analog Input",    "AI",   "pou11_inputAI",    "DrvAI",     "IDL.limitAI", eVarType.REAL, "loadAI();"),
-    FLOW        ("FlowMeter",       "Flow", "pou12_flowMeter",  "DrvFlow",   "IDL.limitFlow",eVarType.REAL, "loadFlow();"),
-    PID         ("PID",             "PID",  "pou75_PID",        "DrvPID",    "IDL.limitPID",eVarType.IOLA, "loadPID();"),
-    DO          ("Discrete Output", "DO",   "pou80_outputDO",   "DrvDO",     "IDL.limitDO", eVarType.BOOL, "loadDO();"),
-    AO          ("Analog Output",   "AO",   "pou82_outputAO",   "DrvAO",     "IDL.limitAO", eVarType.IOLA, "loadAO();"),
-    MOTOR       ("Motor",           "M",    "pou85_callM",      "DrvM",      "IDL.limitM",  eVarType.IOLD, "loadM();"),
-    VALVE       ("Valve",           "V",    "pou90_callV",      "DrvV",      "IDL.limitV",  eVarType.IOLD, "loadV();");
+    DI          ("Discrete Input",  "DI",   "pou10_inputDI",    "DrvDI",     "limitDI", eVarType.BOOL, "loadDI();"),
+    AI          ("Analog Input",    "AI",   "pou11_inputAI",    "DrvAI",     "limitAI", eVarType.REAL, "loadAI();"),
+    FLOW        ("FlowMeter",       "Flow", "pou12_flowMeter",  "DrvFlow",   "limitFlow",eVarType.REAL, "loadFlow();"),
+    PID         ("PID",             "PID",  "pou75_PID",        "DrvPID",    "limitPID",eVarType.IOLA, "loadPID();"),
+    DO          ("Discrete Output", "DO",   "pou80_outputDO",   "DrvDO",     "limitDO", eVarType.BOOL, "loadDO();"),
+    AO          ("Analog Output",   "AO",   "pou82_outputAO",   "DrvAO",     "limitAO", eVarType.IOLA, "loadAO();"),
+    MOTOR       ("Motor",           "M",    "pou85_callM",      "DrvM",      "limitM",  eVarType.IOLD, "loadM();"),
+    VALVE       ("Valve",           "V",    "pou90_callV",      "DrvV",      "limitV",  eVarType.IOLD, "loadV();");
 
 
     //add name to enumerations
@@ -69,6 +69,19 @@ public enum eDevType {
         for (eDevType item : eDevType.values())
         {
             if (item.getValue().equalsIgnoreCase(value)) {
+                type = item;
+                break;
+            }
+        }
+        return type;
+    }
+
+    //find type by string name
+    public static eDevType findByName (String value) {
+        eDevType type = eDevType.EMPTY;
+        for (eDevType item : eDevType.values())
+        {
+            if (item.getName().equalsIgnoreCase(value)) {
                 type = item;
                 break;
             }

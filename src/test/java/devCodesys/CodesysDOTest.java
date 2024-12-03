@@ -1,7 +1,12 @@
-package codesys;
+package devCodesys;
 
+import codesys.CodesysCallDevices;
+import databases.GData;
 import dev.DevDO;
+import enums.eActions;
+import enums.ePLC;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CodesysDOTest {
@@ -12,10 +17,15 @@ class CodesysDOTest {
     String signal = "A5.DO2";
     String message = "Codesys - DevDO";
 
+    @BeforeAll
+    static void init(){
+        GData.setPlc(ePLC.CODESYS);
+    }
+
     @Test
     void createCodesysDevDo() {
         DevDO devDO = new DevDO(id, name, devName, comment, signal);
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callDo(devDO);
         String expectedResult = String.format(
                 "// #001 - Control KC 1\n" +
@@ -30,7 +40,7 @@ class CodesysDOTest {
     @Test
     void createCodesysDevDoNetData() {
         DevDO devDO = new DevDO(id, name, devName, comment, signal);
-        CodesysCallDevices.setUseNetData(true);
+        GData.getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callDo(devDO);
         String expectedResult = String.format(
                 "// #001 - Control KC 1\n" +

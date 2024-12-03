@@ -1,7 +1,12 @@
-package codesys;
+package devCodesys;
 
+import codesys.CodesysCallDevices;
+import databases.GData;
 import dev.DevAI;
+import enums.eActions;
+import enums.ePLC;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CodesysAITest {
@@ -12,10 +17,15 @@ class CodesysAITest {
     String signal = "A4.AI1";
     String message = "Codesys - DevAI";
 
+    @BeforeAll
+    static void init(){
+        GData.setPlc(ePLC.CODESYS);
+    }
+
     @Test
     void createCodesysDevAiReal() {
         DevAI devAI = new DevAI(id, name, devName, comment, signal);
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAi(devAI);
         String expectedResult = String.format(
                 "// #001 - Temperature 1\n" +
@@ -32,7 +42,7 @@ class CodesysAITest {
     void createCodesysDevAiInt() {
         DevAI devAI = new DevAI(id, name, devName, comment, signal);
         devAI.setSignalInt();
-        CodesysCallDevices.setUseNetData(false);
+        GData.getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAi(devAI);
         String expectedResult = String.format(
                 "// #001 - Temperature 1\n" +
@@ -48,7 +58,7 @@ class CodesysAITest {
     @Test
     void createCodesysDevAoNetData() {
         DevAI devAI = new DevAI(id, name, devName, comment, signal);
-        CodesysCallDevices.setUseNetData(true);
+        GData.getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAi(devAI);
         String expectedResult = String.format(
                 "// #001 - Temperature 1\n" +

@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class FxOptions {
@@ -21,8 +22,8 @@ public class FxOptions {
     private static String projectName = "default";
     static GridPane gridDevices;
     static GridPane gridActions;
-    private static Set<eDevType> devices = new HashSet<>();
-    private static Set<eActions> actions = new HashSet<>();
+    private static Set<eDevType> devices = new LinkedHashSet<>();
+    private static Set<eActions> actions = new LinkedHashSet<>();
 
     public FxOptions() {
     }
@@ -120,10 +121,10 @@ public class FxOptions {
         boxDo.setSelected(true);
         boxAi.setSelected(true);
         boxAo.setSelected(true);
-        boxPid.setSelected(true);
-        boxFlow.setSelected(true);
-        boxMotor.setSelected(true);
-        boxValve.setSelected(true);
+        boxPid.setSelected(false);
+        boxFlow.setSelected(false);
+        boxMotor.setSelected(false);
+        boxValve.setSelected(false);
         //grid
         gridDevices = new GridPane();
         gridDevices.setVgap(10);
@@ -150,7 +151,7 @@ public class FxOptions {
         CheckBox boxIOL = new CheckBox(eActions.IOL.getValue());
         CheckBox boxModBus = new CheckBox(eActions.MBS.getValue());
         //default
-        boxAlarm.setSelected(true);
+        boxAlarm.setSelected(false);
         boxPou.setSelected(true);
         boxIOL.setSelected(true);
         boxModBus.setSelected(true);
@@ -179,13 +180,15 @@ public class FxOptions {
     }
 
     public static Set<eDevType> getDevices() {
+        devices.clear();
         // Проходим по всем дочерним элементам GridPane
         for (Node node : gridDevices.getChildren()) {
             if (node instanceof CheckBox) { // Проверяем, является ли элемент CheckBox
                 CheckBox checkBox = (CheckBox) node;
                 if (checkBox.isSelected()) { // Проверяем, выбран ли CheckBox
-                    devices.add(eDevType.findByValue(checkBox.getText()));
-                    System.out.println("Selected action: " + checkBox.getText());
+                    eDevType devType = eDevType.findByName(checkBox.getText());
+                    devices.add(devType);
+                    System.out.println("Selected devices: " + devType.getValue());
                 }
             }
         }
@@ -193,6 +196,7 @@ public class FxOptions {
     }
 
     public static Set<eActions> getActions() {
+        actions.clear();
         // Проходим по всем дочерним элементам GridPane
         for (Node node : gridActions.getChildren()) {
             if (node instanceof CheckBox) { // Проверяем, является ли элемент CheckBox

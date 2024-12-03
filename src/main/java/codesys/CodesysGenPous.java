@@ -1,31 +1,51 @@
 package codesys;
 
+import databases.GData;
 import enums.eDevType;
+import enums.eTemplate;
 import enums.eVarType;
 
-public class CodesysGenPous {
+public class CodesysGenPous extends CodesysGenAbstract {
 
     CodesysGenVarTags codesysVarTags = new CodesysGenVarTags();
 
     public CodesysGenPous() {
-
+        super();
     }
 
-    public StringBuilder generateDrvPou(eDevType devType){
+    public StringBuilder genPous() {
+        StringBuilder allPous = new StringBuilder();
+        GData.getDevices().forEach(device -> allPous.append(generateDrvPou(device)));
+        StringBuilder pous = generateTagPous(allPous);
+        return generateTagTypes(pous);
+    }
+
+    private StringBuilder generateDrvPou(eDevType devType){
+        //var section
+        StringBuilder drv;
+        if (!GData.getTemplate().equals(eTemplate.BASIC)){
+            switch (devType){
+                case AI -> drv = codesysVarTags.genArrayUdt(devType.getDrv(), devType.getDrv() + "_" + GData.getTemplate().getValue(), "IDL." + devType.getCnt());
+                case AO -> drv = codesysVarTags.genArrayUdt(devType.getDrv(), devType.getDrv() + "_" + GData.getTemplate().getValue(), "IDL." + devType.getCnt());
+                default -> drv = codesysVarTags.genArrayUdt(devType.getDrv(),devType.getDrv(), "IDL." + devType.getCnt());
+            }
+        } else drv = codesysVarTags.genArrayUdt(devType.getDrv(),devType.getDrv(), "IDL." + devType.getCnt());
+        drv.append(genVarsDefault());
+        StringBuilder localVars = generateTagLocalVars(drv);
+        StringBuilder intrface = generateTagInterface(localVars);
         //body section
         StringBuilder code = genCode(devType);
         StringBuilder xhtml = generateTagXhtml(code);
         StringBuilder st = generateTagSt(xhtml);
         StringBuilder body = generateTagBody(st);
-        //var section
-        StringBuilder drv = codesysVarTags.genArray("mt." + devType.getDrv(), "IDL." + devType.getCnt());
-        drv.append(genVarsDefault());
-        StringBuilder localVars = generateTagLocalVars(drv);
-        StringBuilder intrface = generateTagInterface(localVars);
+        //addData
+        StringBuilder objectId = generateTagObjectId("");
+        StringBuilder data = generateTagData("objectid", "discard", objectId);
+        StringBuilder addData = generateTagAddData(data);
         //combine
         StringBuilder combine = intrface.append(body);
-        StringBuilder pou = generateTagPou(devType.getPou(), "program", combine);
-        return pou;
+        combine.append(addData);
+        return generateTagPou(devType.getPou(), "program", combine);
     }
 
     private StringBuilder genVarsDefault() {
@@ -42,8 +62,8 @@ public class CodesysGenPous {
                 "id",
                 eVarType.INT.getTypeName(),
                 "ID for copies");
-        StringBuilder pt = codesysVarTags.genArray(eVarType.PT.getTypeName(), "1");
-        StringBuilder nt = codesysVarTags.genArray(eVarType.NT.getTypeName(), "1");
+        StringBuilder pt = codesysVarTags.genArrayUdt("PT", eVarType.PT.getTypeName(), "1");
+        StringBuilder nt = codesysVarTags.genArrayUdt("NT", eVarType.NT.getTypeName(), "1");
         vars.append(step);
         vars.append(cnt);
         vars.append(id);
@@ -55,10 +75,8 @@ public class CodesysGenPous {
     private StringBuilder genCode(eDevType devType) {
         //st code with called devices
         StringBuilder code = new StringBuilder();
-        code.append("\n");
-        code.append(devType.getLoader());
-        code.append("\n");
         code.append(String.format("//Call to execute %s processing\n", devType.getValue()));
+        code.append(devType.getLoader());
         code.append("\n");
         code.append(CodesysCallDevices.generateDeviceData(devType));
         return code;
@@ -70,6 +88,7 @@ public class CodesysGenPous {
         tag.append(String.format("<pou name=\"%s\" pouType=\"%s\">\n", pouName, pouType));
         tag.append(content);
         tag.append("</pou>\n");
+        tag = addPrefix(tag, GData.tab);
         return tag;
     }
 
@@ -79,7 +98,7 @@ public class CodesysGenPous {
         tag.append("<interface>\n");
         tag.append(content);
         tag.append("</interface>\n");
-        tag = addPrefix(tag, "  ");
+        tag = addPrefix(tag, GData.tab);
         return tag;
     }
 
@@ -88,7 +107,7 @@ public class CodesysGenPous {
         tag.append("<localVars>\n");
         tag.append(content);
         tag.append("</localVars>\n");
-        tag = addPrefix(tag, "  ");
+        tag = addPrefix(tag, GData.tab);
         return tag;
     }
 
@@ -98,7 +117,7 @@ public class CodesysGenPous {
         tag.append("<body>\n");
         tag.append(content);
         tag.append("</body>\n");
-        tag = addPrefix(tag, "  ");
+        tag = addPrefix(tag, GData.tab);
         return tag;
     }
 
@@ -108,26 +127,26 @@ public class CodesysGenPous {
         tag.append("<ST>\n");
         tag.append(content);
         tag.append("</ST>\n");
-        tag = addPrefix(tag, "  ");
+        tag = addPrefix(tag, GData.tab);
         return tag;
     }
 
-    // Метод для создания тега <XHTML>
-    private StringBuilder generateTagXhtml(StringBuilder content) {
+    private StringBuilder generateTagTypes(StringBuilder content) {
         StringBuilder tag = new StringBuilder();
-        tag.append("<xhtml xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+        tag.append("<types>\n");
+        tag.append("  <dataTypes />\n");
         tag.append(content);
-        tag.append("</xhtml>\n");
-        tag = addPrefix(tag, "  ");
+        tag.append("</types>\n");
+        tag = addPrefix(tag, GData.tab);
         return tag;
     }
 
-    private StringBuilder addPrefix(StringBuilder content, String prefix){
-        String[] lines = content.toString().split("\n");
-        StringBuilder sb = new StringBuilder();
-        for (String line : lines) {
-            sb.append(prefix).append(line).append("\n");
-        }
-        return sb;
+    private StringBuilder generateTagPous(StringBuilder content) {
+        StringBuilder tag = new StringBuilder();
+        tag.append("<pous>\n");
+        tag.append(content);
+        tag.append("</pous>\n");
+        tag = addPrefix(tag, GData.tab);
+        return tag;
     }
 }

@@ -1,7 +1,12 @@
-package codesys;
+package devCodesys;
 
+import codesys.CodesysCallDevices;
+import databases.GData;
 import dev.DevDI;
+import enums.eActions;
+import enums.ePLC;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CodesysDITest {
@@ -12,10 +17,16 @@ class CodesysDITest {
     String signal = "A2.DI4";
     String message = "Codesys - DevDI";
 
+    @BeforeAll
+    static void init(){
+        GData.setPlc(ePLC.CODESYS);
+    }
+
     @Test
     void createCodesysDevDi() {
         DevDI devDI = new DevDI(id, name, devName, comment, signal);
-        CodesysCallDevices.setUseNetData(false);
+        GData.setPlc(ePLC.CODESYS);
+        GData.getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callDi(devDI);
         String expectedResult = String.format(
                 "// #001 - External Reset\n" +
@@ -30,7 +41,8 @@ class CodesysDITest {
     @Test
     void createCodesysDevDiNetData() {
         DevDI devDI = new DevDI(id, name, devName, comment, signal);
-        CodesysCallDevices.setUseNetData(true);
+        GData.setPlc(ePLC.CODESYS);
+        GData.getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callDi(devDI);
         String expectedResult = String.format(
                 "// #001 - External Reset\n" +
