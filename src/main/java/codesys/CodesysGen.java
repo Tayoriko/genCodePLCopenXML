@@ -1,6 +1,7 @@
 package codesys;
 
 import databases.GData;
+import generation.Xml;
 
 public class CodesysGen extends CodesysGenAbstract{
 
@@ -52,7 +53,7 @@ public class CodesysGen extends CodesysGenAbstract{
                 "<fileHeader companyName=\"%s\" productName=\"%s\" productVersion=\"%s\" creationDateTime=\"%s\" />\n",
                 companyName, productName, productVersion, creationDateTime
         ));
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -66,7 +67,7 @@ public class CodesysGen extends CodesysGenAbstract{
         tag.append(coordinateInfo);
         tag.append(addData);
         tag.append("</contentHeader>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -78,7 +79,7 @@ public class CodesysGen extends CodesysGenAbstract{
         tag.append(generateTagLdScaling(1, 1));
         tag.append(generateTagSfcScaling(1, 1));
         tag.append("</coordinateInfo>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -130,14 +131,14 @@ public class CodesysGen extends CodesysGenAbstract{
         tag.append("<instances>\n");
         tag.append(content);
         tag.append("</instances>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
     private StringBuilder generateTagConfigurationsVoid () {
         StringBuilder tag = new StringBuilder();
         tag.append("<configurations />\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 }

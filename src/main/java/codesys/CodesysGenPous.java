@@ -4,6 +4,7 @@ import databases.GData;
 import enums.eDevType;
 import enums.eTemplate;
 import enums.eVarType;
+import generation.Xml;
 
 public class CodesysGenPous extends CodesysGenAbstract {
 
@@ -88,7 +89,7 @@ public class CodesysGenPous extends CodesysGenAbstract {
         tag.append(String.format("<pou name=\"%s\" pouType=\"%s\">\n", pouName, pouType));
         tag.append(content);
         tag.append("</pou>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -98,7 +99,7 @@ public class CodesysGenPous extends CodesysGenAbstract {
         tag.append("<interface>\n");
         tag.append(content);
         tag.append("</interface>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -107,7 +108,7 @@ public class CodesysGenPous extends CodesysGenAbstract {
         tag.append("<localVars>\n");
         tag.append(content);
         tag.append("</localVars>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -117,7 +118,7 @@ public class CodesysGenPous extends CodesysGenAbstract {
         tag.append("<body>\n");
         tag.append(content);
         tag.append("</body>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -127,7 +128,7 @@ public class CodesysGenPous extends CodesysGenAbstract {
         tag.append("<ST>\n");
         tag.append(content);
         tag.append("</ST>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -137,7 +138,7 @@ public class CodesysGenPous extends CodesysGenAbstract {
         tag.append("  <dataTypes />\n");
         tag.append(content);
         tag.append("</types>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 
@@ -146,7 +147,7 @@ public class CodesysGenPous extends CodesysGenAbstract {
         tag.append("<pous>\n");
         tag.append(content);
         tag.append("</pous>\n");
-        tag = addPrefix(tag, GData.tab);
+        tag = Xml.addTab(tag);
         return tag;
     }
 }

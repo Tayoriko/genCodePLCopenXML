@@ -1,11 +1,9 @@
 package databases;
 
 import enums.*;
-import javafx.scene.control.ToggleGroup;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -22,7 +20,10 @@ public class GData {
     public static final String FILEPATH_XML_VARS        = "./src/main/resources/xml/XMLvars.vm";
     public static final int MAX_VAR_LENGHT              = 10;
     public static final String tab = "  ";
-    public static final String libNameCodesys = "mt.";
+
+    public static final String codesysLibName = "mt.";
+    public static final String codesysXmlns = "http://www.w3.org/1999/xhtml";
+    public static final String codesysPlcOpenLink = "http://www.3s-software.com/plcopenxml/";
 
     private static eHMI hmi;
     private static eTemplate template;

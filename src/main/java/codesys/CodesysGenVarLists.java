@@ -5,6 +5,7 @@ import databases.GData;
 import dev.*;
 import enums.eActions;
 import enums.eDevType;
+import generation.Xml;
 
 public class CodesysGenVarLists extends CodesysGenAbstract{
 
@@ -63,12 +64,10 @@ public class CodesysGenVarLists extends CodesysGenAbstract{
     }
 
     private StringBuilder generateTagGlobalVars (String varList, StringBuilder content) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<globalVars name=\"" + varList +"\">\n");
-        tag.append(content);
-        tag.append("</globalVars>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genTag(
+                        eCtags.globalVars.getTag(),
+                        content));
     }
 
     private StringBuilder genOneIolDevVar (eDevType devType) {
@@ -105,8 +104,7 @@ public class CodesysGenVarLists extends CodesysGenAbstract{
                 }
             }
         }
-        devVar = addPrefix(devVar, GData.tab);
-        return devVar;
+        return Xml.addTab(devVar);
     }
 
     private StringBuilder genOneNvlDevVar (eDevType devType) {
@@ -143,8 +141,7 @@ public class CodesysGenVarLists extends CodesysGenAbstract{
                 }
             }
         }
-        devVar = addPrefix(devVar, GData.tab);
-        return devVar;
+        return Xml.addTab(devVar);
     }
 
 

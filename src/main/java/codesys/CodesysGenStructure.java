@@ -2,6 +2,7 @@ package codesys;
 
 import databases.GData;
 import enums.eActions;
+import generation.Xml;
 
 public class CodesysGenStructure extends CodesysGenAbstract{
 
@@ -42,8 +43,7 @@ public class CodesysGenStructure extends CodesysGenAbstract{
                 "<Object Name=\"%s\" ObjectId=\"%s\" />",
                 name, objectId
         ));
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(tag);
     }
 
     // Метод для создания тега Folder
@@ -52,8 +52,7 @@ public class CodesysGenStructure extends CodesysGenAbstract{
                 "<Folder Name=\"%s\">\n%s</Folder>",
                 folderName, objects.toString()
         ));
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(tag);
     }
 
     // Метод для создания ProjectStructure
@@ -62,7 +61,6 @@ public class CodesysGenStructure extends CodesysGenAbstract{
                 "<ProjectStructure>\n%s</ProjectStructure>",
                 folder.toString()
         ));
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(tag);
     }
 }

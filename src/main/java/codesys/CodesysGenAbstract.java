@@ -1,87 +1,77 @@
 package codesys;
 
 import databases.GData;
+import generation.Xml;
 
 public abstract class CodesysGenAbstract {
 
     public CodesysGenAbstract() {
     }
 
-    protected StringBuilder addPrefix(StringBuilder content, String prefix){
-        String[] lines = content.toString().split("\n");
-        StringBuilder sb = new StringBuilder();
-        for (String line : lines) {
-            sb.append(prefix).append(line).append("\n");
-        }
-        return sb;
-    }
-
     // Метод для генерации тега <documentation>
     protected StringBuilder generateTagDocumentation(String documentation) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<documentation>\n");
-        tag.append("  <xhtml xmlns=\"http://www.w3.org/1999/xhtml\">").append(documentation).append("</xhtml>\n");
-        tag .append("</documentation>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genTag(
+                        eCtags.doc.getTag(),
+                        Xml.addTab(
+                                Xml.genLineOneCloseContext(
+                                        eCtags.xhtml.getTag(),
+                                        eCtags.xmlns.getTag(),
+                                        GData.codesysXmlns,
+                                        documentation))));
     }
 
     // Метод для создания тега <XHTML>
     protected StringBuilder generateTagXhtml(StringBuilder content) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<xhtml xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-        tag.append(content);
-        tag.append("</xhtml>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genTagOne(
+                        eCtags.xhtml.getTag(),
+                        eCtags.xmlns.getTag(),
+                        GData.codesysXmlns,
+                        content));
     }
 
     // Метод для создания тега <addData>
     protected StringBuilder generateTagAddData(StringBuilder content) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<addData>\n");
-        tag.append(content);
-        tag.append("</addData>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genTag(
+                        eCtags.addData.getTag(),
+                        content));
     }
 
     protected StringBuilder generateTagData(String data, String handle, StringBuilder content) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<data name=\"http://www.3s-software.com/plcopenxml/" + data + "\" handleUnknown=\"" + handle + "\">\n");
-        tag.append(content);
-        tag.append("</data>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genTagTwo(
+                        eCtags.data.getTag(),
+                        eCtags.name.getTag(),
+                        GData.codesysPlcOpenLink + data,
+                        eCtags.handleUnknown.getTag(),
+                        handle,
+                        content));
     }
 
     protected StringBuilder generateTagAttributes(StringBuilder content) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<Attributes>\n");
-        tag.append(content);
-        tag.append("</Attributes>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genTag(
+                        eCtags.attrs.getTag(),
+                        content));
     }
 
     protected StringBuilder generateTagAttribute(String name, String value) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<Attribute Name = \"");
-        tag.append(name);
-        tag.append("\" Value=\"");
-        tag.append(value);
-        tag.append("\" />");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genLineTwo(
+                        eCtags.attrs.getTag(),
+                        eCtags.name.getTag(),
+                        name,
+                        eCtags.value.getTag(),
+                        value));
     }
 
     protected StringBuilder generateTagObjectId(String id) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<ObjectId>");
-        tag.append(id);
-        tag.append("</ObjectId>");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genTag(
+                        eCtags.objectId.getTag(),
+                        new StringBuilder(id)));
     }
 
 

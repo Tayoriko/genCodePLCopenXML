@@ -5,6 +5,7 @@ import dev.AbstractDevice;
 import enums.eDevType;
 import enums.eTemplate;
 import enums.eVarType;
+import generation.Xml;
 
 public class CodesysGenVarTags extends CodesysGenAbstract {
 
@@ -13,73 +14,67 @@ public class CodesysGenVarTags extends CodesysGenAbstract {
     }
 
     protected StringBuilder genId (AbstractDevice dev) {
-        StringBuilder xml = new StringBuilder();
-        xml.append("<variable name=\"ID_").append(dev.getDevName()).append("\">\n");
-        xml.append(generateTagType(genrateType(eVarType.INT.getTypeName())));
-        xml.append(generateTagInitialValue(String.valueOf(dev.getId())));
-        xml.append("</variable>\n");
-        xml = addPrefix(xml, GData.tab);
-        return xml;
+        return Xml.genTagOne(
+                eCtags.variable.getTag(),
+                eCtags.name.getTag(),
+                "ID_" + dev.getDevName(),
+                generateTagType(genrateType(eVarType.INT.getTypeName())).
+                        append(generateTagInitialValue(String.valueOf(dev.getId()))));
     }
 
     protected StringBuilder genIol (AbstractDevice dev) {
-        StringBuilder xml = new StringBuilder();
-        xml.append("<variable name=\"").append(dev.getDevName()).append("\">\n");
-        xml.append(selectVarTypeIol(dev.getDev()));
-        xml.append(generateTagDocumentation(dev.getCommentIol()));
-        xml.append("</variable>\n");
-        xml = addPrefix(xml, GData.tab);
-        return xml;
+        return Xml.genTagOne(
+                eCtags.variable.getTag(),
+                eCtags.name.getTag(),
+                dev.getDevName(),
+                selectVarTypeIol(dev.getDev()).
+                        append(generateTagDocumentation(dev.getCommentIol())));
     }
 
     protected StringBuilder genNvl(AbstractDevice dev) {
-        StringBuilder xml = new StringBuilder();
-        xml.append("<variable name=\"").append(dev.getDevName()).append("\">\n");
-        xml.append(selectVarTypeNet(dev.getDev()));
-        xml.append("</variable>\n");
-        xml = addPrefix(xml, GData.tab);
-        return xml;
+        return Xml.genTagOne(
+                eCtags.variable.getTag(),
+                eCtags.name.getTag(),
+                dev.getDevName(),
+                selectVarTypeNet(dev.getDev()));
     }
 
     protected StringBuilder genVar (String varName, String varType, String comment) {
-        StringBuilder xml = new StringBuilder();
-        xml.append("<variable name=\"").append(varName).append("\">\n");
-        xml.append(generateTagType(genrateType(varType)));
-        xml.append(generateTagDocumentation(comment));
-        xml.append("</variable>\n");
-        xml = addPrefix(xml, GData.tab);
-        return xml;
+        return Xml.genTagOne(
+                eCtags.variable.getTag(),
+                eCtags.name.getTag(),
+                varName,
+                generateTagType(genrateType(varType)).append(generateTagDocumentation(comment)));
     }
 
-    protected StringBuilder genArray(String varType, String cnt) {
-        StringBuilder xml = new StringBuilder();
-        xml.append("<variable name=\"").append(varType).append("\">\n");
-        StringBuilder array = generateTagArray(varType, cnt);
-        StringBuilder type = generateTagType(String.valueOf(array));
-        xml.append(type);
-        xml.append("</variable>\n");
-        xml = addPrefix(xml, GData.tab);
-        return xml;
+    protected StringBuilder genArray(String varName, String varType, String cnt, String comment) {
+        return Xml.genTagOne(
+                eCtags.variable.getTag(),
+                eCtags.name.getTag(),
+                varName,
+                generateTagType(
+                        Xml.addTab(
+                                generateTagArray(varType, cnt)))
+                        .append(generateTagDocumentation(comment)));
     }
 
-    protected StringBuilder genArrayUdt(String name, String varType, String cnt) {
-        StringBuilder xml = new StringBuilder();
-        xml.append("<variable name=\"").append(name).append("\">\n");
-        StringBuilder array = generateTagArrayUdt(varType, cnt);
-        StringBuilder type = generateTagType(String.valueOf(array));
-        StringBuilder documentation = generateTagDocumentation("Driver for standard " + varType);
-        xml.append(type);
-        xml.append(documentation);
-        xml.append("</variable>\n");
-        xml = addPrefix(xml, GData.tab);
-        return xml;
+    protected StringBuilder genArrayUdt(String varName, String varType, String cnt) {
+        String text = "Driver for standard " + varType;
+        return Xml.genTagOne(
+                eCtags.variable.getTag(),
+                eCtags.name.getTag(),
+                varName,
+                generateTagType(
+                        Xml.addTab(
+                                generateTagArrayUdt(varName, cnt)))
+                        .append(generateTagDocumentation(text)));
     }
 
     private StringBuilder selectVarTypeIol(eDevType dev) {
         StringBuilder var = new StringBuilder();
         switch (dev.getVarType()){
             case IOLD, IOLA -> {
-                var.append(generateTagTypeUdt("mt." + dev.getVarType().getTypeName()));
+                var.append(generateTagTypeUdt(GData.codesysLibName + dev.getVarType().getTypeName()));
                 break;
             }
             default -> {
@@ -94,11 +89,11 @@ public class CodesysGenVarTags extends CodesysGenAbstract {
         StringBuilder var = new StringBuilder();
         switch (dev.getVarType()){
             case IOLD -> {
-                var.append(generateTagTypeUdt("mt." + eVarType.NETD.getTypeName()));
+                var.append(generateTagTypeUdt(GData.codesysLibName + eVarType.NETD.getTypeName()));
                 break;
             }
             case IOLA, REAL -> {
-                var.append(generateTagTypeUdt("mt." + eVarType.NETA.getTypeName()));
+                var.append(generateTagTypeUdt(GData.codesysLibName + eVarType.NETA.getTypeName()));
                 break;
             }
             default -> {
@@ -109,34 +104,31 @@ public class CodesysGenVarTags extends CodesysGenAbstract {
         return var;
     }
 
-    private String genrateType(String type) {
-        return ("  <" + type + " />\n");
+    private StringBuilder genrateType(String type) {
+        return Xml.addTab(Xml.genLineRaw(type));
     }
 
     // Метод для генерации тега <type>
-    private StringBuilder generateTagType(String type) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<type>\n");
-        tag.append(type);
-        tag.append("</type>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+    private StringBuilder generateTagType(StringBuilder type) {
+        return Xml.addTab(Xml.genTag(eCtags.type.getTag(), new StringBuilder(type)));
     }
 
     // Метод для создания тега <type>
     private StringBuilder generateTagTypeUdt(String varType) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<type>\n");
+        String var = "";
         if (GData.getTemplate().equals(eTemplate.CUSTOM_MV210)){
             if (varType.equals(eDevType.AI.getDrv()) || varType.equals(eDevType.AO.getDrv())){
-                tag.append("  <derived name=\"").append(analogMV210(varType)).append("\" />\n");
-            }
-            else tag.append("  <derived name=\"").append(varType).append("\" />\n");
-        }
-        else tag.append("  <derived name=\"").append(varType).append("\" />\n");
-        tag.append("</type>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+                var = analogMV210(varType);
+            } else var = varType;
+        } else var = varType;
+        return Xml.addTab(
+                Xml.genTag(
+                    eCtags.type.getTag(),
+                    Xml.addTab(
+                            Xml.genLineOne(
+                                eCtags.derived.getTag(),
+                                eCtags.name.getTag(),
+                                var))));
     }
 
     private String analogMV210(String varType){
@@ -145,64 +137,64 @@ public class CodesysGenVarTags extends CodesysGenAbstract {
 
     // Метод для генерации тега <type>
     private StringBuilder generateTagBaseType(String type) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<baseType>\n");
-        tag.append(type);
-        tag.append("</baseType>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.genTag(
+                eCtags.baseType.getTag(),
+                Xml.addTab(
+                        Xml.genLineOne(
+                                eCtags.derived.getTag(),
+                                eCtags.name.getTag(),
+                                type)));
     }
 
     // Метод для создания тега <type>
     private StringBuilder generateTagBaseTypeUdt(String varType) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<baseType>\n");
-        tag.append("  <derived name=\"").append(varType).append("\" />\n");
-        tag.append("</baseType>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.genTag(
+                eCtags.baseType.getTag(),
+                Xml.addTab(
+                        Xml.genLineOne(
+                            eCtags.derived.getTag(),
+                            eCtags.name.getTag(),
+                            varType)));
     }
 
     // Метод для создания тега <array>
     private StringBuilder generateTagArrayUdt (String varType, String cnt) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<array>\n");
-        tag.append(generateTagDimension(cnt));
-        tag.append(generateTagBaseTypeUdt(GData.libNameCodesys + varType));
-        tag.append("</array>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.genTag(
+                eCtags.array.getTag(),
+                Xml.addTab(
+                        generateTagDimension(cnt)
+                                .append(generateTagBaseTypeUdt(
+                                        GData.codesysLibName + varType))));
     }
 
     // Метод для создания тега <array>
     private StringBuilder generateTagArray (String varType, String cnt) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<array>\n");
-        tag.append(generateTagDimension(cnt));
-        tag.append(generateTagBaseType(varType));
-        tag.append("</array>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.genTag(
+                eCtags.array.getTag(),
+                Xml.addTab(
+                        generateTagDimension(cnt)
+                                .append(generateTagBaseType(varType))));
     }
 
     // Метод для создания тега <dimension>
     private StringBuilder generateTagDimension(String cnt) {
-        StringBuilder tag = new StringBuilder();
-        tag.append(String.format(
-                "<dimension lower=\"0\" upper=\"%s\" />\n",
-                cnt
-        ));
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.genLineTwo(
+                eCtags.dimension.getTag(),
+                eCtags.lower.getTag(),
+                "0",
+                eCtags.upper.getTag(),
+                cnt);
     }
 
     // Метод для генерации тега <initialValue>
     private StringBuilder generateTagInitialValue(String value) {
-        StringBuilder tag = new StringBuilder();
-        tag.append("<initialValue>\n");
-        tag.append("  <simpleValue value=\"").append(value).append("\" />\n");
-        tag.append("</initialValue>\n");
-        tag = addPrefix(tag, GData.tab);
-        return tag;
+        return Xml.addTab(
+                Xml.genTag(
+                    eCtags.initialValue.getTag(),
+                    Xml.addTab(
+                            Xml.genLineOne(
+                                eCtags.simpleValue.getTag(),
+                                eCtags.value.getTag(),
+                                value))));
     }
 }
