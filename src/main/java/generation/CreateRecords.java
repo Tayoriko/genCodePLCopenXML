@@ -81,9 +81,9 @@ public class CreateRecords {
 
     private static DevAO createDevAnalogOutput(Row row) {
         DevAO dev = new DevAO(createRawDev(row));
-        String addr = getCellAsAddr(row, 3);
+        String addr = getCellAsAddr(row, 7);
         if (addr.equals("empty")) {
-            addr = getCellAsAddr(row, 4);
+            addr = getCellAsAddr(row, 8);
             dev.setResultInt();
         }
         dev.setResult(addr);

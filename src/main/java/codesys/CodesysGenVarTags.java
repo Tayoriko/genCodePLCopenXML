@@ -66,7 +66,7 @@ public class CodesysGenVarTags extends CodesysGenAbstract {
                 varName,
                 generateTagType(
                         Xml.addTab(
-                                generateTagArrayUdt(varName, cnt)))
+                                generateTagArrayUdt(varType, cnt)))
                         .append(generateTagDocumentation(text)));
     }
 

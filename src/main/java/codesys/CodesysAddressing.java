@@ -1,6 +1,8 @@
 package codesys;
 
+import databases.GData;
 import dev.AddrIO;
+import enums.eOptions;
 
 
 public class CodesysAddressing {
@@ -22,7 +24,16 @@ public class CodesysAddressing {
         if (addrIO.getWord() == 0 && addrIO.getBit() == 0) {
             return noData;
         }
-        else return data += "[" + addrIO.getWord() + "]." + addrIO.getBit();
+        else
+        {
+            data += "[" + addrIO.getWord() + "].";
+            if (GData.getOptions().contains(eOptions.BIT))
+            {
+                data += addrIO.getBit() - 1;
+            }
+            else data += addrIO.getBit();
+            return data;
+        }
     }
 
     public static String getAddrAi(AddrIO addrIO) {
@@ -38,7 +49,15 @@ public class CodesysAddressing {
         if (addrIO.getWord() == 0 && addrIO.getBit() == 0) {
             return noData;
         }
-        else return data += "[" + addrIO.getWord() + "]." + addrIO.getBit();
+        {
+            data += "[" + addrIO.getWord() + "].";
+            if (GData.getOptions().contains(eOptions.BIT))
+            {
+                data += addrIO.getBit() - 1;
+            }
+            else data += addrIO.getBit();
+            return data;
+        }
     }
 
     public static String getAddrAo(AddrIO addrIO) {

@@ -31,10 +31,13 @@ public class DeviceCreator {
 
     public void reviewDevice(eDevType devType) {
         boolean foundDevType = false; // Флаг, указывающий, что devType найден
+        boolean end = false;
+        String cellValue = "";
         System.out.println("Search: " + devType.getValue());
         for (Row row : sheet) {
             Cell firstCell = row.getCell(0); // Первая ячейка строки
-            String cellValue = firstCell.getStringCellValue().trim();
+            if (firstCell != null) cellValue = firstCell.getStringCellValue().trim();
+            else end = true;
             if (firstCell == null) continue;
             // Определяем начало нужного раздела
             if (isDeviceTypeHeader(cellValue, devType)) {

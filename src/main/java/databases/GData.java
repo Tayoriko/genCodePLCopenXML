@@ -31,8 +31,10 @@ public class GData {
     private static String version = "";
     private static Set<eDevType> devices = new LinkedHashSet<>();
     private static Set<eActions> actions = new LinkedHashSet<>();
+    private static Set<eOptions> options = new LinkedHashSet<>();
     private static String projectName = "default";
     private static String targetFolder;
+    private static Boolean bitCorrection = false;
 
     public static eHMI getHmi() {
         return hmi;
@@ -96,6 +98,22 @@ public class GData {
 
     public static void setTargetFolder(String targetFolder) {
         GData.targetFolder = targetFolder;
+    }
+
+    public static Set<eOptions> getOptions() {
+        return options;
+    }
+
+    public static void setOptions(Set<eOptions> options) {
+        GData.options = options;
+    }
+
+    public static Boolean getBitCorrection() {
+        return bitCorrection;
+    }
+
+    public static void setBitCorrection(Boolean bitCorrection) {
+        GData.bitCorrection = bitCorrection;
     }
 
     public static String getTimeStamp () {

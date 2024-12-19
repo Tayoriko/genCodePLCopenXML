@@ -51,7 +51,7 @@ public class CodesysCallDevices {
     private static StringBuilder callNetData(String devName) {
         StringBuilder netData = new StringBuilder();
         if (GData.getActions().contains(eActions.MBS)) {
-            netData.append(String.format("   netData     := %s,\n", CodesysAddressing.getNetList(devName)));
+            netData.append(String.format("   netData     => %s,\n", CodesysAddressing.getNetList(devName)));
         }
         return netData;
     }
@@ -89,7 +89,7 @@ public class CodesysCallDevices {
                         signalFormat +
                         "   cmd         := %s,\n" +
                         "   cfg         := %s,\n" +
-                        "   state       := %s,\n",
+                        "   state       => %s,\n",
                 devAI.getHeader(),
                 devAI.getId(),
                 CodesysAddressing.getAddrAi(devAI.getSignal()),
@@ -136,7 +136,7 @@ public class CodesysCallDevices {
                         "   devState    := %s,\n" +
                         "   cmd         := %s,\n" +
                         "   cfg         := %s,\n" +
-                        "   state       := %s,\n",
+                        "   state       => %s,\n",
                 devAO.getHeader(),
                 devAO.getId(),
                 CodesysAddressing.getIoList(devAO.getDevName()),
@@ -152,7 +152,7 @@ public class CodesysCallDevices {
             ));
         } else {
             device.append(String.format(
-                    "   resultI     => %s);\n",
+                    "   resultI     := %s);\n",
                     CodesysAddressing.getAddrAo(devAO.getResult())
             ));
         }
@@ -167,7 +167,7 @@ public class CodesysCallDevices {
                         "   devState    := %s,\n" +
                         "   cmd         := %s,\n" +
                         "   cfg         := %s,\n" +
-                        "   state       := %s,\n",
+                        "   state       => %s,\n",
                 devMotor.getHeader(),
                 devMotor.getId(),
                 CodesysAddressing.getIoList(devMotor.getDevName()),
@@ -184,8 +184,8 @@ public class CodesysCallDevices {
                 CodesysAddressing.getAddrDi(devMotor.getFbKm()),
                 CodesysAddressing.getAddrDo(devMotor.getCmdFw())
                 ));
-        device.append(checkInput(CodesysAddressing.getAddrDi(devMotor.getFbQf()), "useQF", devMotor));
-        device.append(checkInput(CodesysAddressing.getAddrDi(devMotor.getFbKm()), "useKM", devMotor));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devMotor.getFbQf()), "cfg.useQF", devMotor));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devMotor.getFbKm()), "cfg.useKM", devMotor));
         device.append("\n");
         return device;
     }
@@ -197,7 +197,7 @@ public class CodesysCallDevices {
                         "   devState    := %s,\n" +
                         "   cmd         := %s,\n" +
                         "   cfg         := %s,\n" +
-                        "   state       := %s,\n",
+                        "   state       => %s,\n",
                 devValve.getHeader(),
                 devValve.getId(),
                 CodesysAddressing.getIoList(devValve.getDevName()),
@@ -218,9 +218,9 @@ public class CodesysCallDevices {
                 CodesysAddressing.getAddrDo(devValve.getCmdOpen()),
                 CodesysAddressing.getAddrDo(devValve.getCmdClose())
         ));
-        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbQf()), "useQF", devValve));
-        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbOpen()), "useFbOpen", devValve));
-        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbClose()), "useFbClose", devValve));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbQf()), "cfg.useQF", devValve));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbOpen()), "cfg.useFbOpen", devValve));
+        device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbClose()), "cfg.useFbClose", devValve));
         device.append("\n");
         return device;
     }

@@ -1,6 +1,7 @@
 package appFx;
 
 import codesys.CodesysGen;
+import databases.DatabaseRegistry;
 import databases.GData;
 import enums.*;
 import generation.DeviceCreator;
@@ -49,18 +50,20 @@ public class AppFX extends Application {
         root.add(fxOptions.getGridProjectName(),0,5);
         root.add(fxOptions.getGridDevices(),0,6);
         root.add(fxOptions.getGridActions(),0,7);
+        root.add(fxOptions.getGridOptions(),0,8);
 
         Button btnGenerate = new Button("Generate!");
         btnGenerate.setPrefWidth(550);
         btnGenerate.setAlignment(Pos.CENTER);
 
-        root.add(btnGenerate,0,8);
+        root.add(btnGenerate,0,9);
 
         //Actions
         btnGenerate.setOnAction(e -> {
                     readData();
                     try {
                         System.out.println(GData.getDevices().toString());
+                        DatabaseRegistry.clearAllDatabases();
                         DeviceCreator deviceCreator = new DeviceCreator(sourceFile, GData.getDevices());
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
@@ -74,7 +77,7 @@ public class AppFX extends Application {
                 });
 
         // Настройка сцены и отображение окна
-        Scene scene = new Scene(root, 550, 325);
+        Scene scene = new Scene(root, 550, 355);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -93,7 +96,6 @@ public class AppFX extends Application {
         GData.setProjectName(FxOptions.getProjectName());
         GData.setDevices(FxOptions.getDevices());
         GData.setActions(FxOptions.getActions());
+        GData.setOptions(FxOptions.getOptions());
     }
-
-
 }

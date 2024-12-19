@@ -2,6 +2,7 @@ package appFx;
 
 import enums.eActions;
 import enums.eDevType;
+import enums.eOptions;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -22,8 +23,10 @@ public class FxOptions {
     private static String projectName = "default";
     static GridPane gridDevices;
     static GridPane gridActions;
+    static GridPane gridOptions;
     private static Set<eDevType> devices = new LinkedHashSet<>();
     private static Set<eActions> actions = new LinkedHashSet<>();
+    private static Set<eOptions> options = new LinkedHashSet<>();
 
     public FxOptions() {
     }
@@ -114,8 +117,8 @@ public class FxOptions {
         CheckBox boxAo = new CheckBox(eDevType.AO.getName());
         CheckBox boxPid = new CheckBox(eDevType.PID.getName());
         CheckBox boxFlow = new CheckBox(eDevType.FLOW.getName());
-        CheckBox boxMotor = new CheckBox(eDevType.MOTOR.getValue());
-        CheckBox boxValve = new CheckBox(eDevType.VALVE.getValue());
+        CheckBox boxMotor = new CheckBox(eDevType.MOTOR.getName());
+        CheckBox boxValve = new CheckBox(eDevType.VALVE.getName());
         //default
         boxDi.setSelected(true);
         boxDo.setSelected(true);
@@ -167,6 +170,23 @@ public class FxOptions {
         return gridActions;
     }
 
+    public GridPane getGridOptions() {
+        // Заголовок строки
+        Label label = new Label("Options:");
+        label.setPrefWidth(100);
+        // Чекбоксы для выбора типов устройств
+        CheckBox boxBit = new CheckBox(eOptions.BIT.getValue());
+        //default
+        boxBit.setSelected(false);
+        //grid
+        gridOptions = new GridPane();
+        gridOptions.setVgap(10);
+        gridOptions.setHgap(10);
+        gridOptions.add(label, 0, 0);
+        gridOptions.add(boxBit, 1, 0);
+        return gridOptions;
+    }
+
     public static File getSourceFile() {
         return sourceFile;
     }
@@ -208,5 +228,20 @@ public class FxOptions {
             }
         }
         return actions;
+    }
+
+    public static Set<eOptions> getOptions() {
+        options.clear();
+        // Проходим по всем дочерним элементам GridPane
+        for (Node node : gridOptions.getChildren()) {
+            if (node instanceof CheckBox) { // Проверяем, является ли элемент CheckBox
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) { // Проверяем, выбран ли CheckBox
+                    options.add(eOptions.findByValue(checkBox.getText()));
+                    System.out.println("Selected options: " + checkBox.getText());
+                }
+            }
+        }
+        return options;
     }
 }

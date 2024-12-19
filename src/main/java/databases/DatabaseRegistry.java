@@ -1,4 +1,5 @@
 package databases;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,4 +12,14 @@ public class DatabaseRegistry {
         }
         return (GenericDatabase<T>) registry.get(clazz);
     }
+
+    public static Collection<GenericDatabase<?>> getAllDatabases() {
+        return registry.values();
+    }
+
+    public static void clearAllDatabases() {
+        // Перебираем все зарегистрированные базы данных
+        DatabaseRegistry.getAllDatabases().forEach(GenericDatabase::clear);
+    }
+
 }

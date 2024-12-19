@@ -65,8 +65,10 @@ public class CodesysGenVarLists extends CodesysGenAbstract{
 
     private StringBuilder generateTagGlobalVars (String varList, StringBuilder content) {
         return Xml.addTab(
-                Xml.genTag(
+                Xml.genTagOne(
                         eCtags.globalVars.getTag(),
+                        eCtags.name.getTag(),
+                        varList,
                         content));
     }
 
