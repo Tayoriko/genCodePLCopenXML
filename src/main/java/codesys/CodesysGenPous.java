@@ -63,6 +63,14 @@ public class CodesysGenPous extends CodesysGenAbstract {
                 "id",
                 eVarType.INT.getTypeName(),
                 "ID for copies");
+        StringBuilder empty = codesysVarTags.genVar(
+                "empty",
+                eVarType.BOOL.getTypeName(),
+                "empty boolean value");
+        StringBuilder zero = codesysVarTags.genVar(
+                "zero",
+                eVarType.REAL.getTypeName(),
+                "zero real value");
         StringBuilder pt = codesysVarTags.genArrayUdt("PT", eVarType.PT.getTypeName(), "1");
         StringBuilder nt = codesysVarTags.genArrayUdt("NT", eVarType.NT.getTypeName(), "1");
         vars.append(step);
@@ -70,6 +78,8 @@ public class CodesysGenPous extends CodesysGenAbstract {
         vars.append(id);
         vars.append(pt);
         vars.append(nt);
+        vars.append(empty);
+        vars.append(zero);
         return vars;
     }
 

@@ -27,6 +27,7 @@ public class CodesysGenVarLists extends CodesysGenAbstract{
             listIol.append(addDataIol);
             iol = generateTagGlobalVars("IOL", listIol);
             dataIol = generateTagData("globalvars", "implementation", iol);
+            data.append(dataIol);
         }
         if (GData.getActions().contains(eActions.MBS)) {
             StringBuilder listNvl = generateNvl();
@@ -34,9 +35,8 @@ public class CodesysGenVarLists extends CodesysGenAbstract{
             listNvl.append(addDataNvl);
             nvl = generateTagGlobalVars("NVL", listNvl);
             dataNvl = generateTagData("globalvars", "implementation", nvl);
+            data.append(dataNvl);
         }
-        data.append(dataIol);
-        data.append(dataNvl);
         return data;
     }
 
@@ -105,6 +105,16 @@ public class CodesysGenVarLists extends CodesysGenAbstract{
                     devVar.append(codesysVarTags.genIol(devValve)).append(codesysVarTags.genId(devValve));
                 }
             }
+            case PID -> {
+                for (DevPID devPID : DatabaseRegistry.getInstance(DevPID.class).getRecords()) {
+                    devVar.append(codesysVarTags.genIol(devPID)).append(codesysVarTags.genId(devPID));
+                }
+            }
+            case FLOW -> {
+                for (DevFlow devFlow : DatabaseRegistry.getInstance(DevFlow.class).getRecords()) {
+                    devVar.append(codesysVarTags.genIol(devFlow)).append(codesysVarTags.genId(devFlow));
+                }
+            }
         }
         return Xml.addTab(devVar);
     }
@@ -140,6 +150,16 @@ public class CodesysGenVarLists extends CodesysGenAbstract{
             case VALVE -> {
                 for (DevValve devValve : DatabaseRegistry.getInstance(DevValve.class).getRecords()) {
                     devVar.append(codesysVarTags.genNvl(devValve));
+                }
+            }
+            case PID -> {
+                for (DevPID devPID : DatabaseRegistry.getInstance(DevPID.class).getRecords()) {
+                    devVar.append(codesysVarTags.genNvl(devPID));
+                }
+            }
+            case FLOW -> {
+                for (DevFlow devFlow : DatabaseRegistry.getInstance(DevFlow.class).getRecords()) {
+                    devVar.append(codesysVarTags.genNvl(devFlow));
                 }
             }
         }

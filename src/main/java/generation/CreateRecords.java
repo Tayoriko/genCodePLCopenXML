@@ -39,21 +39,17 @@ public class CreateRecords {
                 DevValve dev = createDevValve(row);
                 DatabaseRegistry.getInstance(DevValve.class).addRecord(dev);
             }
+            case PID -> {
+                DevPID dev = createDevPID(row);
+                DatabaseRegistry.getInstance(DevPID.class).addRecord(dev);
+            }
+            case FLOW -> {
+                DevFlow dev = createDevFlow(row);
+                DatabaseRegistry.getInstance(DevFlow.class).addRecord(dev);
+            }
             default -> {
                 break;
             }
-//            case PID -> {
-//                devOne = createDevPID(row, comment);
-//                DevPid devPid = new DevPid(id, devOne);
-//                PidDatabase.getInstance().addRecord(devPid);
-//                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getVarType() + "\"", devOne.getCommentIOL(), id);
-//            }
-//            case FLOW -> {
-//                devOne = createDevFlow(row, comment);
-//                DevFlowMeter devFlowMeter = new DevFlowMeter(id, devOne);
-//                FlowMetersDatabase.getInstance().addRecord(devFlowMeter);
-//                record = new IOLrecord(devOne.getDevName(), "derived name=\"" + devType.getVarType() + "\"", devOne.getCommentIOL(), id);
-//            }
         }
     };
 
@@ -106,6 +102,23 @@ public class CreateRecords {
         return new DevValve(createRawDev(row), addrQF, addrFbOpen, addrFbClose, addrCmdOpen, addrCmdClose);
     }
 
+    private static DevPID createDevPID (Row row) {
+        String signal = getCellAsAddr(row, 3);
+        String result = getCellAsAddr(row, 7);
+        return new DevPID(createRawDev(row), signal, result);
+    }
+
+    private static DevFlow createDevFlow (Row row) {
+        DevFlow dev = new DevFlow(createRawDev(row));
+        String signal = getCellAsAddr(row, 3);
+        if (signal.equals("empty")) {
+            signal = getCellAsAddr(row, 4);
+            dev.setSignalDiscrete();
+        }
+        dev.setSignal(signal);
+        return dev;
+    }
+
     private static RawDev createRawDev(Row row) {
         return new RawDev(row);
     }
@@ -122,23 +135,3 @@ public class CreateRecords {
         return (cellValue != null) ? cellValue : "empty";
     }
 }
-
-
-//    private DevOne createDevPID (Row row, String comment) {
-//        String name = row.getCell(0).getStringCellValue();
-//        String devName = row.getCell(1).getStringCellValue();
-//        String varInput = getCellAsString(row, 3);
-//        String varOutput = getCellAsString(row, 7);
-//        return new DevOne(name, comment, devName, varInput, varOutput);
-//    }
-//
-//    private DevOne createDevFlow (Row row, String comment) {
-//        String name = row.getCell(0).getStringCellValue();
-//        String devName = row.getCell(1).getStringCellValue();
-//        AddrPLC addrSignal = getCellAsAddr(row, 3);
-//        if (!addrSignal.isUse()) {
-//            addrSignal = getCellAsAddr(row, 4);
-//            addrSignal.setBool(true);
-//        }
-//        return new DevOne(name, comment, devName, addrSignal);
-//    }

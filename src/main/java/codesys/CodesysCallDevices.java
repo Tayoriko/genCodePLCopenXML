@@ -41,8 +41,15 @@ public class CodesysCallDevices {
                 List<DevValve> valveRecords = DatabaseRegistry.getInstance(DevValve.class).getRecords();
                 valveRecords.forEach(dev -> result.append(CodesysCallDevices.callValve(dev)));
             }
+            case PID -> {
+                List<DevPID> valveRecords = DatabaseRegistry.getInstance(DevPID.class).getRecords();
+                valveRecords.forEach(dev -> result.append(CodesysCallDevices.callPid(dev)));
+            }
+            case FLOW -> {
+                List<DevFlow> valveRecords = DatabaseRegistry.getInstance(DevFlow.class).getRecords();
+                valveRecords.forEach(dev -> result.append(CodesysCallDevices.callFlow(dev)));
+            }
             default -> System.out.println("skip " + deviceType.getName());
-            //throw new IllegalArgumentException("Unsupported device type: " + deviceType);
         }
 
         return result;
@@ -221,6 +228,72 @@ public class CodesysCallDevices {
         device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbQf()), "cfg.useQF", devValve));
         device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbOpen()), "cfg.useFbOpen", devValve));
         device.append(checkInput(CodesysAddressing.getAddrDi(devValve.getFbClose()), "cfg.useFbClose", devValve));
+        device.append("\n");
+        return device;
+    }
+
+    public static StringBuilder callPid(DevPID devPID) {
+        StringBuilder device = new StringBuilder(String.format(
+                "%s\n" +
+                        "drvPID[%d](\n" +
+                        "   signal      := %s,\n" +
+                        "   cmd         := %s,\n" +
+                        "   cfg         := %s,\n" +
+                        "   state       => %s,\n",
+                devPID.getHeader(),
+                devPID.getId(),
+                CodesysAddressing.getIoList(devPID.getSignal()),
+                devPID.getCmd(),
+                devPID.getCfg(),
+                devPID.getState()
+        ));
+        device.append(String.format(
+                        "   result      := %s);\n",
+                CodesysAddressing.getIoList(devPID.getResult())
+        ));
+        device.append("\n");
+        return device;
+    }
+
+    public static StringBuilder callFlow(DevFlow devFlow) {
+        String options;
+        StringBuilder device = new StringBuilder(String.format(
+                "%s\n" +
+                        "drvFlow[%d](\n",
+                devFlow.getHeader(),
+                devFlow.getId()
+        ));
+        if (devFlow.getVarType().equals(eVarType.BOOL)){
+            options = devFlow.getCfg() + ".cfg.useDI := TRUE;\n";
+            device.append(String.format(
+                        "   signalDi    := %s,\n" +
+                        "   signalAi    := zero,\n",
+                    CodesysAddressing.getIoList(devFlow.getSignal())
+            ));
+        } else {
+            options = devFlow.getCfg() + ".cfg.useDI := FALSE";
+            device.append(String.format(
+                        "   signalDi    := empty,\n" +
+                        "   signalAi    := %s,\n",
+                    CodesysAddressing.getIoList(devFlow.getSignal())
+            ));
+        }
+        device.append(String.format(
+                        "   cmd         := %s,\n" +
+                        "   cfg         := %s,\n" +
+                        "   state       => %s,\n",
+                devFlow.getCmd(),
+                devFlow.getCfg(),
+                devFlow.getState()
+        ));
+        device.append(callNetData(devFlow.getDevName()));
+        device.append(String.format(
+                        "   PreDone     => (*command for dosing mode for switch to low speed*),\n" +
+                        "   Done        => (*command for dosing mode for finish*),\n" +
+                        "   result      => %s);\n",
+                CodesysAddressing.getIoList(devFlow.getDevName())
+        ));
+        device.append(options);
         device.append("\n");
         return device;
     }
