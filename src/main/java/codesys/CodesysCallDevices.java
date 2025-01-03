@@ -271,7 +271,7 @@ public class CodesysCallDevices {
                     CodesysAddressing.getIoList(devFlow.getSignal())
             ));
         } else {
-            options = devFlow.getCfg() + ".cfg.useDI := FALSE";
+            options = devFlow.getCfg() + ".cfg.useDI := FALSE;\n";
             device.append(String.format(
                         "   signalDi    := empty,\n" +
                         "   signalAi    := %s,\n",
