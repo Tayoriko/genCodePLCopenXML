@@ -56,6 +56,11 @@ public class CreateRecords {
 
     private static DevDI createDevDiscreteInput (Row row) {
         String addr = getCellAsAddr(row, 3);
+        DevDI dev = new DevDI(createRawDev(row), addr);
+        String alarm = getCellAsAddr(row, 4);
+        if (!alarm.equals("empty")) {
+            dev.setAlarm(true);
+        }
         return new DevDI(createRawDev(row), addr);
     }
 

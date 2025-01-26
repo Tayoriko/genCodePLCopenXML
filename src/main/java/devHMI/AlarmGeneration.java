@@ -28,6 +28,7 @@ public class AlarmGeneration {
             GenericDatabase<?> deviceDatabase = null;
             List<String[]> alarmList = new ArrayList<>();
             switch (devType) {
+                case DI -> deviceDatabase = DatabaseRegistry.getInstance(DevAI.class);
                 case AI -> deviceDatabase = DatabaseRegistry.getInstance(DevAI.class);
                 case AO -> deviceDatabase = DatabaseRegistry.getInstance(DevAO.class);
                 case MOTOR -> deviceDatabase = DatabaseRegistry.getInstance(DevMotor.class);
@@ -36,13 +37,30 @@ public class AlarmGeneration {
 
             // If the database is found, proceed to process its records
             if (deviceDatabase != null) {
+                if (!devType.equals(eDevType.DI))
                 alarmList = loadAlarmsFromCsv(getAlarmFilePath(devType.getValue()));
                 for (Object record : deviceDatabase.getRecords()) {
                     // Perform operations on each record
                     generateAlarms((AbstractDevice) record, alarmList);
                 }
+            } else {
+                for (Object record : deviceDatabase.getRecords()) {
+                    generateAlarmDI((DevDI) record);
+                }
             }
         });
+    }
+
+    private void generateAlarmDI(DevDI device){
+        if (device.isAlarm()){
+            // Создание объекта AlarmMessage
+            AlarmMessage newAlarm = new AlarmMessage(
+                    generateAddressDI(device), // Генерация адреса аварии
+                    generateContentDI(device) // Генерация содержимого аварии
+            );
+            // Добавляем в базу данных
+            DatabaseRegistry.getInstance(AlarmMessage.class).addRecord(newAlarm);
+        }
     }
 
     private void generateAlarms(AbstractDevice device, List<String[]> alarmList) {
@@ -68,9 +86,18 @@ public class AlarmGeneration {
         return address;
     }
 
+    private String generateAddressDI(AbstractDevice device) {
+        // Пример генерации адреса аварии
+        return "IOL." + device.getDevName();
+    }
+
     private String generateContent(AbstractDevice device, String alarmMessage) {
         // Пример генерации текста аварии
         return String.format("%s - %s", device.getName(), alarmMessage);
+    }
+
+    private String generateContentDI(AbstractDevice device) {
+        return device.getName();
     }
 
 

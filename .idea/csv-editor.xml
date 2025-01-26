@@ -3,63 +3,56 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\src\main\resources\basic\analog_input.csv">
+        <entry key="\src\main\resources\ru.customMV210\Analog Input.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\basic\analog_output.csv">
+        <entry key="\src\main\resources\ru.customMV210\Analog Output.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\basic\motor.csv">
+        <entry key="\src\main\resources\ru.customMV210\Motor.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\basic\valve.csv">
+        <entry key="\src\main\resources\ru.customMV210\Valve.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\custom_MV210\analog_input.csv">
+        <entry key="\src\main\resources\ru\basic\Analog Input.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\custom_MV210\analog_input_MV210.csv">
+        <entry key="\src\main\resources\ru\basic\Analog Output.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\custom_MV210\analog_output.csv">
+        <entry key="\src\main\resources\ru\basic\Motor.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\main\resources\custom_MV210\motor.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\src\main\resources\custom_MV210\valve.csv">
+        <entry key="\src\main\resources\ru\basic\Valve.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
