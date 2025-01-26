@@ -6,8 +6,8 @@ import enums.eDevType;
 public abstract class AbstractDevice {
 
     private final Integer id;
-    private final String name;
-    private final String devName;
+    private final String name;      //name for user
+    private final String devName;   //name for program
     private final String comment;
     private String header;
     private String cmd;
@@ -94,6 +94,10 @@ public abstract class AbstractDevice {
 
     public String getState() {
         return state;
+    }
+
+    public eDevType getDevType() {
+        return devType;
     }
 
     @Override

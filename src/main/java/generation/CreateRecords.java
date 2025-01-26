@@ -83,6 +83,11 @@ public class CreateRecords {
             dev.setResultInt();
         }
         dev.setResult(addr);
+        String fbQf = getCellAsAddr(row, 3);
+        if (!fbQf.equals("empty")){
+            dev.setFbQf(fbQf);
+            dev.setUseQf((true));
+        }
         return dev;
     }
 

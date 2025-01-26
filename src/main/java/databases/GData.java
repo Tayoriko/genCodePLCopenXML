@@ -10,7 +10,7 @@ import java.util.Set;
 public class GData {
     public static final String DEFAULT_SOURCE           = "./src/main/resources/sources/devices.xlsx";
     public static final String DEFAULT_TARGET_FOLDER    = "./src/main/resources/target";
-    public static final String BASIC                    = "./src/main/resources/basic/";
+    public static final String RESOURCES                = "./src/main/resources/";
     public static final String CUSTOM_MV210             = "./src/main/resources/custom_MV210/";
     public static final String FILEPATH_XML_CLOSE       = "./src/main/resources/xml/XMLclose.vm";
     public static final String FILEPATH_XML_OPEN        = "./src/main/resources/xml/XMLopen.vm";
@@ -26,6 +26,7 @@ public class GData {
     public static final String codesysPlcOpenLink = "http://www.3s-software.com/plcopenxml/";
 
     private static eHMI hmi;
+    private static eLang lang = eLang.RU;
     private static eTemplate template;
     private static ePLC plc;
     private static String version = "";
@@ -102,6 +103,14 @@ public class GData {
 
     public static Set<eOptions> getOptions() {
         return options;
+    }
+
+    public static eLang getLang() {
+        return lang;
+    }
+
+    public static void setLang(eLang lang) {
+        GData.lang = lang;
     }
 
     public static void setOptions(Set<eOptions> options) {

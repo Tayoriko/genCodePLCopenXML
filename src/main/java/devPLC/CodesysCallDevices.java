@@ -1,4 +1,4 @@
-package codesys;
+package devPLC;
 
 import databases.DatabaseRegistry;
 import databases.GData;
@@ -140,16 +140,25 @@ public class CodesysCallDevices {
         StringBuilder device = new StringBuilder(String.format(
                 "%s\n" +
                         "drvAO[%d](\n" +
+                        "   fbQf        := %s,\n",
+                devAO.getHeader(),
+                devAO.getId()
+        ));
+        if (devAO.isUseQf()){
+            device.append(String.format(
+                        "   fbQf        := %s,\n",
+                    CodesysAddressing.getAddrDi(devAO.getFbQf())
+            ));
+        }
+        device.append(String.format(
                         "   devState    := %s,\n" +
                         "   cmd         := %s,\n" +
                         "   cfg         := %s,\n" +
                         "   state       => %s,\n",
-                devAO.getHeader(),
-                devAO.getId(),
-                CodesysAddressing.getIoList(devAO.getDevName()),
-                devAO.getCmd(),
-                devAO.getCfg(),
-                devAO.getState()
+                        CodesysAddressing.getIoList(devAO.getDevName()),
+                        devAO.getCmd(),
+                        devAO.getCfg(),
+                        devAO.getState()
         ));
         device.append(callNetData(devAO.getDevName()));
         if (devAO.getVarType() == eVarType.REAL) {
@@ -162,6 +171,9 @@ public class CodesysCallDevices {
                     "   resultI     := %s);\n",
                     CodesysAddressing.getAddrAo(devAO.getResult())
             ));
+        }
+        if (devAO.isUseQf()){
+            device.append(checkInput(CodesysAddressing.getAddrDi(devAO.getFbQf()), "cfg.useQF", devAO));
         }
         device.append("\n");
         return device;

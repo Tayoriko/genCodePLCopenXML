@@ -1,6 +1,8 @@
 package appFx;
 
-import codesys.CodesysGen;
+import devHMI.AlarmGeneration;
+import devHMI.Weintek;
+import devPLC.CodesysGen;
 import databases.DatabaseRegistry;
 import databases.GData;
 import enums.*;
@@ -61,6 +63,7 @@ public class AppFX extends Application {
         //Actions
         btnGenerate.setOnAction(e -> {
                     readData();
+                    //filling database
                     try {
                         System.out.println(GData.getDevices().toString());
                         DatabaseRegistry.clearAllDatabases();
@@ -68,12 +71,24 @@ public class AppFX extends Application {
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                    StringBuilder xml = new StringBuilder();
-                    switch (GData.getPlc()){
-                        case CODESYS -> xml = codesysGen.createXml();
+                    //generate code
+                    if (GData.getActions().contains(eActions.PUO) || GData.getActions().contains(eActions.IOL) || GData.getActions().contains(eActions.MBS)) {
+                        StringBuilder xml = new StringBuilder();
+                        switch (GData.getPlc()) {
+                            case CODESYS -> xml = codesysGen.createXml();
+                        }
+                        XmlSaver.saveXml(xml);
                     }
-                    //System.out.println(codesysGen.createXml());
-                    XmlSaver.saveXml(xml);
+                    //generate alarms
+                    if (GData.getActions().contains(eActions.ALM)){
+                        AlarmGeneration alarmGeneration = new AlarmGeneration();
+                        switch (GData.getHmi()){
+                            case WEINTEK -> {
+                                Weintek weintek = new Weintek();
+                                weintek.exportToExcelWeintek(GData.getTargetFolder());
+                            }
+                        }
+                    }
                 });
 
         // Настройка сцены и отображение окна

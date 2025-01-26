@@ -1,6 +1,6 @@
 package devCodesys;
 
-import codesys.CodesysCallDevices;
+import devPLC.CodesysCallDevices;
 import databases.GData;
 import dev.DevAO;
 import enums.eActions;

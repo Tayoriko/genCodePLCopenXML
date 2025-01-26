@@ -1,7 +1,7 @@
-package alarmsGen;
+package devHMI;
 
-import alarmsBase.AlarmMessage;
-import alarmsBase.AlarmWeintek;
+import databases.DatabaseRegistry;
+import databases.GData;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,10 +12,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class AlarmDatabaseExporter {
+public class Weintek {
+
+    public Weintek(){
+
+    }
 
     // Метод для экспорта базы данных в Excel файл
-    public static void exportToExcelWeintek(AlarmDatabase database, String filePath) {
+    public void exportToExcelWeintek(String filePath) {
         // Создаем новый workbook и лист для записи данных
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Alarms");
@@ -24,7 +28,6 @@ public class AlarmDatabaseExporter {
             Row systemRow = sheet.createRow(0);
 
             // Устанавливаем значения в ячейки
-            // TODO: add editor to menu
             systemRow.createCell(0).setCellValue("VERSION");
             systemRow.createCell(1).setCellValue("2");
             systemRow.createCell(2).setCellValue("HARDWARE_VERSION");
@@ -48,10 +51,10 @@ public class AlarmDatabaseExporter {
             }
 
             // Получаем список всех AlarmMessage из базы данных
-            List<AlarmMessage> alarms = database.getAlarms();
+            List<AlarmMessage> alarms = DatabaseRegistry.getInstance(AlarmMessage.class).getRecords();
 
             // Добавляем каждое сообщение в виде строки в Excel, начиная со второй строки
-            int rowIndex = 1;
+            int rowIndex = 2;
             for (AlarmMessage alarm : alarms) {
                 // Преобразуем AlarmMessage в AlarmWeintek
                 AlarmWeintek weintekAlarm = convertToWeintek(alarm);
@@ -67,11 +70,12 @@ public class AlarmDatabaseExporter {
             }
 
             // Записываем workbook в файл
-            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+            String fullFilePath =  filePath + "/" + GData.getProjectName() + "_Weintek_alarms.xlsx";
+            try (FileOutputStream fileOut = new FileOutputStream(fullFilePath)) {
                 workbook.write(fileOut);
                 workbook.close();
             }
-            System.out.println("Excel file created successfully at " + filePath);
+            System.out.println("Excel file created successfully at " + fullFilePath);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,4 +87,6 @@ public class AlarmDatabaseExporter {
         // Преобразуем AlarmMessage в AlarmWeintek, используя его адрес и сообщение
         return new AlarmWeintek(alarm.getAddress(), alarm.getMessage());
     }
+
+
 }

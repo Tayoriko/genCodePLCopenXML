@@ -1,7 +1,6 @@
-package alarmsBase;
+package devHMI;
 
 public class AlarmWeintek extends AlarmMessage {
-
     private String category = "0: Category 0";
     private String priority = "Low";
     private String addressType = "Bit";
@@ -22,22 +21,10 @@ public class AlarmWeintek extends AlarmMessage {
     private int acknowledgeValue = 11;
     private boolean enableSound = true;
 
-
     public AlarmWeintek(String address, String message) {
         super(address, message);
         this.addressRead = address;
         this.alarmMessage = message; // Устанавливаем текст аварии
-    }
-
-    public String generateContent() {
-        return String.format("AlarmWeintek [Category=%s, Priority=%s, AddressType=%s, PlcNameRead=%s, " +
-                        "DataTypeRead=%s, SystemTagRead=%s, UserDefinedTagRead=%s, AddressRead=%s, " +
-                        "IndexRead=%s, EnableNotification=%s, Condition=%s, TriggerValue=%s, AlarmMessage=%s, " +
-                        "UseLabelLibrary=%s, LabelName=%s, Font=%s, Color=%s, AcknowledgeValue=%d, " +
-                        "EnableSound=%s]",
-                category, priority, addressType, plcNameRead, dataTypeRead, systemTagRead, userDefinedTagRead,
-                addressRead, indexRead, enableNotification, condition, triggerValue, alarmMessage,
-                useLabelLibrary, labelName, font, color, acknowledgeValue, enableSound);
     }
 
     // Метод для получения строки значений переменных в строгом порядке для Excel
@@ -72,4 +59,5 @@ public class AlarmWeintek extends AlarmMessage {
                 Boolean.toString(enableSound)
         );
     }
+
 }

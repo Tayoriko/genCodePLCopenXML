@@ -1,4 +1,4 @@
-package codesys;
+package devPLC;
 
 public enum eCtags {
     EMPTY           ("empty"),

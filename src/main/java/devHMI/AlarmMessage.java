@@ -1,4 +1,4 @@
-package alarmsBase;
+package devHMI;
 
 public class AlarmMessage {
     private String address;
