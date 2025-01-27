@@ -23,13 +23,13 @@ class CodesysValveTest {
 
     @BeforeAll
     static void init(){
-        GData.setPlc(ePLC.CODESYS);
+        GData.getInstance().setPlc(ePLC.CODESYS);
     }
 
     @Test
     void createCodesysDevValve() {
         DevValve devValve = new DevValve(id, name, devName, comment, qf, fbOpen, fbClose, cmdOpen, cmdClose);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callValve(devValve);
         String expectedResult = String.format(
                 "// #034 - Valve KE 34\n" +
@@ -49,7 +49,7 @@ class CodesysValveTest {
     @Test
     void createCodesysDevValveNetData() {
         DevValve devValve = new DevValve(id, name, devName, comment, qf, fbOpen, fbClose, cmdOpen, cmdClose);
-        GData.getActions().add(eActions.MBS);
+        GData.getInstance().getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callValve(devValve);
         String expectedResult = String.format(
                 "// #034 - Valve KE 34\n" +

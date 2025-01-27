@@ -17,14 +17,14 @@ class CodesysVarTagsTest {
 
     @BeforeAll
     static void init(){
-        GData.setPlc(ePLC.CODESYS);
-        GData.setTemplate(eTemplate.BASIC);
+        GData.getInstance().setPlc(ePLC.CODESYS);
+        GData.getInstance().setTemplate(eTemplate.BASIC);
     }
 
     @Test
     void genId() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult = codesysVarTables.genId(devAO);
         String expectedResult = String.format(
                 "<variable name=\"ID_sp_UZ_1\">\n" +
@@ -41,7 +41,7 @@ class CodesysVarTagsTest {
     @Test
     void genIol() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult = codesysVarTables.genIol(devAO);
         String expectedResult = String.format(
                 "<variable name=\"sp_UZ_1\">\n" +
@@ -58,7 +58,7 @@ class CodesysVarTagsTest {
     @Test
     void genNet() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult = codesysVarTables.genNvl(devAO);
         String expectedResult = String.format(
                 "<variable name=\"sp_UZ_1\">\n" +

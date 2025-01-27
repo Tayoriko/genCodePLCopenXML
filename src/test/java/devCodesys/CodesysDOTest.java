@@ -19,13 +19,13 @@ class CodesysDOTest {
 
     @BeforeAll
     static void init(){
-        GData.setPlc(ePLC.CODESYS);
+        GData.getInstance().setPlc(ePLC.CODESYS);
     }
 
     @Test
     void createCodesysDevDo() {
         DevDO devDO = new DevDO(id, name, devName, comment, signal);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callDo(devDO);
         String expectedResult = String.format(
                 "// #001 - Control KC 1\n" +
@@ -40,7 +40,7 @@ class CodesysDOTest {
     @Test
     void createCodesysDevDoNetData() {
         DevDO devDO = new DevDO(id, name, devName, comment, signal);
-        GData.getActions().add(eActions.MBS);
+        GData.getInstance().getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callDo(devDO);
         String expectedResult = String.format(
                 "// #001 - Control KC 1\n" +

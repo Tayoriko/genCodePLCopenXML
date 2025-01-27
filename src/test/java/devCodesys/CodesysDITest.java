@@ -19,14 +19,14 @@ class CodesysDITest {
 
     @BeforeAll
     static void init(){
-        GData.setPlc(ePLC.CODESYS);
+        GData.getInstance().setPlc(ePLC.CODESYS);
     }
 
     @Test
     void createCodesysDevDi() {
         DevDI devDI = new DevDI(id, name, devName, comment, signal);
-        GData.setPlc(ePLC.CODESYS);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().setPlc(ePLC.CODESYS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callDi(devDI);
         String expectedResult = String.format(
                 "// #001 - External Reset\n" +
@@ -41,8 +41,8 @@ class CodesysDITest {
     @Test
     void createCodesysDevDiNetData() {
         DevDI devDI = new DevDI(id, name, devName, comment, signal);
-        GData.setPlc(ePLC.CODESYS);
-        GData.getActions().add(eActions.MBS);
+        GData.getInstance().setPlc(ePLC.CODESYS);
+        GData.getInstance().getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callDi(devDI);
         String expectedResult = String.format(
                 "// #001 - External Reset\n" +

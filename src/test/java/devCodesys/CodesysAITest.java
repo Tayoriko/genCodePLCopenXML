@@ -19,13 +19,13 @@ class CodesysAITest {
 
     @BeforeAll
     static void init(){
-        GData.setPlc(ePLC.CODESYS);
+        GData.getInstance().setPlc(ePLC.CODESYS);
     }
 
     @Test
     void createCodesysDevAiReal() {
         DevAI devAI = new DevAI(id, name, devName, comment, signal);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAi(devAI);
         String expectedResult = String.format(
                 "// #001 - Temperature 1\n" +
@@ -42,7 +42,7 @@ class CodesysAITest {
     void createCodesysDevAiInt() {
         DevAI devAI = new DevAI(id, name, devName, comment, signal);
         devAI.setSignalInt();
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAi(devAI);
         String expectedResult = String.format(
                 "// #001 - Temperature 1\n" +
@@ -58,7 +58,7 @@ class CodesysAITest {
     @Test
     void createCodesysDevAoNetData() {
         DevAI devAI = new DevAI(id, name, devName, comment, signal);
-        GData.getActions().add(eActions.MBS);
+        GData.getInstance().getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAi(devAI);
         String expectedResult = String.format(
                 "// #001 - Temperature 1\n" +

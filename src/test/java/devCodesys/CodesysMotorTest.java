@@ -21,13 +21,13 @@ class CodesysMotorTest {
 
     @BeforeAll
     static void init(){
-        GData.setPlc(ePLC.CODESYS);
+        GData.getInstance().setPlc(ePLC.CODESYS);
     }
 
     @Test
     void createCodesysDevMotor() {
         DevMotor devMotor = new DevMotor(id, name, devName, comment, qf, km ,cmdFw);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callMotor(devMotor);
         String expectedResult = String.format(
                 "// #010 - Pump UZ 10\n" +
@@ -45,7 +45,7 @@ class CodesysMotorTest {
     @Test
     void createCodesysDevMotorNetData() {
         DevMotor devMotor = new DevMotor(id, name, devName, comment, qf, km ,cmdFw);
-        GData.getActions().add(eActions.MBS);
+        GData.getInstance().getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callMotor(devMotor);
         String expectedResult = String.format(
                 "// #010 - Pump UZ 10\n" +

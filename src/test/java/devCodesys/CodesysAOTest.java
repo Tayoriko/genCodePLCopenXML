@@ -19,13 +19,13 @@ class CodesysAOTest {
 
     @BeforeAll
     static void init(){
-        GData.setPlc(ePLC.CODESYS);
+        GData.getInstance().setPlc(ePLC.CODESYS);
     }
 
     @Test
     void createCodesysDevAoReal() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAo(devAO);
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +
@@ -42,7 +42,7 @@ class CodesysAOTest {
     void createCodesysDevAoInt() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
         devAO.setResultInt();
-        GData.getActions().remove(eActions.MBS);
+        GData.getInstance().getActions().remove(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAo(devAO);
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +
@@ -58,7 +58,7 @@ class CodesysAOTest {
     @Test
     void createCodesysDevAoNetData() {
         DevAO devAO = new DevAO(id, name, devName, comment, result);
-        GData.getActions().add(eActions.MBS);
+        GData.getInstance().getActions().add(eActions.MBS);
         StringBuilder actualResult  = CodesysCallDevices.callAo(devAO);
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +

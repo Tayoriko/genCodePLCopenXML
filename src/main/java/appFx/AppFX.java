@@ -65,27 +65,27 @@ public class AppFX extends Application {
                     readData();
                     //filling database
                     try {
-                        System.out.println(GData.getDevices().toString());
+                        System.out.println(GData.getInstance().getDevices().toString());
                         DatabaseRegistry.clearAllDatabases();
-                        DeviceCreator deviceCreator = new DeviceCreator(sourceFile, GData.getDevices());
+                        DeviceCreator deviceCreator = new DeviceCreator(sourceFile, GData.getInstance().getDevices());
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
                     //generate code
-                    if (GData.getActions().contains(eActions.PUO) || GData.getActions().contains(eActions.IOL) || GData.getActions().contains(eActions.MBS)) {
+                    if (GData.getInstance().getActions().contains(eActions.PUO) || GData.getInstance().getActions().contains(eActions.IOL) || GData.getInstance().getActions().contains(eActions.MBS)) {
                         StringBuilder xml = new StringBuilder();
-                        switch (GData.getPlc()) {
+                        switch (GData.getInstance().getPlc()) {
                             case CODESYS -> xml = codesysGen.createXml();
                         }
                         XmlSaver.saveXml(xml);
                     }
                     //generate alarms
-                    if (GData.getActions().contains(eActions.ALM)){
+                    if (GData.getInstance().getActions().contains(eActions.ALM)){
                         AlarmGeneration alarmGeneration = new AlarmGeneration();
-                        switch (GData.getHmi()){
+                        switch (GData.getInstance().getHmi()){
                             case WEINTEK -> {
                                 Weintek weintek = new Weintek();
-                                weintek.exportToExcelWeintek(GData.getTargetFolder());
+                                weintek.exportToExcelWeintek(GData.getInstance().getTargetFolder());
                             }
                         }
                     }
@@ -98,19 +98,19 @@ public class AppFX extends Application {
     }
 
     private void readData() {
-        GData.getDevices().clear();
-        GData.getActions().clear();
-        GData.setHmi(fxGrids.getHmi());
-        GData.setPlc(fxGrids.getPlc());
-        GData.setTemplate(fxGrids.getTemplate());
-        if (plc.equals(ePLC.CODESYS)) GData.setVersion(fxGrids.getVersionCodesys());
-        if (plc.equals(ePLC.TIA_PORTAL)) GData.setVersion(fxGrids.getVersionTiaPortal());
+        GData.getInstance().getDevices().clear();
+        GData.getInstance().getActions().clear();
+        GData.getInstance().setHmi(fxGrids.getHmi());
+        GData.getInstance().setPlc(fxGrids.getPlc());
+        GData.getInstance().setTemplate(fxGrids.getTemplate());
+        if (plc.equals(ePLC.CODESYS)) GData.getInstance().setVersion(fxGrids.getVersionCodesys());
+        if (plc.equals(ePLC.TIA_PORTAL)) GData.getInstance().setVersion(fxGrids.getVersionTiaPortal());
         sourceFile = FxOptions.getSourceFile();
         targetFolder = FxOptions.getTargetFolder();
-        GData.setTargetFolder(targetFolder);
-        GData.setProjectName(FxOptions.getProjectName());
-        GData.setDevices(FxOptions.getDevices());
-        GData.setActions(FxOptions.getActions());
-        GData.setOptions(FxOptions.getOptions());
+        GData.getInstance().setTargetFolder(targetFolder);
+        GData.getInstance().setProjectName(FxOptions.getProjectName());
+        GData.getInstance().setDevices(FxOptions.getDevices());
+        GData.getInstance().setActions(FxOptions.getActions());
+        GData.getInstance().setOptions(FxOptions.getOptions());
     }
 }
