@@ -89,7 +89,8 @@ public class AppFX extends Application {
                             }
                         }
                     }
-                });
+                    GData.getInstance().clear();
+        });
 
         // Настройка сцены и отображение окна
         Scene scene = new Scene(root, 550, 355);
