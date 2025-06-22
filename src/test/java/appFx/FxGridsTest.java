@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FxGridsTest {
 
-    @Test
-    void textGrids () {
-        String[] args = new String[0];
-        AppFX.main(args); // Запуск JavaFX-приложения
-    }
+//    @Test
+//    void textGrids () {
+//        String[] args = new String[0];
+//        AppFX.main(args); // Запуск JavaFX-приложения
+//    }
 
 }

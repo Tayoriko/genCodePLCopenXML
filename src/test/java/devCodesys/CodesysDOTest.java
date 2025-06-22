@@ -34,7 +34,7 @@ class CodesysDOTest {
                 "   cmd         := CVL.cmdDO[1],\n" +
                 "   cfg         := RVL.cfgDO[1],\n" +
                 "   result      => SIG.listDO[5].2);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
     @Test
@@ -48,9 +48,9 @@ class CodesysDOTest {
                 "   command     := IOL.KC_1,\n" +
                 "   cmd         := CVL.cmdDO[1],\n" +
                 "   cfg         := RVL.cfgDO[1],\n" +
-                "   netData     := NVL.KC_1,\n" +
+                "   netData     => NVL.KC_1,\n" +
                 "   result      => SIG.listDO[5].2);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
 }

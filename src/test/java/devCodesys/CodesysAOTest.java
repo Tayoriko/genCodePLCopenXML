@@ -30,12 +30,12 @@ class CodesysAOTest {
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +
                 "drvAO[1](\n" +
-                "   command     := IOL.sp_UZ_1,\n" +
+                "   devState    := IOL.sp_UZ_1,\n" +
                 "   cmd         := CVL.cmdAO[1],\n" +
                 "   cfg         := RVL.cfgAO[1],\n" +
-                "   state       := SVL.stateAO[1],\n" +
+                "   state       => SVL.stateAO[1],\n" +
                 "   resultR     => SIG.listAO[3, 2]);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
     @Test
@@ -47,12 +47,12 @@ class CodesysAOTest {
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +
                 "drvAO[1](\n" +
-                "   command     := IOL.sp_UZ_1,\n" +
+                "   devState    := IOL.sp_UZ_1,\n" +
                 "   cmd         := CVL.cmdAO[1],\n" +
                 "   cfg         := RVL.cfgAO[1],\n" +
-                "   state       := SVL.stateAO[1],\n" +
+                "   state       => SVL.stateAO[1],\n" +
                 "   resultI     => SIG.listAO[3, 2]);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
     @Test
@@ -63,12 +63,12 @@ class CodesysAOTest {
         String expectedResult = String.format(
                 "// #001 - Setpoint for UZ 1\n" +
                 "drvAO[1](\n" +
-                "   command     := IOL.sp_UZ_1,\n" +
+                "   devState    := IOL.sp_UZ_1,\n" +
                 "   cmd         := CVL.cmdAO[1],\n" +
                 "   cfg         := RVL.cfgAO[1],\n" +
-                "   state       := SVL.stateAO[1],\n" +
-                "   netData     := NVL.sp_UZ_1,\n" +
+                "   state       => SVL.stateAO[1],\n" +
+                "   netData     => NVL.sp_UZ_1,\n" +
                 "   resultR     => SIG.listAO[3, 2]);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 }

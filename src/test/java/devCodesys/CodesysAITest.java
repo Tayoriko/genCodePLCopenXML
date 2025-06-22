@@ -33,9 +33,9 @@ class CodesysAITest {
                 "   signal      := SIG.listAI[4, 1],\n" +
                 "   cmd         := CVL.cmdAI[1],\n" +
                 "   cfg         := RVL.cfgAI[1],\n" +
-                "   state       := SVL.stateAI[1],\n" +
+                "   state       => SVL.stateAI[1],\n" +
                 "   result      => IOL.TE_1);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
     @Test
@@ -50,9 +50,9 @@ class CodesysAITest {
                 "   signal      := INT_TO_REAL(SIG.listAI[4, 1]),\n" +
                 "   cmd         := CVL.cmdAI[1],\n" +
                 "   cfg         := RVL.cfgAI[1],\n" +
-                "   state       := SVL.stateAI[1],\n" +
+                "   state       => SVL.stateAI[1],\n" +
                 "   result      => IOL.TE_1);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
     @Test
@@ -66,9 +66,9 @@ class CodesysAITest {
                 "   signal      := SIG.listAI[4, 1],\n" +
                 "   cmd         := CVL.cmdAI[1],\n" +
                 "   cfg         := RVL.cfgAI[1],\n" +
-                "   state       := SVL.stateAI[1],\n" +
-                "   netData     := NVL.TE_1,\n" +
+                "   state       => SVL.stateAI[1],\n" +
+                "   netData     => NVL.TE_1,\n" +
                 "   result      => IOL.TE_1);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 }

@@ -35,7 +35,7 @@ class CodesysDITest {
                 "   cmd         := CVL.cmdDI[1],\n" +
                 "   cfg         := RVL.cfgDI[1],\n" +
                 "   result      => IOL.keyReset);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
     @Test
@@ -50,9 +50,9 @@ class CodesysDITest {
                 "   signal      := SIG.listDI[2].4,\n" +
                 "   cmd         := CVL.cmdDI[1],\n" +
                 "   cfg         := RVL.cfgDI[1],\n" +
-                "   netData     := NVL.keyReset,\n" +
+                "   netData     => NVL.keyReset,\n" +
                 "   result      => IOL.keyReset);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
 }

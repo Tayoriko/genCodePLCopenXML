@@ -20,16 +20,16 @@ public class GData {
 
     private static final ThreadLocal<GData> instance = ThreadLocal.withInitial(GData::new);
 
-    private eHMI hmi;
-    private eLang lang = eLang.RU;
-    private eTemplate template;
-    private ePLC plc;
-    private String version = "";
-    private Set<eDevType> devices = new LinkedHashSet<>();
-    private Set<eActions> actions = new LinkedHashSet<>();
-    private Set<eOptions> options = new LinkedHashSet<>();
-    private String projectName = "default";
-    private String targetFolder;
+    private static eHMI hmi;
+    private static eLang lang = eLang.RU;
+    private static eTemplate template;
+    private static ePLC plc;
+    private static String version = "";
+    private static Set<eDevType> devices = new LinkedHashSet<>();
+    private static Set<eActions> actions = new LinkedHashSet<>();
+    private static Set<eOptions> options = new LinkedHashSet<>();
+    private static String projectName = "default";
+    private static String targetFolder;
 
     private GData() {}
 
@@ -41,7 +41,7 @@ public class GData {
         instance.remove();
     }
 
-    public eHMI getHmi() {
+    static public eHMI getHmi() {
         return hmi;
     }
 
@@ -49,7 +49,7 @@ public class GData {
         this.hmi = hmi;
     }
 
-    public eTemplate getTemplate() {
+    static public eTemplate getTemplate() {
         return template;
     }
 
@@ -57,7 +57,7 @@ public class GData {
         this.template = template;
     }
 
-    public ePLC getPlc() {
+    static public ePLC getPlc() {
         return plc;
     }
 
@@ -65,7 +65,7 @@ public class GData {
         this.plc = plc;
     }
 
-    public Set<eDevType> getDevices() {
+    static public Set<eDevType> getDevices() {
         return devices;
     }
 
@@ -73,7 +73,7 @@ public class GData {
         this.devices = devices;
     }
 
-    public Set<eActions> getActions() {
+    static public Set<eActions> getActions() {
         return actions;
     }
 
@@ -81,7 +81,7 @@ public class GData {
         this.actions = actions;
     }
 
-    public String getProjectName() {
+    static public String getProjectName() {
         return projectName;
     }
 
@@ -89,7 +89,7 @@ public class GData {
         this.projectName = projectName;
     }
 
-    public String getVersion() {
+    static public String getVersion() {
         return version;
     }
 
@@ -97,7 +97,7 @@ public class GData {
         this.version = version;
     }
 
-    public String getTargetFolder() {
+    static public String getTargetFolder() {
         return targetFolder;
     }
 
@@ -105,11 +105,11 @@ public class GData {
         this.targetFolder = targetFolder;
     }
 
-    public Set<eOptions> getOptions() {
+    static public Set<eOptions> getOptions() {
         return options;
     }
 
-    public eLang getLang() {
+    static public eLang getLang() {
         return lang;
     }
 
@@ -121,7 +121,7 @@ public class GData {
         this.options = options;
     }
 
-    public static String getTimeStamp () {
+    static public String getTimeStamp () {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(eRegex.timeStampCodesys.getValue());
         return now.format(formatter);

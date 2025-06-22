@@ -35,11 +35,11 @@ class CodesysMotorTest {
                 "   devState    := IOL.UZ_10,\n" +
                 "   cmd         := CVL.cmdM[10],\n" +
                 "   cfg         := RVL.cfgM[10],\n" +
-                "   state       := SVL.stateM[10],\n" +
+                "   state       => SVL.stateM[10],\n" +
                 "   fbQF        := SIG.listDI[1].2,\n" +
                 "   fbKM        := SIG.listDI[1].3,\n" +
                 "   cmdFW       => SIG.listDO[4].11);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
     @Test
@@ -53,11 +53,11 @@ class CodesysMotorTest {
                 "   devState    := IOL.UZ_10,\n" +
                 "   cmd         := CVL.cmdM[10],\n" +
                 "   cfg         := RVL.cfgM[10],\n" +
-                "   state       := SVL.stateM[10],\n" +
-                "   netData     := NVL.UZ_10,\n" +
+                "   state       => SVL.stateM[10],\n" +
+                "   netData     => NVL.UZ_10,\n" +
                 "   fbQF        := SIG.listDI[1].2,\n" +
                 "   fbKM        := SIG.listDI[1].3,\n" +
                 "   cmdFW       => SIG.listDO[4].11);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 }

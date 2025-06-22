@@ -139,8 +139,7 @@ public class CodesysCallDevices {
     public static StringBuilder callAo(DevAO devAO) {
         StringBuilder device = new StringBuilder(String.format(
                 "%s\n" +
-                        "drvAO[%d](\n" +
-                        "   fbQf        := %s,\n",
+                        "drvAO[%d](\n",
                 devAO.getHeader(),
                 devAO.getId()
         ));
@@ -168,7 +167,7 @@ public class CodesysCallDevices {
             ));
         } else {
             device.append(String.format(
-                    "   resultI     := %s);\n",
+                    "   resultI     => %s);\n",
                     CodesysAddressing.getAddrAo(devAO.getResult())
             ));
         }

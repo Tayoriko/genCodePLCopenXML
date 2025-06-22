@@ -37,13 +37,14 @@ class CodesysValveTest {
                 "   devState    := IOL.KE_34,\n" +
                 "   cmd         := CVL.cmdV[34],\n" +
                 "   cfg         := RVL.cfgV[34],\n" +
-                "   state       := SVL.stateV[34],\n" +
+                "   state       => SVL.stateV[34],\n" +
                 "   fbQF        := (*input address here*),\n" +
                 "   fbOpen      := SIG.listDI[1].3,\n" +
                 "   fbClose     := SIG.listDI[1].4,\n" +
                 "   cmdOpen     => SIG.listDO[4].11,\n" +
-                "   cmdClose    => SIG.listDO[4].12);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+                "   cmdClose    => SIG.listDO[4].12);\n" +
+                "RVL.cfgV[34].cfg.useQF := FALSE;\n\n");
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 
     @Test
@@ -57,13 +58,14 @@ class CodesysValveTest {
                 "   devState    := IOL.KE_34,\n" +
                 "   cmd         := CVL.cmdV[34],\n" +
                 "   cfg         := RVL.cfgV[34],\n" +
-                "   state       := SVL.stateV[34],\n" +
-                "   netData     := NVL.KE_34,\n" +
+                "   state       => SVL.stateV[34],\n" +
+                "   netData     => NVL.KE_34,\n" +
                 "   fbQF        := (*input address here*),\n" +
                 "   fbOpen      := SIG.listDI[1].3,\n" +
                 "   fbClose     := SIG.listDI[1].4,\n" +
                 "   cmdOpen     => SIG.listDO[4].11,\n" +
-                "   cmdClose    => SIG.listDO[4].12);\n\n");
-        Assertions.assertEquals(actualResult.toString(), expectedResult.toString());
+                "   cmdClose    => SIG.listDO[4].12);\n" +
+                "RVL.cfgV[34].cfg.useQF := FALSE;\n\n");
+        Assertions.assertEquals(expectedResult.toString(),actualResult.toString());
     }
 }
